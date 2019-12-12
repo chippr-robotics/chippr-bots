@@ -1,0 +1,16 @@
+{
+  "name": "santabot",
+  "version": "1.0.0",
+  "description": "a twitter image classifer bridge",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "ChipprRobotics",
+  "license": "Apache-2.0",
+  "dependencies": {
+    "dotenv": "^8.2.0",
+    "kafka": "^0.2.3",
+    "twitter": "^1.7.1"
+  }
+}
