@@ -1,0 +1,19 @@
+language: node_js
+sudo: required
+dist: trusty
+node_js: '8'
+env:
+  -CXX=g++-4.8
+  -WEB3_URL=http://localhost:8546
+  -LOG_LEVEL=info
+  -PORT=5000
+services:
+  - docker
+before_install:
+  - docker pull trufflesuite/ganache-cli
+  - docker run -d -p 8546:8546 -p 3000:3000 -p 27017:27017 trufflesuite/ganache-cli
+install:
+  - npm i -g truffle
+  - npm i
+script:
+  - npm run test
