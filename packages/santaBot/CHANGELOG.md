@@ -5,12 +5,4 @@ See [Conventional Commits](https://conventionalcommits.org) for commit guideline
 
 ## 1.1.2 (2019-12-12)
 
-**Note:** Version bump only for package chippr-bots
-
-
-
-
-
-## 1.1.1 (2019-12-12)
-
-**Note:** Version bump only for package chippr-bots
+**Note:** Version bump only for package santabot
