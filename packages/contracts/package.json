@@ -1,0 +1,11 @@
+{
+  "name": "@chippr-bots/contracts",
+  "version": "1.0.0",
+  "description": "chippr robotics smart contracts",
+  "main": "truffle.js",
+  "license": "Apache-2.0",
+  "private": true,
+  "dependencies": {
+    "truffle": "^5.1.3"
+  }
+}

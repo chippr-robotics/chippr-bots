@@ -1,5 +1,5 @@
 {
-  "name": "santabot",
+  "name": "@chippr-bots/santabot",
   "version": "1.1.4",
   "description": "a twitter image classifer bridge",
   "main": "index.js",
