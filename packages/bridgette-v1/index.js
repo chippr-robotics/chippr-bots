@@ -1,4 +1,6 @@
-const { bot, log, web3 } = require('./common');
+require('dotenv').config();
+
+const { bot, log, web3, forks } = require('./common');
 
 // Initialize Discord Bot
 
@@ -207,33 +209,6 @@ bot.on('message', async function (user, userID, channelID, message, evt) {
             break;
 
 //* dapps *//
-            case 'atlantis':
-              web3.eth.getBlockNumber()
-              .then(blockNumber => {
-                bot.sendMessage(atlantis(channelID, "Atlantis", 8772000, blockNumber));
-                  }).catch((err) => {
-                bot.sendMessage(error(channelID, err))
-              });
-            break;
-
-        case 'agharta':
-              web3.eth.getBlockNumber()
-              .then(blockNumber => {
-                bot.sendMessage(atlantis(channelID, "Agharta", 9573000, blockNumber));
-                  }).catch((err) => {
-                bot.sendMessage(error(channelID, err))
-              });
-            break;
-
-       case 'ecip1017':
-              web3.eth.getBlockNumber()
-              .then(blockNumber => {
-                bot.sendMessage(atlantis(channelID, "ECIP1017", 10000000, blockNumber));
-                  }).catch((err) => {
-                bot.sendMessage(error(channelID, err))
-              });
-            break;
-
             case 'statebot':
             statebot.methods.currentAddr().call()
             .then( ca => {
@@ -319,7 +294,20 @@ bot.on('message', async function (user, userID, channelID, message, evt) {
               bot.sendMessage(await eventLog(channelID, user, payload));
             break;
 
+         };
+       //* forks *//
+        for(var fork in forks.forks) {
+          log.debug('[Bridgett-bot/index.js] fork check:' + forks.forks[fork].fn)
+          if( forks.forks[fork].fn == cmd ){
+           web3.eth.getBlockNumber()
+              .then(blockNumber => {
+                bot.sendMessage(atlantis(channelID, forks.forks[fork].name, forks.forks[fork].block, blockNumber));
+                  }).catch((err) => {
+                bot.sendMessage(error(channelID, err))
+              });
           }
+       }
+
      }
 });
 

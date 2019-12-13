@@ -2,7 +2,7 @@ const { log } = require('../common');
 
 log.debug('[Bridgette-bot/lib/version] version loaded');
 
-var pkg = require('../../package.json');
+var pkg = require('../package.json');
 
 module.exports = (channelID) => {
 return{

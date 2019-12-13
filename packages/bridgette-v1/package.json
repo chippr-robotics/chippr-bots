@@ -5,5 +5,10 @@
   "main": "index.js",
   "author": "chippr robotics",
   "license": "apache-2",
-  "private": false
+  "private": false,
+  "dependencies": {
+    "discord.io-gateway6": "^2.5.3",
+    "dotenv": "^8.2.0",
+    "joi": "^14.3.1"
+  }
 }

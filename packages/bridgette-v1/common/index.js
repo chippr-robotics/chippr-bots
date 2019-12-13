@@ -3,7 +3,8 @@
 var botUnits = require( './botUnits' );
 var bot = require( './discord' );
 var log = require( './logger' );
-var web3 = require( "./etherNode" ); 
+var web3 = require( "./etherNode" );
+var forks = require( "./forks" );
 // var watson = require( './watson' );
 
 
@@ -12,6 +13,7 @@ module.exports = {
     bot  : bot,
     log  : log,
     web3 : web3,
+    forks : forks,
 
 }
 
