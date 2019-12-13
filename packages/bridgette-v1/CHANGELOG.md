@@ -5,12 +5,4 @@ See [Conventional Commits](https://conventionalcommits.org) for commit guideline
 
 ## [1.1.6](https://github.com/chippr-robotics/chippr-bots/compare/v1.1.5...v1.1.6) (2019-12-13)
 
-**Note:** Version bump only for package @chippr-bots/contracts
-
-
-
-
-
-## [1.1.5](https://github.com/chippr-robotics/chippr-bots/compare/v1.1.4...v1.1.5) (2019-12-12)
-
-**Note:** Version bump only for package @chippr-bots/contracts
+**Note:** Version bump only for package @chippr-bots/bridgette-v1

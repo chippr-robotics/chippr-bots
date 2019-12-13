@@ -1,6 +1,6 @@
 {
   "name": "@chippr-bots/contracts",
-  "version": "1.1.5",
+  "version": "1.1.6",
   "description": "chippr robotics smart contracts",
   "main": "truffle.js",
   "license": "Apache-2.0",
