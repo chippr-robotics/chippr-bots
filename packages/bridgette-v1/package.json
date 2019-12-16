@@ -6,6 +6,11 @@
   "author": "chippr robotics",
   "license": "apache-2",
   "private": false,
+  "scripts": {
+    "start": "mocha --exit && node index.js",
+    "test": "mocha --exit",
+    "stop": "forever stop index.js"
+  },
   "dependencies": {
     "discord.io-gateway6": "^2.5.3",
     "dotenv": "^8.2.0",

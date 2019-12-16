@@ -4,7 +4,7 @@ var assert = require('assert');
 const { version } = require( "../funcs" );
 
 //files needed to verify
-var pkg = require('../../package.json');
+var pkg = require('../package.json');
 
 module.exports =
 describe('version reporting', function() {
