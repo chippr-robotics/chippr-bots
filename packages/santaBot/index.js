@@ -22,9 +22,9 @@ var params = {
 //  console.log(data) // If there is no error, proceed
 //});
 
-var download = function(uri, filename, callback){
-    request(uri).pipe(fs.createWriteStream('./img/'+filename)).on('close', callback);
-
+function download(uri, filename, callback){
+console.log("ggg "+uri);
+    request(uri).pipe(fs.createWriteStream(filename)).on('close', callback);
 };
 
 function getter(){ 
@@ -34,14 +34,14 @@ if(!err){
     for(let i = 0; i < data.statuses.length; i++){
       let id = { id: data.statuses[i].id_str }; 
        let photo = data.statuses[i];
-//       console.log(photo.entities.media);
+//    console.log(photo.entities.media);
       if(photo.entities.media != undefined) {
      console.log(photo.entities.media[0].media_url);
      var onList = list({ url: photo.entities.media[0].media_url, owners:['me'],threshold: 0.6});
     try{
-    if(photo.entities.media[0].media_url != undefined){
-      download(photo.entities.media[0].media_uri, nice123.jpg);
-    }
+      download(photo.entities.media[0].media_url, "/img/"+ Math.random().toString(36).substring(2, 15) + ".jpg", function(){
+  console.log('done'); 
+      });
 }
 catch(err) {console.error(err)};
 }
@@ -66,4 +66,6 @@ catch(err) {console.error(err)};
 
 };
 
-getter();
+setInterval(()=>{
+getter();}
+,3000);
