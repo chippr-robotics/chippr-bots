@@ -1,0 +1,9 @@
+{
+  "name": "attestation",
+  "version": "1.0.0",
+  "description": "attestations of MPC ceremonies ",
+  "main": "index.js",
+  "author": "Chippr Robotics",
+  "license": "Apache-2.0",
+  "private": false
+}
