@@ -4,7 +4,7 @@ const { log, web3 } = require('../common');
 
 log.debug('[Bridgette-bot/lib/statebot] statebot loaded');
 
-var faucet = require('../../contracts/build/contracts/faucet.json');
+var faucet = require('@chippr-bots/contracts/build/contracts/faucet.json');
 
 const ABI = faucet.abi;
 const faucetAddr = "0x0189ac60C650e456A660FBAF0E250fDA63fD2905";

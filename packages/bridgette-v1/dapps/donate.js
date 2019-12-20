@@ -5,7 +5,7 @@ const { log, web3 } = require('../common');
 log.debug('[Bridgette-bot/lib/donate] donate loaded');
 
 
-var splitter = require('../../contracts/build/contracts/Split.json');
+var splitter = require('@chippr-bots/contracts/build/contracts/Split.json');
 
 const BYTECODE = splitter.bytecode;
 const ABI = splitter.abi;

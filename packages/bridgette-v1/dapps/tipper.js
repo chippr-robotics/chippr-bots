@@ -4,7 +4,7 @@ const crypto = require('crypto');
 
 const { bot, log, web3 } = require('../common');
 
-var bottoken = require('../../contracts/build/contracts/bottoken.json');
+var bottoken = require('@chippr-bots/contracts/build/contracts/bottoken.json');
 
 
 //joi validation schema
