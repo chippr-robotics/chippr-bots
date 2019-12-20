@@ -16,7 +16,7 @@ function isNumber(n) {
 
 //* Get functions from library *//
 
-const { getBlockNumber, getBalance, getTransaction, getTXR, sendSignedTransaction, getGasPrice, getBlock, version, error, forkName } = require( "./funcs" );
+const { getBlockNumber, getBalance, getTransaction, getTXR, sendSignedTransaction, getGasPrice, getBlock, version, error, forkName, forkit } = require( "./funcs" );
 
 // dapps
 
@@ -45,8 +45,9 @@ bot.on('message', async function (user, userID, channelID, message, evt) {
         var cmd = args[0].toLowerCase();
         var payload = args[1];
         if (args[2] != null){
-        var dLoad = [args[1].toLowerCase(), args[2], args[3]];
-      }
+          var dLoad = [args[1].toLowerCase(), args[2], args[3]];
+          var time =  [args[1], args[2], args[3]];
+        }
         args = args.splice(1);
         switch(cmd) {
             case 'web3':
@@ -72,8 +73,17 @@ bot.on('message', async function (user, userID, channelID, message, evt) {
             case 'fork':
               bot.sendMessage(forkName(channelID, payload));
             break;
-            
-            // getBalance
+           //forkit
+           case 'forkit':
+              web3.eth.getBlockNumber()
+              .then(blockNumber => {
+               bot.sendMessage(forkit(channelID, time[0], time[1], time[2], blockNumber))
+            }).catch((err) =>{
+             bot.sendMessage(error(channelID, err))
+              });
+            break;
+
+          // getBalance
             case 'getbalance':
              if(payload != undefined && web3.utils.isAddress(payload)){
               web3.eth.getBalance(payload)

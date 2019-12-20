@@ -10,12 +10,12 @@ function getResponse(year, month, day, bn){
 
     var Seconds_from_T1_to_T2 = dif / 1000;
     var Seconds_Between_Dates = Math.abs(Seconds_from_T1_to_T2);
-    
+    log.info('[dflow/controllers/forkit.js] inputs:'+ year + " " + month +" "+ day)
     log.info('[dflow/controllers/forkit.js] seconds: ' + Math.floor(Seconds_Between_Dates));
 
-    var FAST_BLOCK = Math.floor(bn + (Seconds_Between_Dates / 7));
+    var FAST_BLOCK = Math.floor(bn + (Seconds_Between_Dates / 8));
     var POINT_BLOCK = Math.floor(bn + (Seconds_Between_Dates / 10));
-    var SLOW_BLOCK = Math.floor(bn + (Seconds_Between_Dates / 13));
+    var SLOW_BLOCK = Math.floor(bn + (Seconds_Between_Dates / 12));
 
     var PRIME = nextPrime(POINT_BLOCK);
 
