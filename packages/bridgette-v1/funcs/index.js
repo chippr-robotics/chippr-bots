@@ -11,6 +11,7 @@ var getBlock = require('./getBlock');
 var version = require('./version');
 var error = require('./error');
 var forkName = require('./forkName');
+var forkit = require('./forkit')
 
 log.info('[Bridgett-bot/funcs/index.js] functions loaded');
 
@@ -25,6 +26,7 @@ module.exports = {
     version : version,
     error : error,
     forkName : forkName,
+    forkit : forkit,
 }
 
 // copy paste 

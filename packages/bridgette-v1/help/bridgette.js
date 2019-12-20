@@ -18,6 +18,7 @@ module.exports = (channelID) => {
     + "       mail: send a message to an address" + "\n"
     + "       donate <team> <percent> <addr>: get a contract to donate to your fav dev team" +"\n"
     + "       tipper: send a ETC to users" + "\n"
+    + "       forkit <year> <month> <day>: get a range of blocks for a date" +"\n"
     + "```"
 
   };
