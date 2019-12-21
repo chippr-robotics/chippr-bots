@@ -1,13 +1,13 @@
 {
   "name": "@chippr-bots/bridgette-v1",
-  "version": "1.1.10",
+  "version": "1.1.11",
   "description": "discord bridgette functions",
   "main": "index.js",
   "author": "chippr robotics",
   "license": "apache-2",
   "private": false,
   "scripts": {
-    "start": "mocha --exit && node index.js",
+    "start": "node index.js",
     "test": "mocha --exit",
     "stop": "forever stop index.js"
   },

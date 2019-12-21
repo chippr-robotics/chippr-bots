@@ -20,7 +20,7 @@ const { getBlockNumber, getBalance, getTransaction, getTXR, sendSignedTransactio
 
 // dapps
 
-const { statebot, multi, donate, getetc, etcmail, eventLog, tipper, atlantis } = require( "./dapps" );
+const { statebot, multi, etcmail, atlantis } = require( "./dapps" );
 
 // help files
 
