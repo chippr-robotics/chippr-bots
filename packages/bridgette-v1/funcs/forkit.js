@@ -6,7 +6,7 @@ log.info('[dflow/controllers/forkit.js] forkit loaded');
 function getResponse(year, month, day, bn){
     var t1 = new Date();
     var t2 = new Date(year, month, day, 14, 0, 0, 0);
-    var dif = t1.getTime() - t2.getTime();
+    var dif = t2.getTime() - t1.getTime();
 
     var Seconds_from_T1_to_T2 = dif / 1000;
     var Seconds_Between_Dates = Math.abs(Seconds_from_T1_to_T2);
