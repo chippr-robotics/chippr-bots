@@ -307,11 +307,15 @@ bot.on('message', async function (user, userID, channelID, message, evt) {
          };
        //* forks *//
         for(var fork in forks.forks) {
-          log.debug('[Bridgett-bot/index.js] fork check:' + forks.forks[fork].fn)
+//          log.debug('[Bridgett-bot/index.js] fork check:' + forks.forks[fork].fn);
           if( forks.forks[fork].fn == cmd ){
-           web3.eth.getBlockNumber()
+           log.debug("matched "+cmd);
+          log.debug("block" + forks.forks[fork].fn);
+          var check = forks.forks[fork];
+             web3.eth.getBlockNumber()
               .then(blockNumber => {
-                bot.sendMessage(atlantis(channelID, forks.forks[fork].name, forks.forks[fork].block, blockNumber));
+              log.debug("forkblock: "+check.block);
+                 bot.sendMessage(atlantis(channelID, check.name, check.block, blockNumber));
                   }).catch((err) => {
                 bot.sendMessage(error(channelID, err))
               });

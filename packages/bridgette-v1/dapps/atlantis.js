@@ -29,6 +29,7 @@ function  getMsg( forkName, forkBlk, blocknumber ) {
 
 
 module.exports = (channelID, forkName, forkBlk, blockNumber) => {
+//console.log("fork block: " + forkBlk );
 return{
   to: channelID,
   message : getMsg( forkName, forkBlk, blockNumber )
