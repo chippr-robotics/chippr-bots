@@ -3,7 +3,7 @@ log.info('[dflow/controllers/forkit.js] forkit loaded');
 
 //provide a random response
 
-function getResponse(year, month, day, bn){
+function getResponse(year, month, day, bn, blkTime, blkTimeV){
     var t1 = new Date();
     var t2 = new Date(year, month, day, 14, 0, 0, 0);
     var dif = t2.getTime() - t1.getTime();
@@ -13,30 +13,43 @@ function getResponse(year, month, day, bn){
     log.info('[dflow/controllers/forkit.js] inputs:'+ year + " " + month +" "+ day)
     log.info('[dflow/controllers/forkit.js] seconds: ' + Math.floor(Seconds_Between_Dates));
 
-    var FAST_BLOCK = Math.floor(bn + (Seconds_Between_Dates / 8));
-    var POINT_BLOCK = Math.floor(bn + (Seconds_Between_Dates / 10));
-    var SLOW_BLOCK = Math.floor(bn + (Seconds_Between_Dates / 12));
+    var FAST_BLOCK = Math.floor(bn + (Seconds_Between_Dates / (blkTime - (blkTime * blkTimeV)))); // fast blocks mean the number will be higher on that date
+    var POINT_BLOCK = Math.floor(bn + (Seconds_Between_Dates / blkTime)); // point is if blocks are on average time
+    var SLOW_BLOCK = Math.floor(bn + (Seconds_Between_Dates / (blkTime + (blkTime * blkTimeV)))); // slow blocks mean the number will be lower on the day
 
     var PRIME = nextPrime(POINT_BLOCK);
 
-    var responses = [
-        `That fork would be between: ${SLOW_BLOCK} and ${FAST_BLOCK}, a prime in that range is: ${PRIME}`
-    ]
+    var BLOCKRANGE = FAST_BLOCK-SLOW_BLOCK;
+    var TWIN_PRIME = nextPrimeTwin(PRIME != NaN) ? "   Twin Prime near mean block: "  + nextPrimeTwin(PRIME) + "\n" : "" ;
+    var QUAD_PRIME = nextPrimeQuad(PRIME != NaN) ? "   A Quad Prime is near that range! Block: "  + nextPrimeQuad(SLOW_BLOCK) + "\n" : "" ;
+    var BIGRANGE = BLOCKRANGE > 24*60*60/blkTime  ? "Warning! This range is larger than one human day, Try back when the range will be tighter. \n": "";
+
+    var responses =  "\`\`\` \n" +
+        " Based on the last 1000 blocks: \n" +
+        "   Current Block Height: " + bn + "\n"+
+        "   Variance for calculations: " + blkTimeV + "\n" +
+        "   Block range: " + BLOCKRANGE + "\n" +
+        "   Low Block number(1 stdv dwn): " + SLOW_BLOCK + "\n" +
+        "   High Block number(1 stdv up): " + FAST_BLOCK + "\n" +
+        "   Prime number near mean block: " + PRIME + "\n" +
+        TWIN_PRIME + QUAD_PRIME + BIGRANGE +
+        " \`\`\`"
+    
 
     log.debug('[dflow/controllers/forkit.js] possible responses: ' + responses);
-    return responses[Math.floor(Math.random() * responses.length)];
+    return responses;
 }
 
-module.exports = (channelID, year, month, day, bn) =>{
+module.exports = (channelID, year, month, day, bn, blkTime, blkTimeV) =>{
     return {
       to: channelID,
-      message: getResponse(year, month, day, bn)
+      message: getResponse(year, month, day, bn, blkTime, blkTimeV)
     };
 };
 
 
 
-// Copyright (c) 2011 Alexei Kourbatov, www.JavaScripter.net 
+// Copyright (c) 2011 Alexei Kourbatov, www.JavaScripter.net
 
 // function leastFactor(n) returns:
 // * the smallest prime that divides n
