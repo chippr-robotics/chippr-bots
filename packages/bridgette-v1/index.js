@@ -77,7 +77,7 @@ bot.on('message', async function (user, userID, channelID, message, evt) {
            case 'forkit':
               web3.eth.getBlockNumber()
               .then(blockNumber => {
-               bot.sendMessage(forkit(channelID, time[0], time[1], time[2], blockNumber))
+               bot.sendMessage(forkit(channelID, time[0], time[1], time[2], blockNumber,  10, .00025))
             }).catch((err) =>{
              bot.sendMessage(error(channelID, err))
               });
