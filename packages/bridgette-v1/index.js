@@ -1,6 +1,6 @@
 require('dotenv').config();
 
-const { bot, log, web3, forks } = require('./common');
+const { bot, log, web3, forks, blkState } = require('./common');
 
 // Initialize Discord Bot
 
@@ -9,10 +9,6 @@ bot.on('ready', function (evt) {
     log.info('[Bridgett-bot/index.js] Logged in as: ');
     log.info('[Bridgett-bot/index.js]' + bot.username + ' - (' + bot.id + ')');
 });
-
-function isNumber(n) {
-  return !isNaN(parseFloat(n)) && isFinite(n);
-}
 
 //* Get functions from library *//
 
@@ -28,6 +24,10 @@ const { bridgette, donatehelp, etcmailhelp, tipperError } = require( "./help" );
 
 //* end functoin set*//
 
+function isNumber(n) {
+  return !isNaN(parseFloat(n)) && isFinite(n);
+}
+
 function addReaction(channelID, evt,emoji){
    bot.addReaction({
     channelID : channelID,
@@ -35,6 +35,21 @@ function addReaction(channelID, evt,emoji){
     reaction : emoji
   })
 }
+
+// set initial state
+const blockSTATE = new blkState();
+
+//update state periodically
+setInterval( async function(){
+  //get the latest block number
+  blockSTATE.blockNumber = await web3.eth.getBlockNumber();
+  log.debug(blockSTATE.blockNumber);
+  //find the average block time
+  let curBlock = await web3.eth.getBlock(blockSTATE.blockNumber);
+  let oldBlock = await web3.eth.getBlock(blockSTATE.blockNumber - 10000);
+  blockSTATE.averageBlockTime = (curBlock.timestamp - oldBlock.timestamp) / 10000;
+  log.debug(blockSTATE.averageBlockTime);
+},5000);
 
 bot.on('message', async function (user, userID, channelID, message, evt) {
     // Our bot needs to know if it will execute a command
@@ -56,12 +71,12 @@ bot.on('message', async function (user, userID, channelID, message, evt) {
 
             // getBlockNumber
             case 'getblocknumber':
-              web3.eth.getBlockNumber()
-              .then(blockNumber => {
-                bot.sendMessage(getBlockNumber(channelID, blockNumber));
-                  }).catch((err) => {
+              try {
+                bot.sendMessage(getBlockNumber(channelID, blockSTATE.blockNumber));
+                 }
+              catch(err) {
                 bot.sendMessage(error(channelID, err))
-              });
+              };
             break;
 
             // version
@@ -75,12 +90,12 @@ bot.on('message', async function (user, userID, channelID, message, evt) {
             break;
            //forkit
            case 'forkit':
-              web3.eth.getBlockNumber()
-              .then(blockNumber => {
-               bot.sendMessage(forkit(channelID, time[0], time[1], time[2], blockNumber,  10, .00025))
-            }).catch((err) =>{
-             bot.sendMessage(error(channelID, err))
-              });
+             try{
+               bot.sendMessage(forkit(channelID, time[0], time[1], time[2], blockSTATE.blockNumber,  blockSTATE.averageBlockTime, .005))
+             }
+             catch(err){
+               bot.sendMessage(error(channelID, err))
+              };
             break;
 
           // getBalance
@@ -312,13 +327,13 @@ bot.on('message', async function (user, userID, channelID, message, evt) {
            log.debug("matched "+cmd);
           log.debug("block" + forks.forks[fork].fn);
           var check = forks.forks[fork];
-             web3.eth.getBlockNumber()
-              .then(blockNumber => {
-              log.debug("forkblock: "+check.block);
-                 bot.sendMessage(atlantis(channelID, check.name, check.block, blockNumber));
-                  }).catch((err) => {
+            try{
+             log.debug("forkblock: "+check.block);
+                 bot.sendMessage(atlantis(channelID, check.name, check.block, blockSTATE.blockNumber, blockSTATE.averageBlockTime));
+               }
+            catch(err) {
                 bot.sendMessage(error(channelID, err))
-              });
+              };
           }
        }
 

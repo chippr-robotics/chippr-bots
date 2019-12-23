@@ -7,7 +7,9 @@ function getResponse(year, month, day, bn, blkTime, blkTimeV){
     var t1 = new Date();
     var t2 = new Date(year, month, day, 14, 0, 0, 0);
     var dif = t2.getTime() - t1.getTime();
-
+    if(dif < 0){
+      return "I need a future date for this trick....";
+    };
     var Seconds_from_T1_to_T2 = dif / 1000;
     var Seconds_Between_Dates = Math.abs(Seconds_from_T1_to_T2);
     log.info('[dflow/controllers/forkit.js] inputs:'+ year + " " + month +" "+ day)
@@ -25,8 +27,9 @@ function getResponse(year, month, day, bn, blkTime, blkTimeV){
     var BIGRANGE = BLOCKRANGE > 24*60*60/blkTime  ? "Warning! This range is larger than one human day, Try back when the range will be tighter. \n": "";
 
     var responses =  "\`\`\` \n" +
-        " Based on the last 1000 blocks: \n" +
+        " Based on the last 10000 blocks: \n" +
         "   Current Block Height: " + bn + "\n"+
+        "   Average BlockTime: "+ blkTime + "\n"+ 
         "   Variance for calculations: " + blkTimeV + "\n" +
         "   Block range: " + BLOCKRANGE + "\n" +
         "   Low Block number(1 stdv dwn): " + SLOW_BLOCK + "\n" +

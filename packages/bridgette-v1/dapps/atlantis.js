@@ -4,9 +4,9 @@
 
 // 
 
-function  getMsg( forkName, forkBlk, blocknumber ) {
+function  getMsg( forkName, forkBlk, blocknumber, blkTime ) {
     var now = new Date().getTime();
-    var timeRemains = (forkBlk - blocknumber) * 14;
+    var timeRemains = (forkBlk - blocknumber) * blkTime;
     var countDownDate = ( timeRemains * 1000 )  + 604800 + new Date().getTime();
     var distance = countDownDate - now;
     // Time calculations for days, hours, minutes and seconds
@@ -28,10 +28,10 @@ function  getMsg( forkName, forkBlk, blocknumber ) {
 }
 
 
-module.exports = (channelID, forkName, forkBlk, blockNumber) => {
+module.exports = (channelID, forkName, forkBlk, blockNumber, blkTime) => {
 //console.log("fork block: " + forkBlk );
 return{
   to: channelID,
-  message : getMsg( forkName, forkBlk, blockNumber )
+  message : getMsg( forkName, forkBlk, blockNumber, blkTime )
   };
 };
