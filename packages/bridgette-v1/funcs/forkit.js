@@ -5,15 +5,18 @@ log.info('[dflow/controllers/forkit.js] forkit loaded');
 
 function getResponse(year, month, day, bn, blkTime, blkTimeV){
     var t1 = new Date();
-    var t2 = new Date(year, month, day, 14, 0, 0, 0);
+    var t2 = new Date(year, month-1, day, 14, 0, 0, 0);
     var dif = t2.getTime() - t1.getTime();
     if(dif < 0){
       return "I need a future date for this trick....";
     };
+    console.log(t1); 
+    console.log(t2);
+    console.log(dif);
     var Seconds_from_T1_to_T2 = dif / 1000;
     var Seconds_Between_Dates = Math.abs(Seconds_from_T1_to_T2);
     log.info('[dflow/controllers/forkit.js] inputs:'+ year + " " + month +" "+ day)
-    log.info('[dflow/controllers/forkit.js] seconds: ' + Math.floor(Seconds_Between_Dates));
+    log.info('[dflow/controllers/forkit.js] seconds: ' + Seconds_Between_Dates);
 
     var FAST_BLOCK = Math.floor(bn + (Seconds_Between_Dates / (blkTime - (blkTime * blkTimeV)))); // fast blocks mean the number will be higher on that date
     var POINT_BLOCK = Math.floor(bn + (Seconds_Between_Dates / blkTime)); // point is if blocks are on average time

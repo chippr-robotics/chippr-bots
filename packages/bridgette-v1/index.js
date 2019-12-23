@@ -68,7 +68,9 @@ bot.on('message', async function (user, userID, channelID, message, evt) {
             case 'web3':
                 bot.sendMessage(bridgette(channelID));
               break;
-
+             case 'depi':
+               addReaction(channelID, evt, "🍕");
+              break;
             // getBlockNumber
             case 'getblocknumber':
               try {
