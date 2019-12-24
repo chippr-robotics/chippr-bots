@@ -66,6 +66,7 @@ bot.on('message', async function (user, userID, channelID, message, evt) {
 
     switch(cmd) {
       case 'web3':
+        addReaction(channelID, evt, "\u{1F916}");
         bot.sendMessage(bridgette(channelID));
         break;
           
@@ -75,6 +76,7 @@ bot.on('message', async function (user, userID, channelID, message, evt) {
         
       // getBlockNumber
       case 'getblocknumber':
+        addReaction(channelID, evt, "\u{1F916}");
         try {
           bot.sendMessage(getBlockNumber(channelID, blockSTATE.blockNumber));
         }
@@ -85,20 +87,22 @@ bot.on('message', async function (user, userID, channelID, message, evt) {
 
       // version
       case 'version':
+        addReaction(channelID, evt, "\u{1F916}");
         bot.sendMessage(version(channelID));
         break;
             
       // forkname     
       case 'fork':
+        addReaction(channelID, evt, "\u{1F916}");
         bot.sendMessage(forkName(channelID, payload));
         break;
       
       //forkit
       case 'forkit':
+        addReaction(channelID, evt, "\u{1F916}");
         try{
           bot.sendMessage(forkit(channelID, time[0], time[1], time[2], blockSTATE.blockNumber,  blockSTATE.averageBlockTime, .005))
-        }
-      
+        }   
         catch(err){
           bot.sendMessage(error(channelID, err))
         };
@@ -106,6 +110,7 @@ bot.on('message', async function (user, userID, channelID, message, evt) {
 
       // getBalance
       case 'getbalance':
+        addReaction(channelID, evt, "\u{1F916}");
         if(payload != undefined && web3.utils.isAddress(payload)){
           web3.eth.getBalance(payload)
             .then( balance => {
@@ -124,6 +129,7 @@ bot.on('message', async function (user, userID, channelID, message, evt) {
 
         // getTransaction
         case 'gettransaction':
+          addReaction(channelID, evt, "\u{1F916}");
           if(payload != undefined){
             web3.eth.getTransaction(payload)
             .then(transaction => {
@@ -142,6 +148,7 @@ bot.on('message', async function (user, userID, channelID, message, evt) {
 
         //get transactionReceipt
         case 'inspect':
+          addReaction(channelID, evt, "\u{1F916}");
           if(payload != undefined){
             web3.eth.getTransactionReceipt(payload)
             .then(transaction => {
@@ -160,6 +167,7 @@ bot.on('message', async function (user, userID, channelID, message, evt) {
 
         // sendSignedTransaction
         case 'sendsignedtransaction':
+          addReaction(channelID, evt, "\u{1F916}");
           if(payload != undefined){
             web3.eth.sendSignedTransaction(payload)
             .then( hash => {
@@ -210,6 +218,7 @@ bot.on('message', async function (user, userID, channelID, message, evt) {
       
           //catch all
         case 'query':
+          addReaction(channelID, evt, "\u{1F916}");
           if(payload != undefined && isNumber(payload)){
             if(web3.utils.isAddress(payload)){
               web3.eth.getBalance(payload)
