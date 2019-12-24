@@ -18,25 +18,36 @@ function getResponse(year, month, day, bn, blkTime, blkTimeV){
     log.info('[dflow/controllers/forkit.js] inputs:'+ year + " " + month +" "+ day)
     log.info('[dflow/controllers/forkit.js] seconds: ' + Seconds_Between_Dates);
 
-    var FAST_BLOCK = Math.floor(bn + (Seconds_Between_Dates / (blkTime - (blkTime * blkTimeV)))); // fast blocks mean the number will be higher on that date
+    var FAST_BLOCK = Math.floor(bn + (Seconds_Between_Dates / (blkTime - blkTimeV))); // fast blocks mean the number will be higher on that date
     var POINT_BLOCK = Math.floor(bn + (Seconds_Between_Dates / blkTime)); // point is if blocks are on average time
-    var SLOW_BLOCK = Math.floor(bn + (Seconds_Between_Dates / (blkTime + (blkTime * blkTimeV)))); // slow blocks mean the number will be lower on the day
+    var SLOW_BLOCK = Math.floor(bn + (Seconds_Between_Dates / (blkTime + blkTimeV))); // slow blocks mean the number will be lower on the day
 
     var PRIME = nextPrime(POINT_BLOCK);
 
     var BLOCKRANGE = FAST_BLOCK-SLOW_BLOCK;
     var TWIN_PRIME = nextPrimeTwin(PRIME != NaN) ? "   Twin Prime near mean block: "  + nextPrimeTwin(PRIME) + "\n" : "" ;
     var QUAD_PRIME = nextPrimeQuad(PRIME != NaN) ? "   A Quad Prime is near that range! Block: "  + nextPrimeQuad(SLOW_BLOCK) + "\n" : "" ;
-    var BIGRANGE = BLOCKRANGE > 24*60*60/blkTime  ? "Warning! This range is larger than one human day, Try back when the range will be tighter. \n": "";
+    var BIGRANGE = BLOCKRANGE > 24*60*60/blkTime  ? "Warning! This range is larger than one human day, Try back later when the range will be tighter. \n": "";
 
     var responses =  "\`\`\` \n" +
         " Based on the last 10000 blocks: \n" +
-        "   Current Block Height: " + bn + "\n"+
-        "   Average BlockTime: "+ blkTime + "\n"+ 
-        "   Variance for calculations: " + blkTimeV + "\n" +
-        "   Block range: " + BLOCKRANGE + "\n" +
-        "   Low Block number(1 stdv dwn): " + SLOW_BLOCK + "\n" +
-        "   High Block number(1 stdv up): " + FAST_BLOCK + "\n" +
+        " \n "+
+        "                      " + bn + "\n "+
+        "                Current Block Height \n"+ 
+        "      " + blkTime + "                    " + blkTimeV + "\n" +
+        " Average BlockTime               Std. Div for calculations \n" +
+        "                     " + BLOCKRANGE + "\n"+
+        "                     Block range \n" +
+        "   \n" +
+        "                  Mean Block \n" +
+        "                  " + POINT_BLOCK + "\n" +
+        "                      | \n" +
+        "   |-----------------------------------------|" + "\n" +
+        "   |                                         |" + "\n" +
+        " "+SLOW_BLOCK+"                                " + FAST_BLOCK + "\n" +
+        "Low Block number                    High Block number \n" +
+        " (1 stdv dwn)                         (1 stdv up) \n" +
+        "   \n" +
         "   Prime number near mean block: " + PRIME + "\n" +
         TWIN_PRIME + QUAD_PRIME + BIGRANGE +
         " \`\`\`"

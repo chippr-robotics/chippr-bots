@@ -1,13 +1,14 @@
 require('dotenv').config();
-
+const fs = require('fs');
+var initialize = require('./data.json');
 const { bot, log, web3, forks, blkState } = require('./common');
 
 // Initialize Discord Bot
 
 bot.on('ready', function (evt) {
-    log.info('[Bridgett-bot/index.js] Connected');
-    log.info('[Bridgett-bot/index.js] Logged in as: ');
-    log.info('[Bridgett-bot/index.js]' + bot.username + ' - (' + bot.id + ')');
+    log.info('[Bridgette-bot/index.js] Connected');
+    log.info('[Bridgette-bot/index.js] Logged in as: ');
+    log.info('[Bridgette-bot/index.js]' + bot.username + ' - (' + bot.id + ')');
 });
 
 //* Get functions from library *//
@@ -37,18 +38,36 @@ function addReaction(channelID, evt,emoji){
 }
 
 // set initial state
-const blockSTATE = new blkState();
-
+const blockSTATE = new blkState(
+  initialize.blkStack,
+  initialize.blockNumber,
+  initialize.averageBlockTime,
+  initialize.blkDiv
+);
+//console.log(blockSTATE);
 //update state periodically
 setInterval( async function(){
   //get the latest block number
+  let pastBlock = blockSTATE.blockNumber;
   blockSTATE.blockNumber = await web3.eth.getBlockNumber();
-  log.debug(blockSTATE.blockNumber);
+  //log.debug(blockSTATE.blockNumber);
   //find the average block time
   let curBlock = await web3.eth.getBlock(blockSTATE.blockNumber);
+  let lastBlock = await web3.eth.getBlock(blockSTATE.blockNumber - 1);
   let oldBlock = await web3.eth.getBlock(blockSTATE.blockNumber - 10000);
   blockSTATE.averageBlockTime = (curBlock.timestamp - oldBlock.timestamp) / 10000;
-  log.debug(blockSTATE.averageBlockTime);
+  //log.debug(blockSTATE.averageBlockTime);
+  //get stddiv
+  //if we have a vew block push it to the stack
+  if(blockSTATE.blockNumber > pastBlock){
+    blockSTATE.blkStack.unshift(Math.abs((curBlock.timestamp - lastBlock.timestamp) - blockSTATE.averageBlockTime));
+  } 
+  if(blockSTATE.blkStack.length > 10000){blockSTATE.blkStack.pop()};
+  //sum all the variance and average it
+  blockSTATE.blkDiv = ( blockSTATE.blkStack.reduce((a,b) => a + b, 0) / blockSTATE.blkStack.length);
+  //log.debug(blockSTATE.blkStack);
+  //log.debug(blockSTATE.blkDiv);
+  fs.writeFileSync('./data.json', JSON.stringify(blockSTATE, null, 2) , 'utf-8'); 
 },5000);
 
 bot.on('message', async function (user, userID, channelID, message, evt) {
@@ -101,7 +120,7 @@ bot.on('message', async function (user, userID, channelID, message, evt) {
       case 'forkit':
         addReaction(channelID, evt, "\u{1F916}");
         try{
-          bot.sendMessage(forkit(channelID, time[0], time[1], time[2], blockSTATE.blockNumber,  blockSTATE.averageBlockTime, .005))
+          bot.sendMessage(forkit(channelID, time[0], time[1], time[2], blockSTATE.blockNumber,  blockSTATE.averageBlockTime, blockSTATE.blkDiv))
         }   
         catch(err){
           bot.sendMessage(error(channelID, err))
