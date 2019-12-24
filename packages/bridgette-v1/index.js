@@ -1,6 +1,6 @@
 require('dotenv').config();
 const fs = require('fs');
-var initialize = require('./data.json');
+var initialize = require('/tmp/data.json');
 const { bot, log, web3, forks, blkState } = require('./common');
 
 // Initialize Discord Bot
@@ -67,7 +67,7 @@ setInterval( async function(){
   blockSTATE.blkDiv = ( blockSTATE.blkStack.reduce((a,b) => a + b, 0) / blockSTATE.blkStack.length);
   //log.debug(blockSTATE.blkStack);
   //log.debug(blockSTATE.blkDiv);
-  fs.writeFileSync('./data.json', JSON.stringify(blockSTATE, null, 2) , 'utf-8'); 
+  fs.writeFileSync('/tmp/data.json', JSON.stringify(blockSTATE, null, 2) , 'utf-8'); 
 },5000);
 
 bot.on('message', async function (user, userID, channelID, message, evt) {
