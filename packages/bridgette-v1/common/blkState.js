@@ -6,5 +6,5 @@ module.exports = class blkState {
       this.blkDiv = blkDiv ;
       this.blkStack = blkStack;
     }
-  }
+}
 

@@ -1,6 +1,14 @@
 const { log } = require('../common');
 log.info('[dflow/controllers/forkit.js] forkit loaded');
 
+Number.prototype.toFixedDown = function(digits) {
+    var re = new RegExp("(\\d+\\.\\d{" + digits + "})(\\d)"),
+        m = this.toString().match(re);
+    return m ? parseFloat(m[1]) : this.valueOf();
+};
+
+
+
 //provide a random response
 
 function getResponse(year, month, day, bn, blkTime, blkTimeV){
@@ -26,27 +34,27 @@ function getResponse(year, month, day, bn, blkTime, blkTimeV){
 
     var BLOCKRANGE = FAST_BLOCK-SLOW_BLOCK;
     var TWIN_PRIME = nextPrimeTwin(PRIME != NaN) ? "   Twin Prime near mean block: "  + nextPrimeTwin(PRIME) + "\n" : "" ;
-    var QUAD_PRIME = nextPrimeQuad(PRIME != NaN) ? "   A Quad Prime is near that range! Block: "  + nextPrimeQuad(SLOW_BLOCK) + "\n" : "" ;
+    var QUAD_PRIME = nextPrimeQuad(PRIME != NaN) ? "   A Quad Prime near that range: "  + nextPrimeQuad(SLOW_BLOCK) + "\n" : "" ;
     var BIGRANGE = BLOCKRANGE > 24*60*60/blkTime  ? "Warning! This range is larger than one human day, Try back later when the range will be tighter. \n": "";
 
     var responses =  "\`\`\` \n" +
-        " Based on the last 10000 blocks: \n" +
+        " Based on the last 50,000 blocks: \n" +
         " \n "+
-        "                      " + bn + "\n "+
-        "                Current Block Height \n"+ 
-        "      " + blkTime + "                    " + blkTimeV + "\n" +
-        " Average BlockTime               Std. Div for calculations \n" +
+        "                   " + bn + "\n "+
+        "             Current Block Height \n"+ 
+        "      " + blkTime.toFixedDown(3) + "                       " + blkTimeV.toFixedDown(3) + "\n" +
+        " Average BlockTime               Std. Div \n" +
         "                     " + BLOCKRANGE + "\n"+
-        "                     Block range \n" +
+        "                  Block range \n" +
         "   \n" +
         "                  Mean Block \n" +
-        "                  " + POINT_BLOCK + "\n" +
+        "                   " + POINT_BLOCK + "\n" +
         "                      | \n" +
         "   |-----------------------------------------|" + "\n" +
         "   |                                         |" + "\n" +
         " "+SLOW_BLOCK+"                                " + FAST_BLOCK + "\n" +
-        "Low Block number                    High Block number \n" +
-        " (1 stdv dwn)                         (1 stdv up) \n" +
+        "Low Block number                     High Block \n" +
+        " (1 stdv dwn)                       (1 stdv up) \n" +
         "   \n" +
         "   Prime number near mean block: " + PRIME + "\n" +
         TWIN_PRIME + QUAD_PRIME + BIGRANGE +

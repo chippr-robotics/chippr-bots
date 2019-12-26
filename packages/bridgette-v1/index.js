@@ -1,7 +1,7 @@
 require('dotenv').config();
 const fs = require('fs');
 var initialize = require('/tmp/data.json');
-const { bot, log, web3, forks, blkState } = require('./common');
+const { bot, log, web3, forks, blkState, T, prime } = require('./common');
 
 // Initialize Discord Bot
 
@@ -23,6 +23,10 @@ const { statebot, multi, etcmail, atlantis } = require( "./dapps" );
 
 const { bridgette, donatehelp, etcmailhelp, tipperError } = require( "./help" );
 
+
+// twitter files
+
+const { quadPrime } = require("./twitter");
 //* end functoin set*//
 
 function isNumber(n) {
@@ -54,20 +58,22 @@ setInterval( async function(){
   //find the average block time
   let curBlock = await web3.eth.getBlock(blockSTATE.blockNumber);
   let lastBlock = await web3.eth.getBlock(blockSTATE.blockNumber - 1);
-  let oldBlock = await web3.eth.getBlock(blockSTATE.blockNumber - 10000);
-  blockSTATE.averageBlockTime = (curBlock.timestamp - oldBlock.timestamp) / 10000;
+  let oldBlock = await web3.eth.getBlock(blockSTATE.blockNumber - 50000);
+  blockSTATE.averageBlockTime = (curBlock.timestamp - oldBlock.timestamp) / 50000;
   //log.debug(blockSTATE.averageBlockTime);
   //get stddiv
-  //if we have a vew block push it to the stack
+  //if we have a vew block push it to the stack and tweet if it is a quad prime
   if(blockSTATE.blockNumber > pastBlock){
+    if(prime.nextPrimeQuad(blockSTATE.blockNumber) % blockSTATE.blockNumber == 0) quadPrime(T, blockSTATE.blockNumber));
     blockSTATE.blkStack.unshift(Math.abs((curBlock.timestamp - lastBlock.timestamp) - blockSTATE.averageBlockTime));
   } 
-  if(blockSTATE.blkStack.length > 10000){blockSTATE.blkStack.pop()};
+  if(blockSTATE.blkStack.length > 50000){blockSTATE.blkStack.pop()};
   //sum all the variance and average it
   blockSTATE.blkDiv = ( blockSTATE.blkStack.reduce((a,b) => a + b, 0) / blockSTATE.blkStack.length);
   //log.debug(blockSTATE.blkStack);
   //log.debug(blockSTATE.blkDiv);
   fs.writeFileSync('/tmp/data.json', JSON.stringify(blockSTATE, null, 2) , 'utf-8'); 
+
 },5000);
 
 bot.on('message', async function (user, userID, channelID, message, evt) {
