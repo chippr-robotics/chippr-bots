@@ -1,6 +1,6 @@
 {
   "name": "@chippr-bots/bridgette-twitter",
-  "version": "1.0.0",
+  "version": "1.1.17",
   "main": "index.js",
   "author": "chippr robotics llc",
   "license": "Apache-2.0",
