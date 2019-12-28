@@ -6,8 +6,10 @@
   "license": "Apache-2.0",
   "private": false,
   "dependencies": {
+    "dotenv": "^8.2.0",
     "ipfs": "^0.40.0",
     "ipfs-http-client": "^40.1.0",
-    "orbit-db": "^0.23.0"
+    "orbit-db": "^0.23.0",
+    "twitter": "^1.7.1"
   }
 }
