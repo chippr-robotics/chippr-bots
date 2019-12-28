@@ -1,3 +1,4 @@
+
 require('dotenv').config();
 const fs = require('fs');
 var initialize = require('/tmp/data.json');
@@ -26,11 +27,24 @@ const { bridgette, donatehelp, etcmailhelp, tipperError } = require( "./help" );
 
 // twitter files
 
-const { quadPrime } = require("./twitter");
+const { quadPrime, twinPrime } = require("./twitter");
+
+T.post('statuses/update', {
+        status: "etc!" },
+        function(err, data, response) {
+            log.debug('[index.js] returned data: ' + data);
+    });
+
+
+
 //* end functoin set*//
 
 function isNumber(n) {
   return !isNaN(parseFloat(n)) && isFinite(n);
+}
+
+function sleep(ms) {
+  return new Promise(resolve => setTimeout(resolve, ms));
 }
 
 function addReaction(channelID, evt,emoji){
@@ -48,26 +62,41 @@ const blockSTATE = new blkState(
   initialize.averageBlockTime,
   initialize.blkDiv
 );
+console.log(blockSTATE);
+
 //console.log(blockSTATE);
 //update state periodically
 setInterval( async function(){
   //get the latest block number
   let pastBlock = blockSTATE.blockNumber;
   blockSTATE.blockNumber = await web3.eth.getBlockNumber();
-  //log.debug(blockSTATE.blockNumber);
+//  log.debug(blockSTATE.blockNumber);
   //find the average block time
   let curBlock = await web3.eth.getBlock(blockSTATE.blockNumber);
   let lastBlock = await web3.eth.getBlock(blockSTATE.blockNumber - 1);
   let oldBlock = await web3.eth.getBlock(blockSTATE.blockNumber - 50000);
-  blockSTATE.averageBlockTime = (curBlock.timestamp - oldBlock.timestamp) / 50000;
+  try {
+ 	 blockSTATE.averageBlockTime = (curBlock.timestamp - oldBlock.timestamp) / 50000;
+       //  console.log(blockSTATE.averageBlockTime);
+  }
+  catch(err){
+	log.error("block average:" + err);
+  }
   //log.debug(blockSTATE.averageBlockTime);
   //get stddiv
   //if we have a vew block push it to the stack and tweet if it is a quad prime
   if(blockSTATE.blockNumber > pastBlock){
-    if(prime.nextPrimeQuad(blockSTATE.blockNumber) % blockSTATE.blockNumber == 0) quadPrime(T, blockSTATE.blockNumber));
-    blockSTATE.blkStack.unshift(Math.abs((curBlock.timestamp - lastBlock.timestamp) - blockSTATE.averageBlockTime));
-  } 
-  if(blockSTATE.blkStack.length > 50000){blockSTATE.blkStack.pop()};
+   await sleep(2000); 
+   try{
+      blockSTATE.blkStack.unshift(Math.abs((curBlock.timestamp - lastBlock.timestamp) - blockSTATE.averageBlockTime));
+    }
+    catch(err){
+      log.error("[bridgette-v1/index.js] tried to unshift: "+ err);
+    }
+  }
+  if(prime.nextPrimeQuad(blockSTATE.blockNumber-1) % blockSTATE.blockNumber == 0) quadPrime(T, blockSTATE.blockNumber);
+//  if(prime.nextPrimeTwin(blockSTATE.blockNumber-1) % blockSTATE.blockNumber == 0) twinPrime(T, blockSTATE.blockNumber);
+  if(blockSTATE.blkStack.length > 50000) blockSTATE.blkStack.pop();
   //sum all the variance and average it
   blockSTATE.blkDiv = ( blockSTATE.blkStack.reduce((a,b) => a + b, 0) / blockSTATE.blkStack.length);
   //log.debug(blockSTATE.blkStack);
@@ -75,6 +104,9 @@ setInterval( async function(){
   fs.writeFileSync('/tmp/data.json', JSON.stringify(blockSTATE, null, 2) , 'utf-8'); 
 
 },5000);
+
+
+
 
 bot.on('message', async function (user, userID, channelID, message, evt) {
 // Our bot needs to know if it will execute a command

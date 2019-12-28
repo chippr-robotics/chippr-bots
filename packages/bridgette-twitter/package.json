@@ -1,0 +1,13 @@
+{
+  "name": "@chippr-bots/bridgette-twitter",
+  "version": "1.0.0",
+  "main": "index.js",
+  "author": "chippr robotics llc",
+  "license": "Apache-2.0",
+  "private": false,
+  "dependencies": {
+    "ipfs": "^0.40.0",
+    "ipfs-http-client": "^40.1.0",
+    "orbit-db": "^0.23.0"
+  }
+}

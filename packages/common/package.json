@@ -1,0 +1,9 @@
+{
+  "name": "@chippr-bots/common",
+  "version": "1.0.0",
+  "description": "common boiler plates",
+  "main": "index.js",
+  "author": "chippr robotics llc",
+  "license": "Apache-2.0",
+  "private": false
+}
