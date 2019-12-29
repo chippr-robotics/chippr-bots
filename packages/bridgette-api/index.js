@@ -2,13 +2,20 @@
 require('dotenv').config();
 const fs = require('fs');
 var express = require('express');
+var uuid = require("uuid/v4");
+
 var initialize = require('/tmp/data.json');
 const { log, web3, forks, blkState, T, prime } = require('@chippr-bots/common');
 
 
 //* Get functions from library *//
 
-const { getBlockNumber, getBalance, getTransaction, getTXR, sendSignedTransaction, getGasPrice, getBlock, version, error, forkName, forkit } = require( "./funcs" );
+const { 
+  getBlockNumber, 
+  getBalance, 
+  getTransaction, 
+  getTXR, 
+  sendSignedTransaction, getGasPrice, getBlock, version, error, forkName, forkit } = require( "./funcs" );
 
 // dapps
 
@@ -26,9 +33,12 @@ const { quadPrime, twinPrime } = require("./twitter");
 
 const app = express();
 
-app.get('/', (req, res) => {
-  return res.send('Received a GET HTTP method');
-});
+app.get('/help', (req, res) => { return res.send(bridgette());});
+app.get('/help/donate', (req, res) => { return res.send(donatehelp);});
+app.get('/help/etcmail', (req, res) => { return res.send(etcmailhelp);});
+app.get('/help/tipper', (req, res) => { return res.send(tipperError);});
+
+
 app.post('/', (req, res) => {
   return res.send('Received a POST HTTP method');
 });

@@ -1,6 +1,5 @@
 module.exports = (channelID) => {
   return {
-    to: channelID,
     message: "``` Bridgette address to address mail service." + "\n"
     + "    This will send a message to an address using the commonwealth messaging contract" + "\n"
     + "       " +"\n"

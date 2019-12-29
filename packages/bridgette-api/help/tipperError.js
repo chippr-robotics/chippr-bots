@@ -1,6 +1,5 @@
 module.exports = (channelID) => {
   return {
-    to: channelID,
     message: "``` (EXPERIMENTAL) Bridgette coin service." + "\n"
     + "    Bridgette can send and manage you bridgette tokens" + "\n"
     + "    Tokens are pegged 100:1 with ETC and have no decimals   " +"\n"

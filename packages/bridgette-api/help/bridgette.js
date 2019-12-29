@@ -1,6 +1,9 @@
-module.exports = (channelID) => {
+var { log } = require("@chippr-bots/common");
+
+log.info("🤖 [bridgette-api/help/bridgette] loaded!");
+
+module.exports = () => {
   return {
-    to: channelID,
     message: "``` I am Bridgette, the minimilst web3 bridge." + "\n"
     + "    Commands: " + "\n"
     + "        query: use <addr> or <blkNumber> or <txHash> to get info" +"\n"
