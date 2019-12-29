@@ -1,7 +1,7 @@
 {
-  "name": "@chippr-bots/bridgette-v1",
+  "name": "@chippr-bots/bridgette-api",
   "version": "1.1.19",
-  "description": "discord bridgette functions",
+  "description": "api for bridgette functions",
   "main": "index.js",
   "author": "chippr robotics",
   "license": "apache-2",
@@ -15,6 +15,7 @@
     "@chippr-bots/common": "^1.1.20",
     "discord.io-gateway6": "^2.5.3",
     "dotenv": "^8.2.0",
+    "express": "^4.17.1",
     "joi": "^14.3.1",
     "mocha": "^6.2.2",
     "twitter": "^1.7.1",

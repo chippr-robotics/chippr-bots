@@ -11,18 +11,22 @@ module.exports = async  (T, _q, likeTH, rtTH) => {
         let status = tweets.statuses[tweet];
 //      console.log(status);
         if(status.text != undefined ){
-          let words = status.text.split(" ");
+          let words = status.text.toLowerCase().split(" ");
           let isGood = true;
           let rt = {
             "id"    : 0,
             "score" : 0,
             }
           for(bw in naughty){
-            if(words.includes(naughty[bw].toLowerCase())) isGood = false;
+//            console.log(naughty[bw]);
+            if(words.includes(naughty[bw])){
+               isGood = false;
 //          log.debug('found word ' + naughty[bw] );
+            }
           }
           //if everything is good add it to the list
           if(isGood){
+//          console.log(words);
             rt.score = status.favorite_count + status.retweet_count;
             rt.id = status.id_str;
             clean.push(rt);
