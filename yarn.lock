@@ -6958,7 +6958,7 @@ std@0.1.36:
   resolved "https://registry.yarnpkg.com/std/-/std-0.1.36.tgz#79da0f9bba887809dfc60958ad4e69cdcf788c40"
   integrity sha1-edoPm7qIeAnfxglYrU5pzc94jEA=
 
-stdrpc@^1.0.0:
+stdrpc@^1.0.0, stdrpc@^1.1.0:
   version "1.1.0"
   resolved "https://registry.yarnpkg.com/stdrpc/-/stdrpc-1.1.0.tgz#e585850d22f741c1e0ce09c8c01af1bbb4acd1f6"
   integrity sha512-ZCyPzF7Pvn2iCy/dXlChPBqG0gsFa+zRNGWAVkWzsY1RJU5VWpbGMywjwnp0UfmQ25RjNtZFfMHEW3NAsQdaUQ==

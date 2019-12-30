@@ -1,5 +1,5 @@
 // common functions
-const { log } = require('../lib');
+const { log } = require('@chippr-bots/common');
 
 // basic functions
 var getBlockNumber = require('./getBlockNumber');

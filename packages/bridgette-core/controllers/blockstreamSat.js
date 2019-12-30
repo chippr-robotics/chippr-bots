@@ -1,7 +1,7 @@
 // calls an external api defined in the env var TICKERPRICE with a ticker symbol
 
 const axios = require('axios');
-const { log, qr } = require('../lib');
+const { log, qr } = require('@chippr-bots/common');
 
 async function getInvoice( payload ) {
     console.log(process.env.BS_SAT_API + `/order?bid=${payload.length * 1000}&message=${payload}`)

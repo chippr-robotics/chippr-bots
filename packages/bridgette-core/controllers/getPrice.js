@@ -1,7 +1,7 @@
 // calls an external api defined in the env var TICKERPRICE with a ticker symbol
 
 const axios = require('axios');
-const { log } = require('../lib');
+const { log } = require('@chippr-bots/common');
 
 async function getTicker( blockchain ) {
     let res = await axios.get(process.env.TICKERFEED + "/" + blockchain + "/metrics" );

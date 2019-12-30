@@ -33,7 +33,7 @@ const { quadPrime, twinPrime } = require("./twitter");
 
 const app = express();
 
-app.get('/help', (req, res) => { return res.send(bridgette());});
+app.get('/help', (req, res) => { bridgette(req, res);});
 app.get('/help/donate', (req, res) => { return res.send(donatehelp);});
 app.get('/help/etcmail', (req, res) => { return res.send(etcmailhelp);});
 app.get('/help/tipper', (req, res) => { return res.send(tipperError);});

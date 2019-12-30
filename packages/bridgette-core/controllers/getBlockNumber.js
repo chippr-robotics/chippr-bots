@@ -1,4 +1,4 @@
-const { log, btc, etc, zec, kotti } = require('../lib');
+const { log, btc, etc, zec, kotti } = require('@chippr-bots/common');
 
 log.info('[dflow/controllers/getBlockNumber.js] getBlockNumber loaded');
 

@@ -1,4 +1,4 @@
-const { log } = require('../lib');
+const { log } = require('@chippr-bots/common');
 
 log.info('[dflow/controllers/version.js] version loaded');
 

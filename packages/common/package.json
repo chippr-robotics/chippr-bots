@@ -8,6 +8,11 @@
   "private": false,
   "dependencies": {
     "discord.io-gateway6": "^2.5.3",
+    "qr-image": "^3.2.0",
+    "request": "^2.88.0",
+    "stdrpc": "^1.1.0",
+    "twitter": "^1.7.1",
+    "uuid": "^3.3.3",
     "web3": "^1.2.4",
     "winston": "^3.2.1"
   }

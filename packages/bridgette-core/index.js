@@ -10,7 +10,7 @@ var fs = require('fs');
 const server = express();
 //const assistant = dialogflow();
 
-const { log } = require('./lib');
+const { log } = require('@chippr-bots/common');
 //active controllers
 const { 
 	getBlockNumber, 

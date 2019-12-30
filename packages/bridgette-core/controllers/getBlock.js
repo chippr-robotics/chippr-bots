@@ -1,4 +1,4 @@
-const { log } = require('../lib');
+const { log } = require('@chippr-bots/commmon');
 
 log.info('[dflow/controllers/getBlock.js] getBlock loaded');
 

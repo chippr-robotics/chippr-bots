@@ -2,8 +2,8 @@ var { log } = require("@chippr-bots/common");
 
 log.info("🤖 [bridgette-api/help/bridgette] loaded!");
 
-module.exports = () => {
-  return {
+module.exports = (req, res) => {
+  return res.send({
     message: "``` I am Bridgette, the minimilst web3 bridge." + "\n"
     + "    Commands: " + "\n"
     + "        query: use <addr> or <blkNumber> or <txHash> to get info" +"\n"
@@ -23,6 +23,5 @@ module.exports = () => {
     + "       tipper: send a ETC to users" + "\n"
     + "       forkit <year> <month> <day>: get a range of blocks for a date" +"\n"
     + "```"
-
-  };
+  });
 };
