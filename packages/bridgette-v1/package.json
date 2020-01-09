@@ -1,6 +1,6 @@
 {
   "name": "@chippr-bots/bridgette-v1",
-  "version": "1.1.21",
+  "version": "1.1.22",
   "description": "discord bridgette functions",
   "main": "index.js",
   "author": "chippr robotics",
@@ -12,7 +12,7 @@
     "stop": "forever stop index.js"
   },
   "dependencies": {
-    "@chippr-bots/common": "^1.1.21",
+    "@chippr-bots/common": "^1.1.22",
     "discord.io-gateway6": "^2.5.3",
     "dotenv": "^8.2.0",
     "joi": "^14.3.1",
