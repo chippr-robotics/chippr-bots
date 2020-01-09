@@ -1,6 +1,6 @@
 {
   "name": "@chippr-bots/common",
-  "version": "1.1.23",
+  "version": "1.1.24",
   "description": "common boiler plates",
   "main": "index.js",
   "author": "chippr robotics llc",
