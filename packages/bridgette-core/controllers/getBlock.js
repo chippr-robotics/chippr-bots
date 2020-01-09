@@ -1,6 +1,6 @@
-const { log } = require('@chippr-bots/commmon');
+//const { log } = require("@chippr-bots/commmon");
 
-log.info('[dflow/controllers/getBlock.js] getBlock loaded');
+//log.info('[dflow/controllers/getBlock.js] getBlock loaded');
 
 //provide a random response
 
