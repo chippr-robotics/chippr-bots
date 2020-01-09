@@ -4,7 +4,7 @@ const { log } = require('@chippr-bots/common');
 var statebot = require('./statebot');
 var multi = require('./multi-sig');
 //var donate = require('./donate');
-//var getetc = require('./getetc');
+var getkotti = require('./getkotti');
 var etcmail = require('./etcmail');
 //var eventLog = require('./eventLog');
 //var tipper = require('./tipper');
@@ -16,7 +16,7 @@ module.exports = {
     statebot : statebot,
     multi : multi,
 //    donate : donate,
-//    getetc : getetc,
+    getkotti : getkotti,
     etcmail : etcmail,
 //    eventLog : eventLog,
 //    tipper : tipper,

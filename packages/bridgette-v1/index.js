@@ -373,6 +373,22 @@ bot.on('message', async function (user, userID, channelID, message, evt) {
             });
           }
           break;
+       
+      case 'getkotti' :
+          if(payload != undefined && web3.utils.isAddress(payload)){
+            bot.sendMessage({
+              to: channelID,
+              message :  'Ok, I\'ll see if I can send some gas money.'
+            });
+            bot.sendMessage(await getetc(channelID, user, payload))
+          } else {
+            bot.sendMessage({
+              to: channelID,
+              message :  "Sorry" + user + " try again with an address!"
+            });
+          }
+          break;
+
 
         case 'mail' :
           if(payload != undefined){
