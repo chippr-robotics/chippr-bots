@@ -4,8 +4,9 @@
   "description": "chippr robotics smart contracts",
   "main": "truffle.js",
   "license": "Apache-2.0",
-  "private": true,
+  "private": false,
   "dependencies": {
+    "@truffle/contract": "^4.1.4",
     "truffle": "^5.1.3"
   }
 }

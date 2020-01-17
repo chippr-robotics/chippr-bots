@@ -18,7 +18,7 @@ const { getBlockNumber, getBalance, getTransaction, getTXR, sendSignedTransactio
 
 // dapps
 
-const { statebot, multi, etcmail, atlantis } = require( "./dapps" );
+const { statebot, multi, etcmail, atlantis, getkotti } = require( "./dapps" );
 
 // help files
 
@@ -87,6 +87,7 @@ setInterval( async function(){
   //if we have a vew block push it to the stack and tweet if it is a quad prime
   if(blockSTATE.blockNumber > pastBlock){
    await sleep(2000); 
+   if(prime.nextPrimeQuad(blockSTATE.blockNumber-1) % blockSTATE.blockNumber == 0) quadPrime(T, blockSTATE.blockNumber);
    try{
       blockSTATE.blkStack.unshift(Math.abs((curBlock.timestamp - lastBlock.timestamp) - blockSTATE.averageBlockTime));
     }
@@ -94,7 +95,6 @@ setInterval( async function(){
       log.error("[bridgette-v1/index.js] tried to unshift: "+ err);
     }
   }
-  if(prime.nextPrimeQuad(blockSTATE.blockNumber-1) % blockSTATE.blockNumber == 0) quadPrime(T, blockSTATE.blockNumber);
 //  if(prime.nextPrimeTwin(blockSTATE.blockNumber-1) % blockSTATE.blockNumber == 0) twinPrime(T, blockSTATE.blockNumber);
   if(blockSTATE.blkStack.length > 50000) blockSTATE.blkStack.pop();
   //sum all the variance and average it
@@ -374,13 +374,13 @@ bot.on('message', async function (user, userID, channelID, message, evt) {
           }
           break;
        
-      case 'getkotti' :
+        case 'getkotti' :
           if(payload != undefined && web3.utils.isAddress(payload)){
             bot.sendMessage({
               to: channelID,
-              message :  'Ok, I\'ll see if I can send some gas money.'
+              message :  'Ok, I\'ll see if I can send some kotti.'
             });
-            bot.sendMessage(await getetc(channelID, user, payload))
+            getkotti(channelID, bot, user, payload)
           } else {
             bot.sendMessage({
               to: channelID,

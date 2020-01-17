@@ -12,31 +12,34 @@ const faucetAddr = "0xe27F239443803dc1B804f6c6603d68e43312781e";
 const faucetContract = new kotti.eth.Contract(ABI, faucetAddr);
 
 
-module.exports = async (channelID, sender,  args) => {
+module.exports = async (channelID, bot, sender,  args) => {
+var msg = {
+        to: channelID,
+        message : '@' + sender + ', Something went wrong. You must wait 100 blocks between requests'
+};
 
 //*  get a payout *//
-  kotti.eth.personal.unlockAccount(process.env.BRIDGETTE_ADDRESS_KOTTI, process.env.BRIDGETTE_PW_KOTTI);
+  try{
+    kotti.eth.personal.unlockAccount(process.env.BRIDGETTE_ADDRESS_KOTTI, process.env.BRIDGETTE_PW_KOTTI, 600);
+    console.log("account unlocked");
+   }
+   catch(err){
+    console.log(err);
+  }
   //console.log(args);
-  const newDrip = await faucetContract.methods.getETC(args).send({
-    from: process.env.BRIDGETTE_ADDRESS_KOTTI,
-    gas: '90000',
-    gasPrice: '20000000000'
-  })
-    .then( res => {
-      return {
+
+var drip = await faucetContract.methods.getETC(args).send({
+      from: process.env.BRIDGETTE_ADDRESS_KOTTI,
+      gas: '90000',
+      gasPrice: '20000000000'
+      })
+      .on('reciept', function(receipt){
+        console.log("got receipt");
+       console.log(receipt);
+        bot.sendMessage({
           to: channelID,
           message : '@'+ sender + ', I sent you some kotti money! You\'re welcome!'
-        }
-    })
-  .catch((err) => {
-    return {
-      to: channelID,
-      message : err
-    }
-  });
-return {
-    to: channelID,
-    message : '@'+ sender + ', I have sent you some kotti money! You\'re welcome!'
-  }
-
+        });
+      })
+     .on('error', function(error){bot.sendMessage(msg)});
 }
