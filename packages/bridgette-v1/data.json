@@ -1,4 +1,7 @@
 {
+  "fate" : {
+     "sexFate" : 5
+   },
   "blockNumber": 9447380,
   "averageBlockTime": 13.1506,
   "blkDiv": 9.218251546391748,

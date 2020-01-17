@@ -3,9 +3,9 @@ const { log, canRes } = require('@chippr-bots/common');
 function postResponse(T, block) {
     log.debug(block);
     var response = [
-        " $ETC just passed another quad prime! Block number " + block,
-        ` ${block} was a quad prime. Those are pretty rare.$ETC is on the move!`,
-        ` If you look at ${block}, it was part of a quad prime.`
+        " #ethereumclassic just passed another quad prime! Block number " + block,
+        ` ${block} was a quad prime. Those are pretty rare.#ethereumclassic is on the move!`,
+        ` If you look at ${block}, it was part of a quad prime.#ethereumclassic`
     ];
     let winScore = 0;
     log.debug(canRes.excited);

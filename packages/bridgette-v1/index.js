@@ -27,7 +27,7 @@ const { bridgette, donatehelp, etcmailhelp, tipperError } = require( "./help" );
 
 // twitter files
 
-const { quadPrime, twinPrime } = require("./twitter");
+const { quadPrime, twinPrime, sexyPrime } = require("./twitter");
 
 T.post('statuses/update', {
         status: "etc!" },
@@ -48,7 +48,7 @@ function sleep(ms) {
 }
 
 function addReaction(channelID, evt,emoji){
-   bot.addReaction({
+    bot.addReaction({
     channelID : channelID,
     messageID : evt.d.id,
     reaction : emoji
@@ -57,12 +57,16 @@ function addReaction(channelID, evt,emoji){
 
 // set initial state
 const blockSTATE = new blkState(
+  initialize.fate,
   initialize.blkStack,
   initialize.blockNumber,
   initialize.averageBlockTime,
-  initialize.blkDiv
+  initialize.blkDiv,
 );
+
+
 console.log(blockSTATE);
+
 
 //console.log(blockSTATE);
 //update state periodically
@@ -88,6 +92,7 @@ setInterval( async function(){
   if(blockSTATE.blockNumber > pastBlock){
    await sleep(2000); 
    if(prime.nextPrimeQuad(blockSTATE.blockNumber-1) % blockSTATE.blockNumber == 0) quadPrime(T, blockSTATE.blockNumber);
+   if(prime.isPrime(blockSTATE.blockNumber) && prime.isPrime(blockSTATE.blockNumber - 6)) sexyPrime(T, blockSTATE.blockNumber, blockSTATE.fate.sexFate);
    try{
       blockSTATE.blkStack.unshift(Math.abs((curBlock.timestamp - lastBlock.timestamp) - blockSTATE.averageBlockTime));
     }
