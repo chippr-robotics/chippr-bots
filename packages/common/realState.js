@@ -1,8 +1,6 @@
-var { log, kotti } = require("./index");
+var kotti = require("./kotti");
 
 var  kvs = require("@chippr-bots/contracts/build/contracts/kvs")
-
-log.debug('[common/realstate] realstate loaded');
 
 
 const ABI = kvs.abi;
