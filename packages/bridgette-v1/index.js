@@ -2,7 +2,7 @@
 require('dotenv').config();
 const fs = require('fs');
 var initialize = require('/tmp/data.json');
-const { bot, log, web3, forks, blkState, T, prime } = require('@chippr-bots/common');
+const { bot, log, web3, forks, blkState, realState, T, prime } = require('@chippr-bots/common');
 
 // Initialize Discord Bot
 
@@ -56,7 +56,7 @@ function addReaction(channelID, evt,emoji){
 }
 
 // set initial state
-const blockSTATE = new blkState(
+const blockSTATE = new realState(
   initialize.fate,
   initialize.blkStack,
   initialize.blockNumber,
