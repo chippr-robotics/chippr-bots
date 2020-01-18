@@ -112,8 +112,8 @@ setInterval( async function(){
 
   //do an update everyday
   if(blockSTATE.blockNumber % 10000 == 0 ){
-   blockSTATE.get("sexFate").then(res => {blockSTATE.sexFate = res});
-   blockSTATE.get("quadFate").then(res => {blockSTATE.quadFate = res});
+   blockSTATE.get("sexFate").then(res => {blockSTATE.sexFate = parseInt(res,10)});
+   blockSTATE.get("quadFate").then(res => {blockSTATE.quadFate = parseInt(res,10)});
   }
 
 },5000);
