@@ -18,35 +18,32 @@ module.exports = class blkState {
       this.fate = fate;
     }
 
-    get( _key ) {
+    async get( _key ) {
      let key = kotti.utils.sha3(_key);
-     kotti.eth.personal.unlockAccount(process.env.BRIDGETTE_ADDRESS_KOTTI, process.env.BRIDGETTE_PW_KOTTI, 600);
-      return kvsContract.method.store( key ).send({
-        from: process.env.BRIDGETTE_ADDRESS_KOTTI,
-        gas: '90000',
-        gasPrice: '20000000000'
-      })
-      .on('reciept', function(receipt){
-        console.log("got receipt");
-        console.log(receipt);
-        })
-     .on('error', function(error){bot.sendMessage(msg)});
+      return await kvsContract.methods.store( key ).call();
    }
-    set( _key, _value ) {
+
+   async set( _key, _value ) {
      let key = kotti.utils.sha3(_key);
      kotti.eth.personal.unlockAccount(process.env.BRIDGETTE_ADDRESS_KOTTI, process.env.BRIDGETTE_PW_KOTTI, 600);
-      return kvsContract.method.set( key, _value ).send({
+      return await kvsContract.methods.set( key, _value ).send({
         from: process.env.BRIDGETTE_ADDRESS_KOTTI,
         gas: '900000',
         gasPrice: '20000000000'
       })
-      .on('reciept', function(receipt){
-        console.log("got receipt");
-        console.log(receipt);
-        })
-     .on('error', console.error());
    }
 
+   async rem( _key ) {
+     let key = kotti.utils.sha3(_key);
+     kotti.eth.personal.unlockAccount(process.env.BRIDGETTE_ADDRESS_KOTTI, process.env.BRIDGETTE_PW_KOTTI, 600);
+      return await kvsContract.methods.rem( key ).send({
+        from: process.env.BRIDGETTE_ADDRESS_KOTTI,
+        gas: '90000',
+        gasPrice: '20000000000'
+      })
+   }
+
+ 
 
 
 

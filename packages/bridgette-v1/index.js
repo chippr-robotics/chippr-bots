@@ -67,6 +67,8 @@ const blockSTATE = new realState(
 
 console.log(blockSTATE);
 
+console.log(blockSTATE.get("fate"));
+
 
 //console.log(blockSTATE);
 //update state periodically
