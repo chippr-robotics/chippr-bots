@@ -1,13 +1,13 @@
 {
   "name": "@chippr-bots/common",
-  "version": "1.1.29",
+  "version": "1.1.30",
   "description": "common boiler plates",
   "main": "index.js",
   "author": "chippr robotics llc",
   "license": "Apache-2.0",
   "private": false,
   "dependencies": {
-    "@chippr-bots/contracts" : "^1.1.26",
+    "@chippr-bots/contracts": "^1.1.26",
     "discord.io-gateway6": "^2.5.3",
     "qr-image": "^3.2.0",
     "request": "^2.88.0",
