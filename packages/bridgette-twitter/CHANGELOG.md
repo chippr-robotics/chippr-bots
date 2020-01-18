@@ -3,6 +3,14 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.1.29](https://github.com/chippr-robotics/chippr-bots/compare/v1.1.28...v1.1.29) (2020-01-18)
+
+**Note:** Version bump only for package @chippr-bots/bridgette-twitter
+
+
+
+
+
 ## [1.1.28](https://github.com/chippr-robotics/chippr-bots/compare/v1.1.27...v1.1.28) (2020-01-17)
 
 **Note:** Version bump only for package @chippr-bots/bridgette-twitter
