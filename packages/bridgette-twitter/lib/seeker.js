@@ -1,8 +1,8 @@
 var { log } = require('@chippr-bots/common');
-var naughty = require('./naughty');
 
-module.exports = async  (T, _q, likeTH, rtTH) => {
+module.exports = async  (T, nice, naughty, likeTH, rtTH, ) => {
   log.info("[bridgette-twitter/lib/seeker] seeker is running");
+  
   await T.get( 'search/tweets', {q: _q})
     .then( (tweets) => {
       //avoid naughty words

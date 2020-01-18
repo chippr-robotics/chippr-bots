@@ -94,7 +94,7 @@ setInterval( async function(){
   if(blockSTATE.blockNumber > pastBlock){
    await sleep(2000); 
    if(prime.nextPrimeQuad(blockSTATE.blockNumber-1) % blockSTATE.blockNumber == 0) quadPrime(T, blockSTATE.blockNumber);
-   if(prime.isPrime(blockSTATE.blockNumber) && prime.isPrime(blockSTATE.blockNumber - 6)) sexyPrime(T, blockSTATE.blockNumber, blockSTATE.fate.sexFate);
+   if(prime.isPrime(blockSTATE.blockNumber) && prime.isPrime(blockSTATE.blockNumber - 6)) sexyPrime(T, blockSTATE.blockNumber, blockSTATE.sexFate);
    try{
       blockSTATE.blkStack.unshift(Math.abs((curBlock.timestamp - lastBlock.timestamp) - blockSTATE.averageBlockTime));
     }
@@ -109,6 +109,12 @@ setInterval( async function(){
   //log.debug(blockSTATE.blkStack);
   //log.debug(blockSTATE.blkDiv);
   fs.writeFileSync('/tmp/data.json', JSON.stringify(blockSTATE, null, 2) , 'utf-8'); 
+
+  //do an update everyday
+  if(blockSTATE.blockNumber % 10000 == 0 ){
+   blockSTATE.get("sexFate").then(res => {blockSTATE.sexFate = res});
+   blockSTATE.get("quadFate").then(res => {blockSTATE.quadFate = res});
+  }
 
 },5000);
 
