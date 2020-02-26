@@ -7,17 +7,17 @@ var {
   seeker
   } = require("./lib");
 
-log.info("🤖  bridgette-twitter loaded");
+log.info("🤖  bridgette-twitter loaded with DBKEY: " + process.env.DBKEY);
 
 
 
 var b = new realState();
 
 setInterval(() => {
-     b.get("likeTH").then(res => {b.likeTH = parseInt(res,10)});
-     b.get("rtTH").then(res => {b.rtTH = parseInt(res, 10)});
-     b.get("hashtags").then(res => {b.hashtags = res.split(",")});
-     b.get("naughty").then(res => {b.naughty = res.split(",")});
+     b.get(process.env.DBKEY + "likeTH").then(res => {log.info("o likeTH: " + res ); b.likeTH = parseInt(res,10)});
+     b.get(process.env.DBKEY + "rtTH").then(res => {log.info("o rtTH: " + res ); b.rtTH = parseInt(res, 10)});
+     b.get(process.env.DBKEY + "nice").then(res => {log.info("o Nice: " + res ); b.hashtags = res.split(",")});
+     b.get(process.env.DBKEY + "naughty").then(res => {log.info("o Naughty: " + res ); b.naughty = res.split(",")});
 }, 6000);
 
 
