@@ -1,4 +1,4 @@
-var kotti = require("./kotti");
+var kotti = require("@chippr-bots/common/kotti");
 
 var  kvs = require("@chippr-bots/contracts/build/contracts/kvs")
 
@@ -8,14 +8,11 @@ const kvsAddr = kvs.networks['6'].address;
 
 const kvsContract = new kotti.eth.Contract(ABI, kvsAddr);
 
-module.exports = class blkState {
+module.exports = class bridgetteDB {
 
-    constructor(fate, blkStack, blockNumber, averageBlockTime, blkDiv) {
-      this.blockNumber = blockNumber;
-      this.averageBlockTime = averageBlockTime;
-      this.blkDiv = blkDiv ;
-      this.blkStack = blkStack;
-      this.fate = fate;
+    constructor( {contractAddress = process.env.BRIDGETTE_ADDRESS_KOTTI || null, accountPasswd = process.env.BRIDGETTE_PW_KOTTI || null}) {
+      this.accountAddress = accountAddress;
+      this.accountPasswd = accountPasswd;
     }
 
     async get( _key ) {
