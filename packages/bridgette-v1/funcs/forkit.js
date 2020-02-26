@@ -26,9 +26,9 @@ function getResponse(year, month, day, bn, blkTime, blkTimeV){
     log.info('[dflow/controllers/forkit.js] inputs:'+ year + " " + month +" "+ day)
     log.info('[dflow/controllers/forkit.js] seconds: ' + Seconds_Between_Dates);
 
-    var FAST_BLOCK = Math.floor(bn + (Seconds_Between_Dates / (blkTime - blkTimeV))); // fast blocks mean the number will be higher on that date
     var POINT_BLOCK = Math.floor(bn + (Seconds_Between_Dates / blkTime)); // point is if blocks are on average time
-    var SLOW_BLOCK = Math.floor(bn + (Seconds_Between_Dates / (blkTime + blkTimeV))); // slow blocks mean the number will be lower on the day
+    var FAST_BLOCK = Math.floor(POINT_BLOCK - Math.sqrt( (Seconds_Between_Dates / blkTime) * blkTimeV^2))); // fast blocks mean the number will be higher on that date
+    var SLOW_BLOCK = Math.floor(POINT_BLOCK + Math.sqrt( (Seconds_Between_Dates / blkTime) * blkTimeV^2))); // slow blocks mean the number will be lower on the day
 
     var PRIME = nextPrime(POINT_BLOCK);
 
