@@ -59,11 +59,11 @@
                "name": "Aztlan",
                "fn": "aztlan",
                "block": 10500839
-           }
+           },
            {
                "name": "Gotham - 5M20 Era 4",
                "fn": "era4",
                "block": 15000000
-           },
+           }
         ]
 }
