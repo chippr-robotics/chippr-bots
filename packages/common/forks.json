@@ -52,7 +52,7 @@
             },
             {
                 "name": "Gotham - 5M20 Era 3",
-                "fn": "era3",
+                "fn": "era3 || ecip1017",
                 "block": 10000000
             },
             {

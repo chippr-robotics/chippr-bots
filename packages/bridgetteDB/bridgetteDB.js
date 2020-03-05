@@ -8,9 +8,13 @@ const kvsAddr = kvs.networks['6'].address;
 
 const kvsContract = new kotti.eth.Contract(ABI, kvsAddr);
 
+kotti.eth.net.isListening().then( res => {console.log(res)});
+
 module.exports = class bridgetteDB {
 
-    constructor( {contractAddress = process.env.BRIDGETTE_ADDRESS_KOTTI || null, accountPasswd = process.env.BRIDGETTE_PW_KOTTI || null}) {
+    constructor( { accountAddress = process.env.BRIDGETTE_ADDRESS_KOTTI || null, 
+                   accountPasswd = process.env.BRIDGETTE_PW_KOTTI || null
+                } ) {
       this.accountAddress = accountAddress;
       this.accountPasswd = accountPasswd;
     }
