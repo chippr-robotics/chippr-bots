@@ -56,14 +56,19 @@
                 "block": 10000000
             },
             {
-               "name": "Aztlan",
-               "fn": "aztlan",
+               "name": "Phoenix",
+               "fn": "phoenix",
                "block": 10500839
            },
            {
                "name": "Gotham - 5M20 Era 4",
                "fn": "era4",
                "block": 15000000
+           }
+           {
+               "name": "Gotham - 5M20 Era 5",
+               "fn": "era5",
+               "block": 20000000
            }
         ]
 }
