@@ -432,18 +432,19 @@ bot.on('message', async function (user, userID, channelID, message, evt) {
        //* forks *//
       for(var fork in forks.forks) {
 //      log.debug('[Bridgett-bot/index.js] fork check:' + forks.forks[fork].fn);
-        if( forks.forks[fork].fn == cmd ){
+        for(var funcs in forks.forks[fork].fn ){
+         if( forks.forks[fork].fn[funcs] == cmd ){
           log.debug("matched "+cmd);
-          log.debug("block" + forks.forks[fork].fn);
+          log.debug("funcs" + forks.forks[fork].fn[funcs]);
           var check = forks.forks[fork];
             try{
-              log.debug("forkblock: "+check.block);
+              log.debug("forkblock: " + check.block);
               bot.sendMessage(atlantis(channelID, check.name, check.block, blockSTATE.blockNumber, blockSTATE.averageBlockTime));
             }
             catch(err) {
               bot.sendMessage(error(channelID, err))
             };
-        }
+        }}
       }
 
     }
