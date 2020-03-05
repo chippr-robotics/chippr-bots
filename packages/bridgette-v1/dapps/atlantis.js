@@ -23,7 +23,7 @@ function  getMsg( forkName, forkBlk, blocknumber, blkTime ) {
 	];
     return response[Math.floor(Math.random() * response.length)];
     } else {
-	return ""+ forkName + " is here!!!!";
+	return ""+ forkName + " is here!!!! It arrived on block " + forkBlk;
 }
 }
 
