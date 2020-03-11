@@ -2,68 +2,73 @@
   "forks" : [
             {
                 "name": "Frontier",
-                "fn": "frontier",
+                "fn": ["frontier"],
                 "block": 1
             },
             {
                 "name": "Frontier Thawing",
-                "fn": "thawing",
+                "fn": ["thawing"],
                 "block": 200000
             },
             {
                 "name": "Homestead",
-                "fn": "homestead",
+                "fn": ["homestead"],
                 "block": 1150000
             },
             {
                 "name": "The DAO Bailout",
-                "fn": "thedao",
+                "fn": ["thedao"],
                 "block": 1920000
             },
             {
                 "name": "GasReprice",
-                "fn": "gasreprice",
+                "fn": ["gasreprice"],
                 "block": 2500000
             },
             {
                 "name": "Diehard",
-                "fn": "diehard",
+                "fn": ["diehard"],
                 "block": 3000000
             },
             {
                 "name": "Gotham - 5M20 Era 2",
-                "fn": "era2",
+                "fn": ["era2"],
                 "block": 5000000
             },
             {
                 "name": "Defuse Difficulty Bomb",
-                "fn": "defuse",
+                "fn": ["defuse"],
                 "block": 5900000
             },
             {
                 "name": "Atlantis",
-                "fn": "atlantis",
+                "fn": ["atlantis"],
                 "block": 8772000
             },
             {
                 "name": "Agharta",
-                "fn": "agharta",
+                "fn": ["agharta"],
                 "block": 9573000
             },
             {
                 "name": "Gotham - 5M20 Era 3",
-                "fn": "era3",
+                "fn": ["era3", "ecip1017"],
                 "block": 10000000
             },
             {
-               "name": "Aztlan",
-               "fn": "aztlan",
+               "name": "Phoenix",
+               "fn": ["phoenix", "aztlan"],
                "block": 10500839
            },
            {
                "name": "Gotham - 5M20 Era 4",
-               "fn": "era4",
+               "fn": ["era4"],
                "block": 15000000
+           },
+           {
+               "name": "Gotham - 5M20 Era 5",
+               "fn": ["era5"],
+               "block": 20000000
            }
         ]
 }

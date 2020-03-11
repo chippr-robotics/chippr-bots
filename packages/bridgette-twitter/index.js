@@ -1,6 +1,6 @@
 require("dotenv").config();
-var { log, T, realState } =require("@chippr-bots/common");
-
+var { log, T } =require("@chippr-bots/common");
+var bridgetteDB = require("@chippr-bots/bridgettedb");
 
 var {
   tags,
@@ -11,7 +11,9 @@ log.info("🤖  bridgette-twitter loaded with DBKEY: " + process.env.DBKEY);
 
 
 
-var b = new realState();
+//var b = new bridgetteDB();
+
+var b = new bridgetteDB({ "accountAddress": "0x5B53e0b34743AE54A7e8fC76A4f60d915499B8B2"})
 
 setInterval(() => {
      b.get(process.env.DBKEY + "likeTH").then(res => {log.info("o likeTH: " + res ); b.likeTH = parseInt(res,10)});

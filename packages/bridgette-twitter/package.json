@@ -1,6 +1,6 @@
 {
   "name": "@chippr-bots/bridgette-twitter",
-  "version": "1.1.34",
+  "version": "1.1.36",
   "main": "index.js",
   "author": "chippr robotics llc",
   "license": "Apache-2.0",
@@ -11,7 +11,8 @@
     "stop": "forever stop index.js"
   },
   "dependencies": {
-    "@chippr-bots/common": "^1.1.34",
+    "@chippr-bots/bridgettedb": "^1.1.36",
+    "@chippr-bots/common": "^1.1.36",
     "dotenv": "^8.2.0",
     "twitter": "^1.7.1"
   }
