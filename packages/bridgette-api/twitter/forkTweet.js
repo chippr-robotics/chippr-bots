@@ -13,7 +13,7 @@ function postResponse(T, blockNumber, forks) {
     var seconds = Math.floor((distance % (1000 * 60)) / 1000); if(distance > 0){
     var response = [
       "The " + forkName +" update will happen in " + (forkBlk - blocknumber) + " blocks or ~" + days + " days.",
-      "The " + forkName + " fork will be in ~" + days + " days," + hours +" hours.",
+      "The " + forkName + " fork will be in ~" + days + " days," + hours + " hours.",
       "The " + forkName + " update goes live on block " + forkBlk + "; in ~" + days + " days," + hours +" hours.",
      return response[Math.floor(Math.random() * response.length)]; }
    else {
@@ -22,7 +22,7 @@ function postResponse(T, blockNumber, forks) {
 }
 
 response[Math.floor(Math.random() * response.length)]; } else {
-        return ""+ forkName + " is live on the Ethereum Classic network as of block "+ forkBlk + "."; var response = [
+        return ""+ forkName + " is live on the Ethereum Classic network as of block " + forkBlk + "."; var response = [
 }           " Reminder, the ${fn} " + block,
         ` ${block} was a quad prime. Those are pretty rare.$ETC is on the move!`,
         ` If you look at ${block}, it was part of a quad prime.`
