@@ -10,18 +10,19 @@ function postResponse(T, blockNumber, forks) {
     var days = Math.floor( distance / (1000 * 60 * 60 * 24));
     var hours = Math.floor( ( distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
     var minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
-    var seconds = Math.floor((distance % (1000 * 60)) / 1000); if(distance > 0){ 
-    var response = [ 
-      "The " + forkName +" update will happen in " + (forkBlk - blocknumber) + " blocks.", 
-      "The " + forkName + " fork will be in " + days + " days," + hours +" hours,
+    var seconds = Math.floor((distance % (1000 * 60)) / 1000); if(distance > 0){
+    var response = [
+      "The " + forkName +" update will happen in " + (forkBlk - blocknumber) + " blocks or ~" + days + " days.",
+      "The " + forkName + " fork will be in ~" + days + " days," + hours + " hours.",
+      "The " + forkName + " update goes live on block " + forkBlk + "; in ~" + days + " days," + hours +" hours.",
      return response[Math.floor(Math.random() * response.length)]; }
    else {
         return true;
  }
-}   
+}
 
 response[Math.floor(Math.random() * response.length)]; } else {
-        return ""+ forkName + " is here!!!!"; var response = [
+        return ""+ forkName + " is live on the Ethereum Classic network as of block " + forkBlk + "."; var response = [
 }           " Reminder, the ${fn} " + block,
         ` ${block} was a quad prime. Those are pretty rare.$ETC is on the move!`,
         ` If you look at ${block}, it was part of a quad prime.`
@@ -35,11 +36,11 @@ response[Math.floor(Math.random() * response.length)]; } else {
             var intro = canRes.excited[i].word;
         }
     }
-    
+
     log.debug('[dflow/controllers/quadPrime.js] possible responses: ' + response);
-    T.post('statuses/update', { 
-        status: intro + response[Math.floor(Math.random() * response.length)] },         
-        function(err, data, response) { 
+    T.post('statuses/update', {
+        status: intro + response[Math.floor(Math.random() * response.length)] },
+        function(err, data, response) {
             log.debug('[dflow/controllers/quadPrime.js] returned data: ' + data);
     });
 }

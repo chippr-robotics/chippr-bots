@@ -6,8 +6,8 @@
                 "block": 1
             },
             {
-                "name": "Frontier Thawing",
-                "fn": ["thawing"],
+                "name": "Ice Age",
+                "fn": ["ice", "iceage"],
                 "block": 200000
             },
             {
@@ -17,23 +17,23 @@
             },
             {
                 "name": "The DAO Bailout",
-                "fn": ["thedao"],
+                "fn": ["thedao", "dao", "bailout"],
                 "block": 1920000
             },
             {
-                "name": "GasReprice",
-                "fn": ["gasreprice"],
+                "name": "Gas Reprice",
+                "fn": ["gasreprice", "reprice"],
                 "block": 2500000
             },
             {
-                "name": "Diehard",
-                "fn": ["diehard"],
+                "name": "Die Hard",
+                "fn": ["diehard", "delaybomb"],
                 "block": 3000000
             },
             {
                 "name": "Gotham - 5M20 Era 2",
                 "fn": ["era2"],
-                "block": 5000000
+                "block": 5000001
             },
             {
                 "name": "Defuse Difficulty Bomb",
@@ -52,23 +52,23 @@
             },
             {
                 "name": "Gotham - 5M20 Era 3",
-                "fn": ["era3", "ecip1017"],
-                "block": 10000000
+                "fn": ["era3"],
+                "block": 10000001
             },
             {
                "name": "Phoenix",
-               "fn": ["phoenix", "aztlan"],
+               "fn": ["phoenix", "aztlan", "ecip1088","1088"],
                "block": 10500839
            },
            {
                "name": "Gotham - 5M20 Era 4",
-               "fn": ["era4"],
-               "block": 15000000
+               "fn": ["era4", "ecip1017", "1017", "5M20"],
+               "block": 15000001
            },
            {
                "name": "Gotham - 5M20 Era 5",
                "fn": ["era5"],
-               "block": 20000000
+               "block": 20000001
            }
         ]
 }
