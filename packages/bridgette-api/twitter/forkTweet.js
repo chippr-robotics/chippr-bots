@@ -22,7 +22,7 @@ function postResponse(T, blockNumber, forks) {
 }
 
 response[Math.floor(Math.random() * response.length)]; } else {
-        return ""+ forkName + " is here!!!!"; var response = [
+        return ""+ forkName + " is live on the Ethereum Classic network as of block "+ forkBlk + "."; var response = [
 }           " Reminder, the ${fn} " + block,
         ` ${block} was a quad prime. Those are pretty rare.$ETC is on the move!`,
         ` If you look at ${block}, it was part of a quad prime.`
