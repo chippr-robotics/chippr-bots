@@ -26,9 +26,9 @@ module.exports = class bridgetteDB {
 
    async set( _key, _value ) {
      let key = kotti.utils.sha3(_key);
-     kotti.eth.personal.unlockAccount(process.env.BRIDGETTE_ADDRESS_KOTTI, process.env.BRIDGETTE_PW_KOTTI, 600);
+     kotti.eth.personal.unlockAccount(this.accountAddress, this.accountPasswd, 600);
       return await kvsContract.methods.set( key, _value ).send({
-        from: process.env.BRIDGETTE_ADDRESS_KOTTI,
+        from: this.accountAddress,
         gas: '900000',
         gasPrice: '20000000000'
       })
@@ -36,9 +36,9 @@ module.exports = class bridgetteDB {
 
    async rem( _key ) {
      let key = kotti.utils.sha3(_key);
-     kotti.eth.personal.unlockAccount(process.env.BRIDGETTE_ADDRESS_KOTTI, process.env.BRIDGETTE_PW_KOTTI, 600);
+     kotti.eth.personal.unlockAccount(this.accountAddress, this.accountPasswd, 600);
       return await kvsContract.methods.rem( key ).send({
-        from: process.env.BRIDGETTE_ADDRESS_KOTTI,
+        from: this.accountAddress,
         gas: '90000',
         gasPrice: '20000000000'
       })
