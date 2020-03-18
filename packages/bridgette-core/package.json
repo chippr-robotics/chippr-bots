@@ -19,6 +19,7 @@
     "dialogflow-fulfillment": "dialogflow/dialogflow-fulfillment-nodejs",
     "dotenv": "^7.0.0",
     "express": "^4.17.1",
+    "lerna": "^3.19.0",
     "mocha": "^6.2.0",
     "qr-image": "^3.2.0",
     "request": "^2.88.0",
