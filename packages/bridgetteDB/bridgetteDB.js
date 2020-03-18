@@ -50,9 +50,8 @@ module.exports = class bridgetteDB {
 //db functions
    async get( _key ) {
      let key = this.getKey( _key );
-     await this.kvsContract.methods.store( key ).call().then( res => {
-       return res;
-       })
+     var res = await this.kvsContract.methods.store( key ).call();
+     return res;
      }
 
    async set( _key, _value ) {
