@@ -3,6 +3,14 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.1.42](https://github.com/chippr-robotics/chippr-bots/compare/v1.1.41...v1.1.42) (2020-04-13)
+
+**Note:** Version bump only for package chippr-bots
+
+
+
+
+
 ## [1.1.41](https://github.com/chippr-robotics/chippr-bots/compare/v1.1.40...v1.1.41) (2020-03-31)
 
 **Note:** Version bump only for package chippr-bots
