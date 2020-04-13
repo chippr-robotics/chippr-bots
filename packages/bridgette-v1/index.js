@@ -75,14 +75,14 @@ console.log(blockSTATE.get("fate"));
 setInterval( async function(){
   //get the latest block number
   let pastBlock = blockSTATE.blockNumber;
-  blockSTATE.blockNumber = await web3.eth.getBlockNumber();
-//  log.debug(blockSTATE.blockNumber);
-  //find the average block time
-  let curBlock = await web3.eth.getBlock(blockSTATE.blockNumber);
-  let lastBlock = await web3.eth.getBlock(blockSTATE.blockNumber - 1);
-  let oldBlock = await web3.eth.getBlock(blockSTATE.blockNumber - 50000);
-  try {
- 	 blockSTATE.averageBlockTime = (curBlock.timestamp - oldBlock.timestamp) / 50000;
+  try{
+    blockSTATE.blockNumber = await web3.eth.getBlockNumber();
+    //log.debug(blockSTATE.blockNumber);
+    //find the average block time
+    let curBlock = await web3.eth.getBlock(blockSTATE.blockNumber);
+    let lastBlock = await web3.eth.getBlock(blockSTATE.blockNumber - 1);
+    let oldBlock = await web3.eth.getBlock(blockSTATE.blockNumber - 50000);
+    blockSTATE.averageBlockTime = (curBlock.timestamp - oldBlock.timestamp) / 50000;
        //  console.log(blockSTATE.averageBlockTime);
   }
   catch(err){
@@ -103,11 +103,16 @@ setInterval( async function(){
     }
   }
 //  if(prime.nextPrimeTwin(blockSTATE.blockNumber-1) % blockSTATE.blockNumber == 0) twinPrime(T, blockSTATE.blockNumber);
+  try{
   if(blockSTATE.blkStack.length > 50000) blockSTATE.blkStack.pop();
   //sum all the variance and average it
   blockSTATE.blkDiv = ( blockSTATE.blkStack.reduce((a,b) => a + b, 0) / blockSTATE.blkStack.length);
   //log.debug(blockSTATE.blkStack);
   //log.debug(blockSTATE.blkDiv);
+  }
+  catch(err){
+    log.error("[bridgette-v1/index] tried to reduce blockstate");
+  }
   fs.writeFileSync('/tmp/data.json', JSON.stringify(blockSTATE, null, 2) , 'utf-8'); 
 
   //do an update everyday
@@ -139,11 +144,11 @@ bot.on('message', async function (user, userID, channelID, message, evt) {
         addReaction(channelID, evt, "\u{1F916}");
         bot.sendMessage(bridgette(channelID));
         break;
-          
+
       case 'depi':
         addReaction(channelID, evt, "🍕");
         break;
-        
+
       // getBlockNumber
       case 'getblocknumber':
         addReaction(channelID, evt, "\u{1F916}");
@@ -160,19 +165,19 @@ bot.on('message', async function (user, userID, channelID, message, evt) {
         addReaction(channelID, evt, "\u{1F916}");
         bot.sendMessage(version(channelID));
         break;
-            
-      // forkname     
+
+      // forkname
       case 'fork':
         addReaction(channelID, evt, "\u{1F916}");
         bot.sendMessage(forkName(channelID, payload));
         break;
-      
+
       //forkit
       case 'forkit':
         addReaction(channelID, evt, "\u{1F916}");
         try{
           bot.sendMessage(forkit(channelID, time[0], time[1], time[2], blockSTATE.blockNumber,  blockSTATE.averageBlockTime, blockSTATE.blkDiv))
-        }   
+        }
         catch(err){
           bot.sendMessage(error(channelID, err))
         };
@@ -285,7 +290,7 @@ bot.on('message', async function (user, userID, channelID, message, evt) {
             });
           }
           break;
-      
+
           //catch all
         case 'query':
           addReaction(channelID, evt, "\u{1F916}");
@@ -359,7 +364,7 @@ bot.on('message', async function (user, userID, channelID, message, evt) {
             });
           }
           break;
-        
+
         case 'donate' :
           if(payload != undefined){
             bot.sendMessage({
@@ -386,7 +391,7 @@ bot.on('message', async function (user, userID, channelID, message, evt) {
             });
           }
           break;
-       
+
         case 'getkotti' :
           if(payload != undefined && web3.utils.isAddress(payload)){
             bot.sendMessage({

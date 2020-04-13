@@ -5,10 +5,16 @@
   "main": "index.js",
   "author": "chippr=robotics llc",
   "license": "Apache-2.0",
+  "scripts": {
+    "start": "node index.js",
+    "test": "mocha --exit",
+    "stop": "forever stop index.js"
+  },
   "private": false,
   "dependencies": {
     "@chippr-bots/common": "^1.1.39",
     "@chippr-bots/contracts": "^1.1.26",
+    "mocha": "^7.1.1",
     "web3": "^1.2.6"
   }
 }

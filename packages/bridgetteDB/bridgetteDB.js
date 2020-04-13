@@ -17,22 +17,33 @@ module.exports = class bridgetteDB {
      */
 
     constructor( {
-        nodeAddr = process.env.NODEADDR || null,
-        accountAddress = process.env.BRIDGETTE_ADDRESS_KOTTI || null, 
-        accountPasswd = process.env.BRIDGETTE_PW_KOTTI || null,
-        kvsAddr = process.env.kvsContract ||  kvs.networks['6'].address,
-        DBKEY = process.env.DBKEY || null,
+        nodeAddr = process.env.NODEADDR,
+        accountAddress = process.env.BRIDGETTE_ADDRESS_KOTTI, 
+        accountPasswd = process.env.BRIDGETTE_PW_KOTTI,
+        kvsAddr = kvs.networks['6'].address,
+        DBKEY = process.env.DBKEY || "default",
      } = {}) {
-
+       //validate constructor types
 	assert.equal(typeof nodeAddr, "string");
-        assert.equal(typeof accountAddress, "string");
+//        assert.match(accountAddress, /^0x[a-fA-F0-9]{40}$/);
         assert.equal(typeof accountPasswd,"string");
-        assert.equal(typeof kvsAddr,"string");
+//        assert.match(kvsAddr, /^0x[a-fA-F0-9]{40}$/);
 	assert.equal(typeof DBKEY,"string");
+
+      log.info(
+        "BridgetteDB config: " +
+        "node address: " + nodeAddr + ", " +
+        "kvsAddr: " + kvsAddr + ", " +
+        "user account: " + accountAddress + ", " +
+        "user password: " + accountPasswd + ", " +
+        "dbkey: " + DBKEY
+      );
+
 
       //setup node connection
       this.nodeAddr = nodeAddr;
       this.web3 = new Web3(new Web3.providers.HttpProvider(this.nodeAddr));
+
       //save account info
       this.accountAddress = accountAddress;
       this.accountPasswd = accountPasswd;
@@ -44,14 +55,6 @@ module.exports = class bridgetteDB {
       this.kvsContract = new this.web3.eth.Contract(this.ABI, this.kvsAddr);
 
      // return connection information
-      log.info(
-        "BridgetteDB established \n" +
-        "node address: " + this.nodeAddr + "\n" +
-        "kvsAddr: " + this.kvsAddr + "\n" +
-        "user account: " + this.accountAddress + "\n" +
-        "user password: " + this.accountPasswd + "\n" +
-        "dbkey: " + this.DBKEY
-      );
       this.web3.eth.net.isListening().then( res => {console.log(res)});
     }
 
