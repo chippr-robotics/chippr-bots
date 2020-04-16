@@ -12,7 +12,7 @@ To use the system, you will need an ethereum node or RPC endpoint for communitca
 
 ### Install
 
-install using a packge manager
+install using a packge manager 
 
 `yarn add @chipprbots/bridgetteDB`
 `npm install -s @chipprbots/bridgetteDB`
