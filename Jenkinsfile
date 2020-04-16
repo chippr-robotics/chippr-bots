@@ -74,7 +74,7 @@ pipeline {
      withCredentials([string(credentialsId: 'discord_webhook', variable: 'WEBHOOK')]) {
         discordSend description: 'Jenkins Pipeline Build', 
         link: BUILD_URL, 
-        successful: currentBuild.resultIsBetterOrEqualTo('SUCCESS'), y
+        successful: currentBuild.resultIsBetterOrEqualTo('SUCCESS'), 
         title: JOB_NAME, 
         webhookURL: WEBHOOK
          
