@@ -71,7 +71,6 @@ pipeline {
         successful: currentBuild.resultIsBetterOrEqualTo('SUCCESS'), 
         title: JOB_NAME, 
         webhookURL: WEBHOOK
-         
      }
     }
   }
