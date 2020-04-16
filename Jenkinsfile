@@ -1,11 +1,4 @@
 pipeline {
-<<<<<<< HEAD
-    agent any
-    
-    echo $SVN_REVISION
-    svn_last_successful_build_revision=`curl $JOB_URL'lastSuccessfulBuild/api/json' | python -c 'import json,sys;obj=json.loads(sys.stdin.read());print obj["'"changeSet"'"]["'"revisions"'"][0]["'"revision"'"]'`
-    diff=`svn di -r$SVN_REVISION:$svn_last_successful_build_revision --summarize`
-=======
   environment {
     API_IMAGE="chipprbots/bridgette-api"
   }
@@ -30,7 +23,6 @@ pipeline {
         }
       }
     }
->>>>>>> 6a97740eaddc3da51e45767e9e0e6ae1629fd080
 
     stage('Common Files build') {
         when{
