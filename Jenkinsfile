@@ -64,7 +64,7 @@ pipeline {
    }
   
    post {
-    always {
+    changed {
      withCredentials([string(credentialsId: 'discord_webhook', variable: 'WEBHOOK')]) {
         discordSend description: 'Jenkins Pipeline Build', 
         link: BUILD_URL, 
