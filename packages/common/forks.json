@@ -2,7 +2,7 @@
   "forks" : [
             {
                 "name": "Frontier",
-                "fn": ["frontier"],
+                "fn": ["frontier", "genesis"],
                 "block": 1
             },
             {
