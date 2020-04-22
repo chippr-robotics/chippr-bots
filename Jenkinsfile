@@ -1,6 +1,7 @@
 pipeline {
   environment {
     API_IMAGE="chipprbots/bridgette-api"
+    V1_IMAGE="chipprbots/bridgette-v1"
     HOME = '.'
     WEB3_URL='https://www.ethercluster.com/etc'
     LOG_LEVEL='debug'
