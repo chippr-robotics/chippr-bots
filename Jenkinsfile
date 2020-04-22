@@ -1,6 +1,7 @@
 pipeline {
   environment {
     API_IMAGE="chipprbots/bridgette-api"
+    HOME = '.'
   }
   agent any
   stages {
