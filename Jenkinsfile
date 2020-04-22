@@ -53,11 +53,12 @@ pipeline {
         }
         steps{
             dir("./packages/bridgette-v1") {
+                sh "npm i"
                 sh "npm run test"
                 sh "docker build -t $V1_IMAGE:$BUILD_NUMBER ."
                 sh "docker build -t $V1_IMAGE:latest ."  
                 sh "docker rmi $V1_IMAGE:$BUILD_NUMBER"
-                 sh "docker service update --image $V1_IMAGE:latest bridgette_discord"
+                sh "docker service update --image $V1_IMAGE:latest bridgette_discord"
             }
         } 
     }
