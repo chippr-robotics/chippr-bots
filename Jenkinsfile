@@ -2,6 +2,8 @@ pipeline {
   environment {
     API_IMAGE="chipprbots/bridgette-api"
     HOME = '.'
+    WEB3_URL='https://www.ethercluster.com/etc'
+    LOG_LEVEL='debug'
   }
   agent any
   stages {
