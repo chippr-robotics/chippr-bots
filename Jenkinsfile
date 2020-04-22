@@ -17,9 +17,9 @@ pipeline {
             dir("./packages/bridgette-api") {
                 sh "npm run test"
                 sh "docker build -t $API_IMAGE:$BUILD_NUMBER ."
-                sh "docker service update --image $API_IMAGE:$BUILD_NUMBER bridgette_api"
                 sh "docker build -t $API_IMAGE:latest ."  
                 sh "docker rmi $API_IMAGE:$BUILD_NUMBER"
+                sh "docker service update --image $API_IMAGE:latest bridgette_api"
         }
       }
     }
@@ -55,9 +55,9 @@ pipeline {
             dir("./packages/bridgette-v1") {
                 sh "npm run test"
                 sh "docker build -t $V1_IMAGE:$BUILD_NUMBER ."
-                sh "docker service update --image $V1_IMAGE:$BUILD_NUMBER bridgette_discord"
                 sh "docker build -t $V1_IMAGE:latest ."  
                 sh "docker rmi $V1_IMAGE:$BUILD_NUMBER"
+                 sh "docker service update --image $V1_IMAGE:latest bridgette_discord"
             }
         } 
     }
