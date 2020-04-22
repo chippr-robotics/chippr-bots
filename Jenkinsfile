@@ -6,7 +6,7 @@ pipeline {
   stages {
     stage('Cloning Git') {
       steps {
-        git 'https://github.com/chippr-robotics/chippr-bots'
+        git branch: "staging", url: 'https://github.com/chippr-robotics/chippr-bots'
       }
     }
     stage('Bridgette API build') {
