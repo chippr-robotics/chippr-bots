@@ -2,7 +2,7 @@ const { log, canRes } = require('@chippr-bots/common');
 
 function postResponse(T, block) {
     log.debug(block);
-    let quadSet = block + ", " + block - 2 + ", " + block - 4 + ", " + block - 6
+    let quadSet = block + ", " + (block - 2) + ", " + (block - 4) + ", " + (block - 6)
     var response = [
         ` #ethereumclassic just passed another quad prime! Block numbers ${quadSet}`,
         ` ${quadSet} was a quad prime set. Those are pretty rare. #ethereumclassic is on the move!`,
