@@ -28,9 +28,10 @@ const { bridgette, donatehelp, etcmailhelp, tipperError } = require( "./help" );
 // twitter files
 
 const { quadPrime, twinPrime, sexyPrime } = require("./twitter");
+var vibe = require("./positive.json");
 
 T.post('statuses/update', {
-        status: "etc!" },
+        status: vibe.response[Math.floor(Math.random() * vibe.response.length)] },
         function(err, data, response) {
             log.debug('[index.js] returned data: ' + data);
     });
