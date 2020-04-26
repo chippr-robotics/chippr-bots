@@ -2,7 +2,7 @@ const { log, canRes } = require('@chippr-bots/common');
 
 function postResponse(T, block, fate) {
     log.debug(block);
-    let blockSet = block + " and " + (block - 6);
+    let blockSet = block + " and " + (block + 6);
     var response = [
         ` Cover your eyes! #ethereumclassic just passed a sexy prime pair on block numbers ` + blockSet,
         ` Ooh la la #ethereumclassic, blocks ${blockSet} were a sexy prime..`,
