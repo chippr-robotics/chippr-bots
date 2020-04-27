@@ -28,6 +28,17 @@ pipeline {
       }
     }
 
+    stage('Documentation build') {
+        when{
+            changeset "**/packages/docs/*.*"
+        }
+        steps{
+            dir("./packages/docs") {
+                sh "make html"
+           }
+        }
+    }
+
     stage('Common Files build') {
         when{
             changeset "**/packages/common/*.*"
