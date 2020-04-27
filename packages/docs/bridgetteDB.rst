@@ -1,26 +1,26 @@
+BridgetteDB
+=====
 
-# BridgetteDB 
-
-## About:
-
+About
+=====
 BridgetteDB is a lightweight, key value store database built on top of the ethereum blockchain built for nodeJS. It sets and retrives values to a key. 
 
-
-## Use
-
+Use
+^^^
 To use the system, you will need an ethereum node or RPC endpoint for communitcation. To set a kvs you will need to have an account which can be unlocked
 
-### Install
+Install
+^^^^^^^
+Install using a packge manager 
 
-install using a packge manager 
+print `yarn add @chipprbots/bridgetteDB`
+print `npm install -s @chipprbots/bridgetteDB`
 
-`yarn add @chipprbots/bridgetteDB`
-`npm install -s @chipprbots/bridgetteDB`
-
-### Enable
+Enable
+^^^^^^
 To use BridgetteDB, require it within a script and create a new instance of the DB agent. All values are strings.
 
-```
+print ```
 var bdb = require('@chipprbots/bridgetteDB');
 var db = new bdb({ 
   "nodeAddr": url of the ethereum node,
@@ -30,27 +30,24 @@ var db = new bdb({
   "DBKEY": user assigned unique key for storage
   })
 ```
-## Functions
-
-### Get
-
+Functions
+=========
+Get
+^^^
  Given a key, retrevis any data stored within the DB
  `db.get( _Key)` 
 
-### Set
+Set
+^^^
  Given a key and Value, stores the value in the DB using the Key
   `db.set( _key, _value)` 
 
-### Remove
+Remove
+^^^^^^
    Given a key, remove a DB entry
    'db.rem( _key )`
 
-var bdb = require('./bridgetteDB');
-var db = new bdb({
-  "nodeAddr": "http://172.16.0.250:8554",
-  "accountAddress": "0x5B53e0b34743AE54A7e8fC76A4f60d915499B8B2",
-  "accountPasswd" : "*12MaximuS12*",
-  "kvsAddr" : "0x57EEB5d4D3E1Ac75D51067AE2dCF78922CF3F189",
-  "DBKEY": "bridgette"
-  })
-
+Unlock 
+^^^^^^
+Unlock the DB for writing
+print "db.unlock()"

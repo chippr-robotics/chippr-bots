@@ -18,6 +18,11 @@ var b = new bdb({
   "DBKEY": process.env.BDB_DBKEY
   })
 
+var local = {
+  local.likeTH : local.likeTH,
+  local.likeTH
+}
+
 setInterval(() => {
      b.get(process.env.DBKEY + "likeTH").then(res => {log.info("o likeTH: " + res ); b.likeTH = parseInt(res,10)});
      b.get(process.env.DBKEY + "rtTH").then(res => {log.info("o rtTH: " + res ); b.rtTH = parseInt(res, 10)});
