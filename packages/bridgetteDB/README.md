@@ -44,13 +44,3 @@ var db = new bdb({
 ### Remove
    Given a key, remove a DB entry
    'db.rem( _key )`
-
-var bdb = require('./bridgetteDB');
-var db = new bdb({
-  "nodeAddr": "http://172.16.0.250:8554",
-  "accountAddress": "0x5B53e0b34743AE54A7e8fC76A4f60d915499B8B2",
-  "accountPasswd" : "*12MaximuS12*",
-  "kvsAddr" : "0x57EEB5d4D3E1Ac75D51067AE2dCF78922CF3F189",
-  "DBKEY": "bridgette"
-  })
-
