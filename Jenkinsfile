@@ -84,7 +84,6 @@ pipeline {
         steps{
             dir("./packages/bridgette-twitter") {
                 sh "npm i"
-                sh "npm run test"
                 sh "docker build -t $TW_IMAGE:latest ."  
                 sh "docker service update --image $TW_IMAGE:latest --force bridgette_twitter"
             }
