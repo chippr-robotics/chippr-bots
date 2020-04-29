@@ -37,4 +37,4 @@ function main(){
 
 main();
 
-setInterval(() => {main()}, 600000);
+setInterval(() => {main()}, process.env.MAIN_LOOP_TIMER);
