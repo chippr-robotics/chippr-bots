@@ -19,10 +19,10 @@ var b = new bdb({
 
 setInterval(() => {
   try {
-    b.get(process.env.DBKEY + "likeTH").then(res => {log.debug(`o likeTH: ${res}`);b.likeTH = parseInt(res,10)});
-    b.get(process.env.DBKEY + "rtTH").then(res => {log.debug(`o rtTH: ${res}` ); b.rtTH = parseInt(res, 10)});
-    b.get(process.env.DBKEY + "nice").then(res => {log.debug(`o Nice: ${res}` ); b.hashtags = res.split(",")});
-    b.get(process.env.DBKEY + "naughty").then(res => {log.debug(`o Naughty: ${res}` ); b.naughty = res.split(",")});
+    b.get("likeTH").then(res => {log.debug(`o likeTH: ${res}`);b.likeTH = parseInt(res,10)});
+    b.get("rtTH").then(res => {log.debug(`o rtTH: ${res}` ); b.rtTH = parseInt(res, 10)});
+    b.get("nice").then(res => {log.debug(`o Nice: ${res}` ); b.hashtags = res.split(",")});
+    b.get("naughty").then(res => {log.debug(`o Naughty: ${res}` ); b.naughty = res.split(",")});
   } catch (error) {
     log.error(`[bridgette-twitter/index] error getting variables: ${error}`)
   }
