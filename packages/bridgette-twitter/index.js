@@ -26,7 +26,7 @@ setInterval(() => {
   } catch (error) {
     log.error(`[bridgette-twitter/index] error getting variables: ${error}`)
   }
-}, 6000);
+}, process.env.SYNC_LOOP_TIMER);
 
 function main(){
   log.info(`o likeTH: ${b.likeTH} | rtTH: ${b.rtTH} | Nice ${hashtags} | Naughty ${b.naughty}` );
@@ -35,6 +35,6 @@ function main(){
    }
 }
 
-main();
-
-setInterval(() => {main()}, process.env.MAIN_LOOP_TIMER);
+setInterval(() => {
+  main()
+}, process.env.MAIN_LOOP_TIMER);
