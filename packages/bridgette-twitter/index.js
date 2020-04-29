@@ -1,4 +1,3 @@
-require("dotenv").config();
 var { log, T } =require("@chippr-bots/common");
 var bdb = require("@chippr-bots/bridgettedb");
 
@@ -19,20 +18,23 @@ var b = new bdb({
   })
 
 setInterval(() => {
-     b.get(process.env.DBKEY + "likeTH").then(res => {log.info("o likeTH: " + res ); b.likeTH = parseInt(res,10)});
-     b.get(process.env.DBKEY + "rtTH").then(res => {log.info("o rtTH: " + res ); b.rtTH = parseInt(res, 10)});
-     b.get(process.env.DBKEY + "nice").then(res => {log.info("o Nice: " + res ); b.hashtags = res.split(",")});
-     b.get(process.env.DBKEY + "naughty").then(res => {log.info("o Naughty: " + res ); b.naughty = res.split(",")});
-}, 6000);
-
-
+  try {
+    b.get("likeTH").then(res => {log.debug(`o likeTH: ${res}`);b.likeTH = parseInt(res,10)});
+    b.get("rtTH").then(res => {log.debug(`o rtTH: ${res}` ); b.rtTH = parseInt(res, 10)});
+    b.get("nice").then(res => {log.debug(`o Nice: ${res}` ); b.hashtags = res.split(",")});
+    b.get("naughty").then(res => {log.debug(`o Naughty: ${res}` ); b.naughty = res.split(",")});
+  } catch (error) {
+    log.error(`[bridgette-twitter/index] error getting variables: ${error}`)
+  }
+}, process.env.SYNC_LOOP_TIMER);
 
 function main(){
-  for(tag in b.hashtags){
+  log.info(`o likeTH: ${b.likeTH} | rtTH: ${b.rtTH} | Nice ${b.hashtags} | Naughty ${b.naughty}` );
+  for(tag in b.hashtags){ 
     let res = seeker(T, b.hashtags[tag], b.naughty, b.likeTH, b.rtTH);
    }
 }
 
-main();
-
-setInterval(() => {main()}, 600000);
+setInterval(() => {
+  main()
+}, process.env.MAIN_LOOP_TIMER);

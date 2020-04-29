@@ -3,6 +3,7 @@ pipeline {
   environment {
     API_IMAGE="chipprbots/bridgette-api"
     V1_IMAGE="chipprbots/bridgette-v1"
+    TW_IMAGE="chipprbots/bridgette-twitter"
     HOME = '.'
     WEB3_URL='https://www.ethercluster.com/etc'
     LOG_LEVEL='debug'
@@ -37,6 +38,17 @@ pipeline {
                 sh "docker service update --image $API_IMAGE:latest bridgette_api"
         }
       }
+    }
+
+    stage('Documentation build') {
+        when{
+            changeset "**/packages/docs/*.*"
+        }
+        steps{
+            dir("./packages/docs") {
+                sh "make html"
+           }
+        }
     }
 
     stage('Common Files build') {
@@ -89,9 +101,25 @@ pipeline {
             }
         } 
     }
-   }
   
+<<<<<<< HEAD
 >>>>>>> 6472b71fe329190458aaa3d6b67963fa6e1db4cd
+=======
+  stage('Bridgette twitter build') {
+        when{
+            changeset "**/packages/bridgette-twitter/*.*"
+        }
+        steps{
+            dir("./packages/bridgette-twitter") {
+                sh "npm i"
+                sh "docker build -t $TW_IMAGE:latest ."  
+                sh "docker service update --image $TW_IMAGE:latest --force bridgette_twitter"
+            }
+        } 
+    }
+   }
+
+>>>>>>> 62d93f87541ebe3e39bbb144f1653a6c86999d05
    post {
     changed {
      withCredentials([string(credentialsId: 'discord_webhook', variable: 'WEBHOOK')]) {

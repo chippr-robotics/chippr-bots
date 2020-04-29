@@ -31,7 +31,7 @@ const { quadPrime, twinPrime, sexyPrime } = require("./twitter");
 var vibe = require("./positive.json");
 
 T.post('statuses/update', {
-        status: `${vibe.response[Math.floor(Math.random() * vibe.response.length)]} #ethereumclassic`},
+        status: `${vibe.response[Math.floor(Math.random() * vibe.response.length)]} ${process.env.BOTFOCUS}`},
         function(err, data, response) {
             log.debug('[index.js] returned data: ' + data);
     });

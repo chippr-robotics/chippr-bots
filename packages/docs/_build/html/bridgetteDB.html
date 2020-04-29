@@ -1,0 +1,176 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <title>BridgetteDB &#8212; Chippr Robotics 1.1.48 documentation</title>
+    <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <script id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/doctools.js"></script>
+    <script src="_static/language_data.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="prev" title="Welcome to Chippr Robotic’s documentation!" href="index.html" />
+   
+  <link rel="stylesheet" href="_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <div class="section" id="bridgettedb">
+<h1>BridgetteDB<a class="headerlink" href="#bridgettedb" title="Permalink to this headline">¶</a></h1>
+</div>
+<div class="section" id="about">
+<h1>About<a class="headerlink" href="#about" title="Permalink to this headline">¶</a></h1>
+<p>BridgetteDB is a lightweight, key value store database built on top of the ethereum blockchain built for nodeJS. It sets and retrives values to a key.</p>
+<div class="section" id="use">
+<h2>Use<a class="headerlink" href="#use" title="Permalink to this headline">¶</a></h2>
+<p>To use the system, you will need an ethereum node or RPC endpoint for communitcation. To set a kvs you will need to have an account which can be unlocked</p>
+</div>
+<div class="section" id="data-flow">
+<h2>Data flow<a class="headerlink" href="#data-flow" title="Permalink to this headline">¶</a></h2>
+<p>All data is saved within the BridgetteDB smart contract located on the public blockchain. #DO NOT SAVE ANYTHING THAT IS NOT PUBLIC INFORMATION!#</p>
+<p>When interacting with data on chain, a <code class="docutils literal notranslate"><span class="pre">DBKEY</span></code> is appended to the data to index within the storage space.</p>
+<p>The format of a database entry is: <code class="docutils literal notranslate"><span class="pre">DBKEY</span> <span class="pre">+</span> <span class="pre">key</span> <span class="pre">:</span> <span class="pre">value</span></code> The <code class="docutils literal notranslate"><span class="pre">DBKEY</span></code> is stored when initilizing the db and will be used for all keys within the session without a need to explicitly append it.</p>
+</div>
+<div class="section" id="install">
+<h2>Install<a class="headerlink" href="#install" title="Permalink to this headline">¶</a></h2>
+<p>Install using a packge manager</p>
+<p><code class="docutils literal notranslate"><span class="pre">$</span> <span class="pre">yarn</span> <span class="pre">add</span> <span class="pre">&#64;chipprbots/bridgetteDB</span></code></p>
+<p><code class="docutils literal notranslate"><span class="pre">$</span> <span class="pre">npm</span> <span class="pre">install</span> <span class="pre">-s</span> <span class="pre">&#64;chipprbots/bridgetteDB</span></code></p>
+</div>
+<div class="section" id="enable">
+<h2>Enable<a class="headerlink" href="#enable" title="Permalink to this headline">¶</a></h2>
+<p>To use BridgetteDB, require it within a script and create a new instance of the DB agent. All values are strings.</p>
+<div class="highlight-guess notranslate"><div class="highlight"><pre><span></span> var bdb = require(&#39;@chipprbots/bridgetteDB&#39;);
+ var db = new bdb({
+  &quot;nodeAddr&quot;: url of the ethereum node,
+  &quot;accountAddress&quot;: ethereum account to use for transactions,
+  &quot;accountPasswd&quot; : ethereum account password,
+  &quot;kvsAddr&quot; : address the kvs is deployed to, &quot;0x57EEB5d4D3E1Ac75D51067AE2dCF78922CF3F189&quot;,
+  &quot;DBKEY&quot;: user assigned unique key for storage
+})
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="functions">
+<h1>Functions<a class="headerlink" href="#functions" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="get">
+<h2>Get<a class="headerlink" href="#get" title="Permalink to this headline">¶</a></h2>
+<p>Given a key, retrevis any data stored within the DB</p>
+<p><code class="docutils literal notranslate"><span class="pre">db.get(</span> <span class="pre">_Key)</span></code></p>
+</div>
+<div class="section" id="set">
+<h2>Set<a class="headerlink" href="#set" title="Permalink to this headline">¶</a></h2>
+<p>Given a key and Value, stores the value in the DB using the Key</p>
+<p><code class="docutils literal notranslate"><span class="pre">db.set(</span> <span class="pre">_key,</span> <span class="pre">_value)</span></code></p>
+</div>
+<div class="section" id="remove">
+<h2>Remove<a class="headerlink" href="#remove" title="Permalink to this headline">¶</a></h2>
+<p>Given a key, remove a DB entry</p>
+<p><code class="docutils literal notranslate"><span class="pre">db.rem(</span> <span class="pre">_key</span> <span class="pre">)</span></code></p>
+</div>
+<div class="section" id="unlock">
+<h2>Unlock<a class="headerlink" href="#unlock" title="Permalink to this headline">¶</a></h2>
+<p>Unlock the DB for writing</p>
+<p><code class="docutils literal notranslate"><span class="pre">db.unlock()</span></code></p>
+</div>
+</div>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="index.html">Chippr Robotics</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+<ul class="current">
+<li class="toctree-l1 current"><a class="current reference internal" href="#">BridgetteDB</a></li>
+<li class="toctree-l1"><a class="reference internal" href="#about">About</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#use">Use</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#data-flow">Data flow</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#install">Install</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#enable">Enable</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="#functions">Functions</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#get">Get</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#set">Set</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#remove">Remove</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#unlock">Unlock</a></li>
+</ul>
+</li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="index.html">Documentation overview</a><ul>
+      <li>Previous: <a href="index.html" title="previous chapter">Welcome to Chippr Robotic’s documentation!</a></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2020, Cody W Burns.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 3.0.3</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
+      
+      |
+      <a href="_sources/bridgetteDB.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>
