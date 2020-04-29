@@ -18,16 +18,17 @@ var b = new bdb({
   })
 
 setInterval(() => {
-     b.get(process.env.DBKEY + "likeTH").then(res => {log.info("o likeTH: " + res ); b.likeTH = parseInt(res,10)});
-     b.get(process.env.DBKEY + "rtTH").then(res => {log.info("o rtTH: " + res ); b.rtTH = parseInt(res, 10)});
-     b.get(process.env.DBKEY + "nice").then(res => {log.info("o Nice: " + res ); b.hashtags = res.split(",")});
-     b.get(process.env.DBKEY + "naughty").then(res => {log.info("o Naughty: " + res ); b.naughty = res.split(",")});
+     b.get(process.env.DBKEY + "likeTH").then(res => {log.debug(`o likeTH: ${res}`);b.likeTH = parseInt(res,10)});
+     b.get(process.env.DBKEY + "rtTH").then(res => {log.debug(`o rtTH: ${res}` ); b.rtTH = parseInt(res, 10)});
+     b.get(process.env.DBKEY + "nice").then(res => {log.debug(`o Nice: ${res}` ); b.hashtags = res.split(",")});
+     b.get(process.env.DBKEY + "naughty").then(res => {log.debug(`o Naughty: ${res}` ); b.naughty = res.split(",")});
 }, 6000);
 
 
 
 function main(){
   for(tag in b.hashtags){
+    log.info(`o likeTH: ${b.likeTH} | rtTH: ${b.rtTH} | Nice ${hashtags} | Naughty ${b.naughty}` ); 
     let res = seeker(T, b.hashtags[tag], b.naughty, b.likeTH, b.rtTH);
    }
 }
