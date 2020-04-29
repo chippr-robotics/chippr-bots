@@ -14,6 +14,7 @@
   "dependencies": {
     "@chippr-bots/common": "^1.1.44",
     "@chippr-bots/contracts": "^1.1.26",
+    "chai": "^4.2.0",
     "discord.io-gateway6": "^2.5.3",
     "dotenv": "^8.2.0",
     "joi": "^14.3.1",

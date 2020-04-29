@@ -2,6 +2,10 @@ pipeline {
 
   environment {
     API_IMAGE="chipprbots/bridgette-api"
+    V1_IMAGE="chipprbots/bridgette-v1"
+    HOME = '.'
+    WEB3_URL='https://www.ethercluster.com/etc'
+    LOG_LEVEL='debug'
   }
 
   agent any
@@ -10,7 +14,7 @@ pipeline {
 
     stage('Cloning Git') {
       steps {
-        git 'https://github.com/chippr-robotics/chippr-bots'
+        git branch: "staging", url: 'https://github.com/chippr-robotics/chippr-bots'
       }
     }
 
@@ -28,9 +32,9 @@ pipeline {
             dir("./packages/bridgette-api") {
                 sh "npm run test"
                 sh "docker build -t $API_IMAGE:$BUILD_NUMBER ."
-                sh "docker service update --image $API_IMAGE:$BUILD_NUMBER bridgette_api"
                 sh "docker build -t $API_IMAGE:latest ."  
                 sh "docker rmi $API_IMAGE:$BUILD_NUMBER"
+                sh "docker service update --image $API_IMAGE:latest bridgette_api"
         }
       }
     }
@@ -64,6 +68,7 @@ pipeline {
         }
         steps{
             dir("./packages/bridgette-v1") {
+<<<<<<< HEAD
                 withCredentials([string(credentialsId: 'discord_webhook', variable: 'WEBHOOK')]) {
                     sh "npm run test"
                     sh "docker build -t $V1_IMAGE:$BUILD_NUMBER ."
@@ -76,15 +81,25 @@ pipeline {
      }
   }
    
+=======
+                sh "npm i"
+                sh "npm run test"
+                sh "docker build -t $V1_IMAGE:latest ."  
+                sh "docker service update --image $V1_IMAGE:latest --force bridgette_discord"
+            }
+        } 
+    }
+   }
+  
+>>>>>>> 6472b71fe329190458aaa3d6b67963fa6e1db4cd
    post {
-    always {
+    changed {
      withCredentials([string(credentialsId: 'discord_webhook', variable: 'WEBHOOK')]) {
         discordSend description: 'Jenkins Pipeline Build', 
         link: BUILD_URL, 
         successful: currentBuild.resultIsBetterOrEqualTo('SUCCESS'), 
         title: JOB_NAME, 
         webhookURL: WEBHOOK
-         
      }
     }
   }

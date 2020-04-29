@@ -1,7 +1,7 @@
 
 require('dotenv').config();
 const fs = require('fs');
-var initialize = require('/tmp/data.json');
+var initialize = require('./data.json');
 const { bot, log, web3, forks, blkState, realState, T, prime } = require('@chippr-bots/common');
 
 // Initialize Discord Bot
@@ -9,7 +9,7 @@ const { bot, log, web3, forks, blkState, realState, T, prime } = require('@chipp
 bot.on('ready', function (evt) {
     log.info('[Bridgette-bot/index.js] Connected');
     log.info('[Bridgette-bot/index.js] Logged in as: ');
-    log.info('[Bridgette-bot/index.js]' + bot.username + ' - (' + bot.id + ')');
+    log.info(`[Bridgette-bot/index.js] ${bot.username} - (${bot.id})`);
 });
 
 //* Get functions from library *//
@@ -28,9 +28,10 @@ const { bridgette, donatehelp, etcmailhelp, tipperError } = require( "./help" );
 // twitter files
 
 const { quadPrime, twinPrime, sexyPrime } = require("./twitter");
+var vibe = require("./positive.json");
 
 T.post('statuses/update', {
-        status: "etc!" },
+        status: `${vibe.response[Math.floor(Math.random() * vibe.response.length)]} #ethereumclassic`},
         function(err, data, response) {
             log.debug('[index.js] returned data: ' + data);
     });
@@ -55,7 +56,7 @@ function addReaction(channelID, evt,emoji){
   })
 }
 
-// set initial state
+// set initial state move to core
 const blockSTATE = new realState(
   initialize.fate,
   initialize.blkStack,
@@ -84,10 +85,7 @@ setInterval( async function(){
     let oldBlock = await web3.eth.getBlock(blockSTATE.blockNumber - 50000);
     blockSTATE.averageBlockTime = (curBlock.timestamp - oldBlock.timestamp) / 50000;
        //  console.log(blockSTATE.averageBlockTime);
-  }
-  catch(err){
-	log.error("block average:" + err);
-  }
+  
   //log.debug(blockSTATE.averageBlockTime);
   //get stddiv
   //if we have a vew block push it to the stack and tweet if it is a quad prime
@@ -99,7 +97,7 @@ setInterval( async function(){
       blockSTATE.blkStack.unshift(Math.abs((curBlock.timestamp - lastBlock.timestamp) - blockSTATE.averageBlockTime));
     }
     catch(err){
-      log.error("[bridgette-v1/index.js] tried to unshift: "+ err);
+      log.error(`[bridgette-v1/index.js] tried to unshift: ${err}`);
     }
   }
 //  if(prime.nextPrimeTwin(blockSTATE.blockNumber-1) % blockSTATE.blockNumber == 0) twinPrime(T, blockSTATE.blockNumber);
@@ -113,13 +111,17 @@ setInterval( async function(){
   catch(err){
     log.error("[bridgette-v1/index] tried to reduce blockstate");
   }
-  fs.writeFileSync('/tmp/data.json', JSON.stringify(blockSTATE, null, 2) , 'utf-8'); 
+  fs.writeFileSync('./data.json', JSON.stringify(blockSTATE, null, 2) , 'utf-8'); 
 
   //do an update everyday
   if(blockSTATE.blockNumber % 10000 == 0 ){
    blockSTATE.get("sexFate").then(res => {blockSTATE.sexFate = parseInt(res,10)});
    blockSTATE.get("quadFate").then(res => {blockSTATE.quadFate = parseInt(res,10)});
   }
+ }
+catch(err){
+  log.error("block average:" + err);
+}
 
 },5000);
 
