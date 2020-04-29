@@ -1,4 +1,3 @@
-require("dotenv").config();
 var { log, T } =require("@chippr-bots/common");
 var bdb = require("@chippr-bots/bridgettedb");
 
@@ -17,11 +16,6 @@ var b = new bdb({
   "kvsAddr" : process.env.BDB_CONTRACT_ADDR,
   "DBKEY": process.env.BDB_DBKEY
   })
-
-var local = {
-  local.likeTH : local.likeTH,
-  local.likeTH
-}
 
 setInterval(() => {
      b.get(process.env.DBKEY + "likeTH").then(res => {log.info("o likeTH: " + res ); b.likeTH = parseInt(res,10)});
