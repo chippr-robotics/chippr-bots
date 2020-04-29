@@ -76,7 +76,6 @@ pipeline {
             }
         } 
     }
-   }
   
   stage('Bridgette twitter build') {
         when{
@@ -92,7 +91,7 @@ pipeline {
         } 
     }
    }
-   
+
    post {
     changed {
      withCredentials([string(credentialsId: 'discord_webhook', variable: 'WEBHOOK')]) {
