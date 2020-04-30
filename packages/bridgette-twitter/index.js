@@ -8,7 +8,6 @@ var {
 
 log.info("🤖  bridgette-twitter loaded with DBKEY: " + process.env.BDB_DBKEY);
 
-
 var b = new bdb({
   "nodeAddr": process.env.BDB_NODE_URL,
   "accountAddress": process.env.BDB_ACCOUNT_ADDR,
@@ -16,6 +15,8 @@ var b = new bdb({
   "kvsAddr" : process.env.BDB_CONTRACT_ADDR,
   "DBKEY": process.env.BDB_DBKEY
   })
+
+var tweetstack = [];
 
 setInterval(() => {
   try {
@@ -31,7 +32,12 @@ setInterval(() => {
 function main(){
   log.info(`o likeTH: ${b.likeTH} | rtTH: ${b.rtTH} | Nice ${b.hashtags} | Naughty ${b.naughty}` );
   for(tag in b.hashtags){ 
-    let res = seeker(T, b.hashtags[tag], b.naughty, b.likeTH, b.rtTH);
+    try{ 
+      seeker(T, b.hashtags[tag], tweetstack);
+    }
+    catch(error){
+      log.error(`[bridgette-twitter/index] error getting variables: ${error}`)
+    }
    }
 }
 
