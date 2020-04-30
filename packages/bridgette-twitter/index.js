@@ -1,5 +1,8 @@
 var { log, T } =require("@chippr-bots/common");
 var bdb = require("@chippr-bots/bridgettedb");
+const path = require('path')
+
+var {training, character} = require("./mode");
 
 var {
   tags,
@@ -16,8 +19,13 @@ var b = new bdb({
   "DBKEY": process.env.BDB_DBKEY
   })
 
-var tweetstack = [];
+var state = {
+  "mode" : "training",
+  tweetstack : []
+}
 
+
+//keep refreshing lists
 setInterval(() => {
   try {
     b.get("likeTH").then(res => {log.debug(`o likeTH: ${res}`);b.likeTH = parseInt(res,10)});
@@ -31,14 +39,26 @@ setInterval(() => {
 
 function main(){
   log.info(`o likeTH: ${b.likeTH} | rtTH: ${b.rtTH} | Nice ${b.hashtags} | Naughty ${b.naughty}` );
-  for(tag in b.hashtags){ 
-    try{ 
-      seeker(T, b.hashtags[tag], tweetstack);
+  switch (state.mode) {
+    case "training":
+        let tl = b.hashtags.concat(b.naughty);
+        log.info( `training on: ${tl}`);
+        training(T, tl);
+      break;
+    case "character":
+      for(tag in b.hashtags){ 
+        try{ 
+          seeker(T, b.hashtags[tag], state.tweetstack);
+        }
+        catch(error){
+          log.error(`[bridgette-twitter/index] error getting variables: ${error}`)
+        }
+       }
+      break;
+
+    default:
+      break;
     }
-    catch(error){
-      log.error(`[bridgette-twitter/index] error getting variables: ${error}`)
-    }
-   }
 }
 
 setInterval(() => {
