@@ -1,8 +1,8 @@
 
 var seeker = require("./seeker");
-var train = require("./train");
+var bayes = require("./Bayes");
 
 module.exports = {
   seeker : seeker,
-  train : train,
+  bayes : bayes,
 }

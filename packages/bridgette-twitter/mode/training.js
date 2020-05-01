@@ -1,6 +1,6 @@
 var { log } = require('@chippr-bots/common');
 
-var { train, seeker } = require('../lib');
+var { bayes, seeker } = require('../lib');
 var fs = require('fs');
 
 const defaultModel = require('../models/default.json');
@@ -43,9 +43,9 @@ module.exports = async (T, wordlist) => {
         //console.log(workingModel);
         let tweetstack = [];
         await seeker(T, wordlist[word], tweetstack);
-        console.log(tweetstack);
-        train(tweetstack, wordlist[word], workingModel)
-        console.log(workingModel);
+        //console.log(tweetstack);
+        bayes(tweetstack, wordlist[word], workingModel)
+        //console.log(workingModel);
         saveModel(wordlist[word], workingModel);
     }
 }

@@ -9,6 +9,7 @@ module.exports = (tweetstack, category, model) => {
     for(tweet in tweetstack){
         log.info(`[bridgette-twitter/lib/train] training on tweet number: ${tweet} out of  ${tweetstack.length}`);
         //console.log(tweetstack[tweet]);
+        //add to the overall model
         for( i in tweetstack[tweet]){ 
             let word = tweetstack[tweet][i];
             //console.log(word);
@@ -27,11 +28,14 @@ module.exports = (tweetstack, category, model) => {
     for (key in model.wordlist){
         let modelKeys = Object.keys(model.wordlist);
         console.log(modelKeys[key]);
-        if( model.wordlist[key] != undefined && (model.wordlist[key] <= 3 || modelKeys[key].length == 1)) {
+        let keyLength = 0;
+        if (modelKeys[key] !== undefined) keyLength = modelKeys[key].length;
+            
+        if( model.wordlist[key] <= 3 || keyLength == 1 ) {
             delete model.wordlist[key];
             model.wordCount -= 1;
             model.vocabCount -= 1
-        }
+        } 
     }
     //console.log(model);
     return model;
