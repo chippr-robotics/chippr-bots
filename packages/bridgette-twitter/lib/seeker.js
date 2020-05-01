@@ -14,6 +14,15 @@ module.exports = async  (T, nice, tweetstack) => {
           if(status.text != undefined ){
             //cleanup and normalize text
             let words = status.text.toLowerCase().split(" ");
+            for(word in words){
+              var twtHdl = `^@?(\w){1,15}$`
+              var url = `https?:\/\/(www\.)?[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_\+.~#?&//=]*)`;
+              var chk1 = new RegExp(twtHdl);
+              var chk2 = new RegExp(url);
+              if( words[word].match(chk1) || words[word].match(chk2) ){
+                delete words[word];
+              }
+            }
             tweetstack.push(words);
           }
         }; 

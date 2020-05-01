@@ -27,7 +27,7 @@ module.exports = (tweetstack, category, model) => {
     //remove all low occurence words: occurs less than 3 times or has a length of 1 to elimanante  
     for (key in model.wordlist){
         let modelKeys = Object.keys(model.wordlist);
-        console.log(modelKeys[key]);
+        //console.log(modelKeys[key]);
         let keyLength = 0;
         if (modelKeys[key] !== undefined) keyLength = modelKeys[key].length;
             

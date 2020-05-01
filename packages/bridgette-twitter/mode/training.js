@@ -1,9 +1,13 @@
 var { log } = require('@chippr-bots/common');
 
-var { bayes, seeker } = require('../lib');
+var { bayes, seeker, markov } = require('../lib');
 var fs = require('fs');
 
 const defaultModel = require('../models/default.json');
+
+var Markov = require("markov-json");
+var markovModel = require("../models/markov.json");
+var mkjs = new Markov(markovModel);
 
 /* training loop 
 *   the training module should
@@ -36,6 +40,14 @@ function getModel( category ){
         }
 }
 
+function saveMarkov(){
+    let filePath = `./models/markov.json`;
+    fs.writeFile( filePath , JSON.stringify(mkjs), function (err) {
+        if (err) throw err;
+        log.info(`Saved the markov model`);
+     });
+}
+
 
 module.exports = async (T, wordlist) => {
     for(word in wordlist){
@@ -44,9 +56,11 @@ module.exports = async (T, wordlist) => {
         let tweetstack = [];
         await seeker(T, wordlist[word], tweetstack);
         //console.log(tweetstack);
-        bayes(tweetstack, wordlist[word], workingModel)
+        bayes(tweetstack, wordlist[word], workingModel);
+        markov(tweetstack, mkjs);
         //console.log(workingModel);
         saveModel(wordlist[word], workingModel);
     }
+    saveMarkov();
 }
     

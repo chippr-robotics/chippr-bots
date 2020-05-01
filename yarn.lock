@@ -5333,6 +5333,11 @@ map-visit@^1.0.0:
   dependencies:
     object-visit "^1.0.0"
 
+markov-json@^1.1.7:
+  version "1.1.7"
+  resolved "https://registry.yarnpkg.com/markov-json/-/markov-json-1.1.7.tgz#5d52ddda53d739253ebf1f025fbf6faa6c846c0f"
+  integrity sha512-TJLq4J/5aWweclDc2o2fPwvAfZSw/3IPboVnI0n7oPmCXnBrITXOjBwthuBi+CVkLnL/RfKRuJuJ+BcJ4cTQXA==
+
 md5.js@^1.3.4:
   version "1.3.5"
   resolved "https://registry.yarnpkg.com/md5.js/-/md5.js-1.3.5.tgz#b5d07b8e3216e3e27cd728d72f70d1e6a342005f"

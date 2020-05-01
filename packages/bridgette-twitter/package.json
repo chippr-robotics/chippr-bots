@@ -14,6 +14,7 @@
     "@chippr-bots/bridgettedb": "^1.1.44",
     "@chippr-bots/common": "^1.1.44",
     "dotenv": "^8.2.0",
+    "markov-json": "^1.1.7",
     "twitter": "^1.7.1"
   }
 }
