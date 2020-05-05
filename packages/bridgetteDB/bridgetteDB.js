@@ -35,7 +35,6 @@ module.exports = class bridgetteDB {
         "node address: " + nodeAddr + ", " +
         "kvsAddr: " + kvsAddr + ", " +
         "user account: " + accountAddress + ", " +
-        "user password: " + accountPasswd + ", " +
         "dbkey: " + DBKEY
       );
 

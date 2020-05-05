@@ -1,0 +1,10 @@
+{
+    "category" : "giveaway",
+    "exampleCount" : 5,
+    "vocabCount" : 2,
+    "wordCount" : 7,
+    "wordlist" : {
+        "giveaway" : 5,
+        "free" : 2
+    }
+}
