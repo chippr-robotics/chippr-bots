@@ -1,18 +1,30 @@
 pipeline {
+
   environment {
     API_IMAGE="chipprbots/bridgette-api"
     V1_IMAGE="chipprbots/bridgette-v1"
+    TW_IMAGE="chipprbots/bridgette-twitter"
     HOME = '.'
     WEB3_URL='https://www.ethercluster.com/etc'
     LOG_LEVEL='debug'
   }
+
   agent any
+
   stages {
+
     stage('Cloning Git') {
       steps {
         git branch: "staging", url: 'https://github.com/chippr-robotics/chippr-bots'
       }
     }
+
+    stage('Bumping Lerna versions') {
+        steps {
+            sh 'yarn run new-version'
+        }
+    }
+
     stage('Bridgette API build') {
         when{
             changeset "**/packages/bridgette-api/*.*"
@@ -68,6 +80,20 @@ pipeline {
         }
         steps{
             dir("./packages/bridgette-v1") {
+<<<<<<< HEAD
+                withCredentials([string(credentialsId: 'discord_webhook', variable: 'WEBHOOK')]) {
+                    sh "npm run test"
+                    sh "docker build -t $V1_IMAGE:$BUILD_NUMBER ."
+                    sh "docker service update --image $V1_IMAGE:$BUILD_NUMBER bridgette_discord"
+                    sh "docker build -t $V1_IMAGE:latest ."  
+                    sh "docker rmi $V1_IMAGE:$BUILD_NUMBER"
+                }
+            } 
+        }
+     }
+  }
+   
+=======
                 sh "npm i"
                 sh "npm run test"
                 sh "docker build -t $V1_IMAGE:latest ."  
@@ -75,8 +101,25 @@ pipeline {
             }
         } 
     }
-   }
   
+<<<<<<< HEAD
+>>>>>>> 6472b71fe329190458aaa3d6b67963fa6e1db4cd
+=======
+  stage('Bridgette twitter build') {
+        when{
+            changeset "**/packages/bridgette-twitter/*.*"
+        }
+        steps{
+            dir("./packages/bridgette-twitter") {
+                sh "npm i"
+                sh "docker build -t $TW_IMAGE:latest ."  
+                sh "docker service update --image $TW_IMAGE:latest --force bridgette_twitter"
+            }
+        } 
+    }
+   }
+
+>>>>>>> 62d93f87541ebe3e39bbb144f1653a6c86999d05
    post {
     changed {
      withCredentials([string(credentialsId: 'discord_webhook', variable: 'WEBHOOK')]) {
