@@ -8,5 +8,5 @@ module.exports = (tweetstack, markovModel) => {
     for(tweet in tweetstack){
         markovModel.train(tweetstack[tweet].join(' '));
     }
-    console.log(markovModel.words(39));
+    console.log(markovModel.words(20));
 }

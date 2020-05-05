@@ -21,39 +21,40 @@ var b = new bdb({
 
 var state = {
   "mode" : "training",
-  tweetstack : []
+  tweetstack : [],
+  likeTH : 9999999,
+  rtTH : 9999999,
+  hashtags: [],
+  naughty: []
 }
 
 
 //keep refreshing lists
 setInterval(() => {
   try {
-    b.get("likeTH").then(res => {log.debug(`o likeTH: ${res}`);b.likeTH = parseInt(res,10)});
-    b.get("rtTH").then(res => {log.debug(`o rtTH: ${res}` ); b.rtTH = parseInt(res, 10)});
-    b.get("nice").then(res => {log.debug(`o Nice: ${res}` ); b.hashtags = res.split(",")});
-    b.get("naughty").then(res => {log.debug(`o Naughty: ${res}` ); b.naughty = res.split(",")});
+    b.get("likeTH").then(res => {log.debug(`o likeTH: ${res}`); state.likeTH = parseInt(res,10)});
+    b.get("rtTH").then(res => {log.debug(`o rtTH: ${res}` ); state.rtTH = parseInt(res, 10)});
+    b.get("nice").then(res => {log.debug(`o Nice: ${res}` ); state.hashtags = res.split(",")});
+    b.get("naughty").then(res => {log.debug(`o Naughty: ${res}` ); state.naughty = res.split(",")});
+    b.get("activeState").then(res => {log.debug(`o State: ${res}` ); state.mode = res});
   } catch (error) {
     log.error(`[bridgette-twitter/index] error getting variables: ${error}`)
   }
 }, process.env.SYNC_LOOP_TIMER);
 
 function main(){
-  log.info(`o likeTH: ${b.likeTH} | rtTH: ${b.rtTH} | Nice ${b.hashtags} | Naughty ${b.naughty}` );
+  log.info(`o likeTH: ${state.likeTH} | rtTH: ${state.rtTH} | Nice ${state.hashtags} | Naughty ${state.naughty}` );
   switch (state.mode) {
     case "training":
-        let tl = b.hashtags.concat(b.naughty);
+        let tl = state.hashtags.concat(state.naughty);
         log.info( `training on: ${tl}`);
         training(T, tl);
       break;
     case "character":
-      for(tag in b.hashtags){ 
-        try{ 
-          seeker(T, b.hashtags[tag], state.tweetstack);
-        }
-        catch(error){
-          log.error(`[bridgette-twitter/index] error getting variables: ${error}`)
-        }
-       }
+      //log mode 
+      log.info( `Tweeting on: ${state.hashtags}`);
+      //Run loop
+      character(T, state);      
       break;
 
     default:
