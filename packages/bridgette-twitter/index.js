@@ -20,7 +20,7 @@ var b = new bdb({
   })
 
 var state = {
-  "mode" : "training",
+  "activeState" : "training",
   tweetstack : [],
   likeTH : 9999999,
   rtTH : 9999999,
@@ -36,7 +36,7 @@ setInterval(() => {
     b.get("rtTH").then(res => {log.debug(`o rtTH: ${res}` ); state.rtTH = parseInt(res, 10)});
     b.get("nice").then(res => {log.debug(`o Nice: ${res}` ); state.hashtags = res.split(",")});
     b.get("naughty").then(res => {log.debug(`o Naughty: ${res}` ); state.naughty = res.split(",")});
-    b.get("activeState").then(res => {log.debug(`o State: ${res}` ); state.mode = res});
+    b.get("activeState").then(res => {log.debug(`o State: ${res}` ); state.activeState = res});
   } catch (error) {
     log.error(`[bridgette-twitter/index] error getting variables: ${error}`)
   }
@@ -44,7 +44,7 @@ setInterval(() => {
 
 function main(){
   log.info(`o likeTH: ${state.likeTH} | rtTH: ${state.rtTH} | Nice ${state.hashtags} | Naughty ${state.naughty}` );
-  switch (state.mode) {
+  switch (state.activeState) {
     case "training":
         let tl = state.hashtags.concat(state.naughty);
         log.info( `training on: ${tl}`);
@@ -56,7 +56,6 @@ function main(){
       //Run loop
       character(T, state);      
       break;
-
     default:
       break;
     }
