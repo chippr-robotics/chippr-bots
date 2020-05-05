@@ -1,6 +1,6 @@
 {
   "name": "@chippr-bots/bridgettedb",
-  "version": "1.1.44",
+  "version": "1.1.45",
   "description": "blockchain based kvs db",
   "main": "index.js",
   "author": "chippr=robotics llc",
@@ -12,7 +12,7 @@
   },
   "private": false,
   "dependencies": {
-    "@chippr-bots/common": "^1.1.44",
+    "@chippr-bots/common": "^1.1.45",
     "@chippr-bots/contracts": "^1.1.26",
     "mocha": "^7.1.1",
     "web3": "^1.2.6"
