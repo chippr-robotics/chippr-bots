@@ -1,0 +1,15 @@
+{
+  "name": "bdb-graphwl-api",
+  "version": "1.0.0",
+  "description": "graphql api for bridgetteDB",
+  "main": "index.js",
+  "repository": "https://github.com/chippr-robotics/chippr-bots/",
+  "author": "chippr robottics",
+  "license": "Apache-2.0",
+  "private": false,
+  "dependencies": {
+    "express": "^4.17.1",
+    "express-graphql": "^0.9.0",
+    "graphql": "^15.0.0"
+  }
+}
