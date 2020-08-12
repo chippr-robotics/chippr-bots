@@ -1,4 +1,5 @@
 const winston = require('winston');
+const Elasticsearch = require('winston-elasticsearch');
 const path = require('path');
 
 // Configure custom app-wide logger
@@ -16,6 +17,11 @@ module.exports = winston.createLogger({
       name: 'error-file',
       filename: path.resolve(__dirname, '../error.log'),
       level: 'error'
+    }),
+    new Elasticsearch({
+      name: 'elasticsearch',
+      host: process.env.ESEARCH_HOST,
+      level: 'debug'
     })
   ]
 });
