@@ -19,7 +19,7 @@ var b = new bdb({
 // Construct a schema, using GraphQL schema language
 var schema = buildSchema(`
   type Query {
-    hello: String
+    getkey(key:String!) : [String] ,
   }
 `);
 
@@ -28,6 +28,14 @@ var root = {
   hello: () => {
     return 'Hello world!';
   },
+  getkey: async ({_key}) => {
+    output = [];
+    await b.get(_key).then((res) => {
+        log.info(res);
+        output.push(res);
+    });
+    return output;
+  }
 };
 
 var app = express();

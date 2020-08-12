@@ -26,6 +26,7 @@ module.exports = async (T, state) => {
     try {
     for(word in state.hashtags){    
         sleep(5000);
+        log.debug(`searching for word:${word} `)
         await T.get( 'search/tweets', {q: word})
          .then( (tweets) => {
         
@@ -45,7 +46,7 @@ module.exports = async (T, state) => {
              console.log(state.naughty[bw]);
              if(words.includes(state.naughty[bw])){
                 isGood = false;
-           log.debug('found word ' + state.naughty[bw] );
+                log.debug('found word ' + state.naughty[bw] );
              }
            }
            //if everything is good add it to the list

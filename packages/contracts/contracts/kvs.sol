@@ -36,8 +36,9 @@ contract kvs is owned{
       emit remove(bytes32);
       return true;
   }
-  
-  function bulkSet(bytes32[] _key) public onlyOwner returns(bool){
+  /// @dev Method to bulk remove attributes
+  /// @param _key array of bytes32 to be removed
+  function bulkRm(bytes32[] _key) public onlyOwner returns(bool){
       for(i=0; i <= _key.length; ){
         store[_key[i]] = "";
         emit remove(_key[i]);
