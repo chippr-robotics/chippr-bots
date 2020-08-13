@@ -1,8 +1,9 @@
 const winston = require('winston');
 const Elasticsearch = require('winston-elasticsearch');
 const path = require('path');
+const { Client } = require('@elastic/elasticsearch')
 
-var client =  new elasticsearch.Client({process.env.ESEARCH_HOST:9200});
+var client =  new Client({ node: process.env.ESEARCH_HOST || 'http://172.16.0.234:9200'});
 
 // Configure custom app-wide logger
 module.exports = winston.createLogger({

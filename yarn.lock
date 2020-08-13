@@ -2,7 +2,7 @@
 # yarn lockfile v1
 
 
-"@elastic/elasticsearch@^7.7.1":
+"@elastic/elasticsearch@^7.8.0":
   version "7.8.0"
   resolved "https://registry.yarnpkg.com/@elastic/elasticsearch/-/elasticsearch-7.8.0.tgz#3f9ee54fe8ef79874ebd231db03825fa500a7111"
   integrity sha512-rUOTNN1At0KoN0Fcjd6+J7efghuURnoMTB/od9EMK6Mcdebi6N3z5ulShTsKRn6OanS9Eq3l/OmheQY1Y+WLcg==
@@ -2547,11 +2547,6 @@ dayjs@^1.8.16:
   version "1.8.23"
   resolved "https://registry.yarnpkg.com/dayjs/-/dayjs-1.8.23.tgz#07b5a8e759c4d75ae07bdd0ad6977f851c01e510"
   integrity sha512-NmYHMFONftoZbeOhVz6jfiXI4zSiPN6NoVWJgC0aZQfYVwzy/ZpESPHuCcI0B8BUMpSJQ08zenHDbofOLKq8hQ==
-
-dayjs@^1.8.28:
-  version "1.8.33"
-  resolved "https://registry.yarnpkg.com/dayjs/-/dayjs-1.8.33.tgz#18bc4a2b6c1c6f4d67b4c4f2536c0b97e5b766f7"
-  integrity sha512-881TDLZCdpJFKbraWRHcUG8zfMLLX400ENf9rFZDuWc5zYMss6xifo2PhlDX0ftOmR2NRmaIY47bAa4gKQfXqw==
 
 debug@2.6.9, debug@^2.2.0, debug@^2.3.3:
   version "2.6.9"
@@ -6511,7 +6506,7 @@ promise-retry@^1.1.1:
     err-code "^1.0.0"
     retry "^0.10.0"
 
-promise@^8.0.3, promise@^8.1.0:
+promise@^8.0.3:
   version "8.1.0"
   resolved "https://registry.yarnpkg.com/promise/-/promise-8.1.0.tgz#697c25c3dfe7435dd79fcd58c38a135888eaf05e"
   integrity sha512-W04AqnILOL/sPRXziNicCjSNRruLAuIHEOVBazepu0545DDNGYHz7ar9ZgZ1fMU8/MA4mVxp5rkBWRi6OXIy3Q==
@@ -8703,7 +8698,7 @@ windows-release@^3.1.0:
   dependencies:
     execa "^1.0.0"
 
-winston-elasticsearch@^0.7.13:
+winston-elasticsearch@^0.7.12, winston-elasticsearch@^0.7.13:
   version "0.7.13"
   resolved "https://registry.yarnpkg.com/winston-elasticsearch/-/winston-elasticsearch-0.7.13.tgz#709cfc80cf7f8a86996e51d6b74ff9d615074932"
   integrity sha512-iOyRIIE7LIxW13I/pGz31uSD0Rf9v3xuD4jcia/o61dMIiH79kW2WziVqruk7Hg7rNsuMyaT11mwmAEYeG3vsA==
@@ -8714,21 +8709,6 @@ winston-elasticsearch@^0.7.13:
     lodash.defaults "^4.2.0"
     lodash.omit "^4.5.0"
     promise "^8.0.3"
-    retry "^0.12.0"
-    winston "^3.2.1"
-    winston-transport "4.3.0"
-
-winston-elasticsearch@^0.9.0:
-  version "0.9.0"
-  resolved "https://registry.yarnpkg.com/winston-elasticsearch/-/winston-elasticsearch-0.9.0.tgz#de150ea5baa70637f17c4c744b4475d8f863dbe9"
-  integrity sha512-vsrkufSvA47H72i7fMqZSyBBjicz+A/kCwmpqnFvzd9J8RnLCe1AUK8Od/mTvdp5bW+mcynZhN2afiThIK67zw==
-  dependencies:
-    "@elastic/elasticsearch" "^7.7.1"
-    dayjs "^1.8.28"
-    debug "4.1.1"
-    lodash.defaults "^4.2.0"
-    lodash.omit "^4.5.0"
-    promise "^8.1.0"
     retry "^0.12.0"
     winston "^3.2.1"
     winston-transport "4.3.0"
