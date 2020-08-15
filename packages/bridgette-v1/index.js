@@ -74,6 +74,7 @@ console.log(blockSTATE.get("fate"));
 //console.log(blockSTATE);
 //update state periodically
 setInterval( async function(){
+   log.info("[bridgette-v1/index.js] bridgette heartbeat");
   //get the latest block number
   let pastBlock = blockSTATE.blockNumber;
   try{
@@ -91,10 +92,10 @@ setInterval( async function(){
   //if we have a vew block push it to the stack and tweet if it is a quad prime
   if(blockSTATE.blockNumber > pastBlock){
    await sleep(2000); 
-   if(prime.nextPrimeQuad(blockSTATE.blockNumber-1) % blockSTATE.blockNumber == 0) quadPrime(T, blockSTATE.blockNumber);
-   if(prime.isPrime(blockSTATE.blockNumber) && prime.isPrime(blockSTATE.blockNumber - 6)) sexyPrime(T, blockSTATE.blockNumber, blockSTATE.sexFate);
+   //if(prime.nextPrimeQuad(blockSTATE.blockNumber-1) % blockSTATE.blockNumber == 0) quadPrime(T, blockSTATE.blockNumber);
+   //if(prime.isPrime(blockSTATE.blockNumber) && prime.isPrime(blockSTATE.blockNumber - 6)) sexyPrime(T, blockSTATE.blockNumber, blockSTATE.sexFate);
    try{
-      blockSTATE.blkStack.unshift(Math.abs((curBlock.timestamp - lastBlock.timestamp) - blockSTATE.averageBlockTime));
+     // blockSTATE.blkStack.unshift(Math.abs((curBlock.timestamp - lastBlock.timestamp) - blockSTATE.averageBlockTime));
     }
     catch(err){
       log.error(`[bridgette-v1/index.js] tried to unshift: ${err}`);
@@ -102,21 +103,20 @@ setInterval( async function(){
   }
 //  if(prime.nextPrimeTwin(blockSTATE.blockNumber-1) % blockSTATE.blockNumber == 0) twinPrime(T, blockSTATE.blockNumber);
   try{
-  if(blockSTATE.blkStack.length > 50000) blockSTATE.blkStack.pop();
+ // if(blockSTATE.blkStack.length > 50000) blockSTATE.blkStack.pop();
   //sum all the variance and average it
-  blockSTATE.blkDiv = ( blockSTATE.blkStack.reduce((a,b) => a + b, 0) / blockSTATE.blkStack.length);
+  //blockSTATE.blkDiv = ( blockSTATE.blkStack.reduce((a,b) => a + b, 0) / blockSTATE.blkStack.length);
   //log.debug(blockSTATE.blkStack);
   //log.debug(blockSTATE.blkDiv);
   }
   catch(err){
     log.error("[bridgette-v1/index] tried to reduce blockstate");
   }
-  fs.writeFileSync('./data.json', JSON.stringify(blockSTATE, null, 2) , 'utf-8'); 
-
+  //fs.writeFileSync('./data.json', JSON.stringify(blockSTATE, null, 2) , 'utf-8'); 
   //do an update everyday
-  if(blockSTATE.blockNumber % 10000 == 0 ){
-   blockSTATE.get("sexFate").then(res => {blockSTATE.sexFate = parseInt(res,10)});
-   blockSTATE.get("quadFate").then(res => {blockSTATE.quadFate = parseInt(res,10)});
+ // if(blockSTATE.blockNumber % 10000 == 0 ){
+ //  blockSTATE.get("sexFate").then(res => {blockSTATE.sexFate = parseInt(res,10)});
+ // blockSTATE.get("quadFate").then(res => {blockSTATE.quadFate = parseInt(res,10)});
   }
  }
 catch(err){
