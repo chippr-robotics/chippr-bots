@@ -101,7 +101,8 @@ bot.on('message', async function (user, userID, channelID, message, evt) {
       var time =  [args[1], args[2], args[3]];
     }
     args = args.splice(1);
-    log.info(message.substring);
+    var messageInfo = user + " "+userID +" "+ channelID +" "+ message +" "+ evt;
+    log.info("UserMessage " + messageInfo);
     switch(cmd) {
       case 'web3':
         addReaction(channelID, evt, "\u{1F916}");
