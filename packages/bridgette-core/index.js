@@ -88,6 +88,7 @@ server.post('/webhook', function (req, res) {
 });
 
 server.get('/', (req, res) => {
+        console.log(req);
         res.send('Hello World!');
 	log.debug('hello world log', {'file': 'bridgette-core/index.js'});
 });

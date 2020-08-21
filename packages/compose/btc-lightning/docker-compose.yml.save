@@ -1,0 +1,41 @@
+services:
+  bitcoind:
+    image: nicolasdorier/docker-bitcoin:0.19.1
+    container_name: bitcoind
+    environment:
+      BITCOIN_EXTRA_ARGS: |
+        testnet=0
+        whitelist=0.0.0.0/0
+        server=1
+        rpcuser=BurnsCapital
+        rpcpassword=YtZ6xx4XhviK7hIydaqW
+        rescan=1
+    expose:
+      - "8333"
+    ports:
+      - "0.0.0.0:8333:8333"
+    volumes:
+      - "/freenas-Burns/blockchain/bitcoin-tor/mainnet/bitcoind:/data"
+      - "/freenas-Burns/blockchain/bitcoin-tor:/root"
+  clightning_bitcoin:
+    image: elementsproject/lightningd
+    container_name: lightning
+    command:
+      - --bitcoin-rpcconnect=bitcoind
+      - --bitcoin-rpcuser=BurnsCapital
+      - --bitcoin-rpcpassword=YtZ6xx4XhviK7hIydaqW
+      - --network=bitcoin
+      - --alias=Lightningpay.me
+      - --rgb=FF4500
+      - --log-level=debug
+    environment:
+      EXPOSE_TCP: "true"
+    expose:
+      - "9735"
+    ports:
+      - "0.0.0.0:9735:9735"
+    volumes:
+      - "/freenas-Burns//blockchain/bitcoin-tor/mainnet/clightning:/root/.lightning"
+      - "/freenas-Burns//blockchain/bitcoin-tor/mainnet/bitcoind:/etc/bitcoin"
+    links:
+      - bitcoind

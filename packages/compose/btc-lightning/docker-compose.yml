@@ -1,0 +1,56 @@
+
+version: "3.2"
+services:
+  bitcoind:
+    image: ${BTC_IMAGE}
+    volumes:
+      - type: bind
+        source: "${BTC_DATA_DIR}"
+        target: /data/
+      - type: bind
+        source: "${BTC_ROOT_DIR}"
+        target: /root/
+    environment:
+      BITCOIN_EXTRA_ARGS: |
+        testnet=0
+        whitelist=0.0.0.0/0
+        server=1
+        rpcuser=${BTC_RPC_USER}
+        rpcpassword=${BTC_RPC_PW}
+        rescan=1
+    ports:
+      - "${BTC_PORT}:8333"
+    logging:
+      driver: gelf
+      options:
+        tag: ${BTC_TAG}
+        gelf-address: "${GELF_ADDRESS}"
+
+  clightning_bitcoin:
+    image: ${LND_IMAGE}
+        volumes:
+      - type: bind
+        source: "${LND_DATA_DIR}"
+        target: /etc/bitcoin
+      - type: bind
+        source: "${LND_ROOT_DIR}"
+        target: /root/.lightning
+    command:
+      - --bitcoin-rpcconnect=bitcoind
+      - --bitcoin-rpcuser=${BTC_RPC_USER}
+      - --bitcoin-rpcpassword=${BTC_RPC_USER}
+      - --network=bitcoin
+      - --alias=${LND_ALIAS}
+      - --rgb=${LND_RGB}
+    environment:
+      EXPOSE_TCP: "true"
+    ports:
+      - "${LND_PORT}:9735"
+    links:
+      - bitcoind
+    logging:
+      driver: gelf
+      options:
+        tag: ${LND_TAG}
+        gelf-address: "${GELF_ADDRESS}"
+
