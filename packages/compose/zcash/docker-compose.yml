@@ -1,0 +1,16 @@
+version: '3.2'
+services:
+  zcash:
+    image: ${ZEC_IMAGE}
+    volumes:
+      - type: bind
+        source: "${ZEC_ROOT_DIR}"
+        target: /root/.zcash
+    ports:
+      - "${ZEC_RPC}:8232"
+      - "${ZEC_P2P}:9050"
+    logging:
+      driver: gelf
+      options:
+        tag: ${ZEC_TAG}
+        gelf-address: "${GELF_ADDRESS}"

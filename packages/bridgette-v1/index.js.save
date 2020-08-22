@@ -71,21 +71,60 @@ console.log(blockSTATE);
 console.log(blockSTATE.get("fate"));
 
 
+//console.log(blockSTATE);
+//update state periodically
 setInterval( async function(){
    log.info("[bridgette-v1/index.js] bridgette heartbeat");
   //get the latest block number
-   let pastBlock = blockSTATE.blockNumber;
-   try{
+  let pastBlock = blockSTATE.blockNumber;
+  try{
     blockSTATE.blockNumber = await web3.eth.getBlockNumber();
+    //log.debug(blockSTATE.blockNumber);
+    //find the average block time
     let curBlock = await web3.eth.getBlock(blockSTATE.blockNumber);
     let lastBlock = await web3.eth.getBlock(blockSTATE.blockNumber - 1);
     let oldBlock = await web3.eth.getBlock(blockSTATE.blockNumber - 50000);
     blockSTATE.averageBlockTime = (curBlock.timestamp - oldBlock.timestamp) / 50000;
-   }
-   catch(err){
-    log.error("block average:" + err);
-   }
+       //  console.log(blockSTATE.averageBlockTime);
+
+  //log.debug(blockSTATE.averageBlockTime);
+  //get stddiv
+  //if we have a vew block push it to the stack and tweet if it is a quad prime
+  if(blockSTATE.blockNumber > pastBlock){
+   await sleep(2000); 
+   //if(prime.nextPrimeQuad(blockSTATE.blockNumber-1) % blockSTATE.blockNumber == 0) quadPrime(T, blockSTATE.blockNumber);
+   //if(prime.isPrime(blockSTATE.blockNumber) && prime.isPrime(blockSTATE.blockNumber - 6)) sexyPrime(T, blockSTATE.blockNumber, blockSTATE.sexFate);
+   try{
+     // blockSTATE.blkStack.unshift(Math.abs((curBlock.timestamp - lastBlock.timestamp) - blockSTATE.averageBlockTime));
+    }
+    catch(err){
+      log.error(`[bridgette-v1/index.js] tried to unshift: ${err}`);
+    }
+  }
+//  if(prime.nextPrimeTwin(blockSTATE.blockNumber-1) % blockSTATE.blockNumber == 0) twinPrime(T, blockSTATE.blockNumber);
+  try{
+ // if(blockSTATE.blkStack.length > 50000) blockSTATE.blkStack.pop();
+  //sum all the variance and average it
+  //blockSTATE.blkDiv = ( blockSTATE.blkStack.reduce((a,b) => a + b, 0) / blockSTATE.blkStack.length);
+  //log.debug(blockSTATE.blkStack);
+  //log.debug(blockSTATE.blkDiv);
+  }
+  catch(err){
+    log.error("[bridgette-v1/index] tried to reduce blockstate");
+  }
+  //fs.writeFileSync('./data.json', JSON.stringify(blockSTATE, null, 2) , 'utf-8'); 
+  //do an update everyday
+ // if(blockSTATE.blockNumber % 10000 == 0 ){
+ //  blockSTATE.get("sexFate").then(res => {blockSTATE.sexFate = parseInt(res,10)});
+ // blockSTATE.get("quadFate").then(res => {blockSTATE.quadFate = parseInt(res,10)});
+  }
+ }
+catch(err){
+  log.error("block average:" + err);
+}
+
 },5000);
+
 
 
 
@@ -101,8 +140,7 @@ bot.on('message', async function (user, userID, channelID, message, evt) {
       var time =  [args[1], args[2], args[3]];
     }
     args = args.splice(1);
-    var messageInfo = user + " "+userID +" "+ channelID +" "+ message +" "+ evt;
-    log.info("UserMessage " + messageInfo);
+
     switch(cmd) {
       case 'web3':
         addReaction(channelID, evt, "\u{1F916}");
