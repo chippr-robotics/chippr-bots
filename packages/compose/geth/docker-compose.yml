@@ -1,0 +1,68 @@
+version: '3.2'
+
+services:
+  kotti:
+    image: etclabscore/core-geth:latest
+    volumes:
+      - type: bind
+        source: /freenas-Burns/blockchain/geth/kotti
+        target: /root
+    command: >
+               --kotti
+               --miner.etherbase ${MINER_ETHERBASE}
+               --miner.extradata '${MINER_EXTRADATA}'
+               --mine
+               --unlock ${UNLOCK_ACCOUNT}
+               --password "/root/password.txt"
+               --datadir "/root"
+               --allow-insecure-unlock
+               --rpc
+               --rpcapi "${RPC_API}"
+               --rpcaddr ${RPC_ADDR}
+               --rpcport 8554
+               --rpcvhosts="${RPC_VHOSTS}"
+               --rpccorsdomain ${RPC_CORS_DOMAIN}
+               --ws
+               --wsorigins="${WS_ORIGIN}"
+               --wsport 8556
+               --wsapi "${WS_API}"
+               --wsaddr ${WS_ADDR}
+               --shh
+               --ethstats "${STATS_SERVER}"
+               --nousb
+               --maxpeers "${MAX_PEERS}"
+    ports:
+      - '${RPC_PORT}:8554'
+      - '${WS_PORT}:8556'
+      - '${P2P_PORT}:30303'
+    logging:
+      driver: gelf
+      options:
+        tag: ${GELF_TAG}
+        gelf-address: "${GELF_ADDR}"
+    deploy:
+      mode: replicated
+      replicas: 1
+      restart_policy:
+        condition: any
+        delay: 5s
+        max_attempts: 3
+
+  kotti-etherbeat:
+    image: chipprbots/etherbeat:latest
+#    volumes:
+#      - type: bind
+#        source: /freenas-Burns/blockchain/etherbeat
+#        target: /root/
+    environment:
+      - ELASTIC_HOST="${ELASTIC_HOST}"
+      - ETH_RPC_ADDR="${ETH_RPC_ADDR}"
+      - START_BLOCK="0"
+    deploy:
+      mode: replicated
+      replicas: 1
+      restart_policy:
+        condition: any
+        delay: 5s
+        max_attempts: 3
+

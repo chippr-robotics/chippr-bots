@@ -1,0 +1,26 @@
+{
+  "name": "@chippr-bots/bridgette-api",
+  "version": "1.1.48",
+  "description": "api for bridgette functions",
+  "main": "index.js",
+  "author": "chippr robotics",
+  "license": "apache-2",
+  "private": false,
+  "scripts": {
+    "start": "node index.js",
+    "test": "mocha --exit",
+    "stop": "forever stop index.js"
+  },
+  "dependencies": {
+    "@chippr-bots/common": "^1.1.48",
+    "discord.io-gateway6": "^2.5.3",
+    "dotenv": "^8.2.0",
+    "express": "^4.17.1",
+    "joi": "^14.3.1",
+    "mocha": "^6.2.2",
+    "twitter": "^1.7.1",
+    "uuid": "^3.3.3",
+    "web3": "^1.2.4",
+    "winston": "^3.2.1"
+  }
+}

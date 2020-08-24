@@ -1,0 +1,24 @@
+{
+  "name": "discord-dialogflow",
+  "version": "1.0.0",
+  "description": "two way bridge for discord communication",
+  "main": "index.js",
+  "repository": "@chippr-bots/discord-dialogflow",
+  "author": "Chippr-robotics",
+  "license": "Apache-2.0",
+  "private": false,
+  "scripts": {
+    "start": "node index.js",
+    "test": "mocha --exit",
+    "stop": "forever stop index.js"
+  },
+  "dependencies": {
+    "@chippr-bots/common": "^1.1.48",
+    "@google-cloud/dialogflow": "^3.2.0",
+    "dialogflow": "^1.2.0",
+    "discord.js": "^12.3.1",
+    "dotenv": "^8.2.0",
+    "node-vault": "^0.9.20",
+    "uuid": "^8.3.0"
+  }
+}
