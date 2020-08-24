@@ -1,7 +1,7 @@
 require("dotenv").config()
 var options = {
   apiVersion: 'v1', // default
-  endpoint: 'http://172.16.0.234:8200', // default
+  endpoint: process.env.DB_VAULT_ADDRESS, // default
   token: process.env.VAULT_TOKEN // optional client token; can be fetched after valid initialization of the server
 };
 
@@ -49,7 +49,7 @@ discordClient.on('message', m => {
   }
   //console.log("clear");
   // session path (project, environment, user, session);
-  var sessionPath = dialogflowClient.projectAgentSessionPath(process.env.PROJECT_ID, process.env.DB_ENVIRONMENT, discordClient.user.id);
+  var sessionPath = dialogflowClient.projectAgentSessionPath(process.env.PROJECT_ID, discordClient.user.id);
 
   log.info(m);
   // remove the user name from the message befor sendining it to dialogflow
