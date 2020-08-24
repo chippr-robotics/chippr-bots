@@ -48,9 +48,10 @@ discordClient.on('message', m => {
     return;
   }
   //console.log("clear");
-  var sessionPath = dialogflowClient.projectAgentSessionPath(process.env.PROJECT_ID, discordClient.user.id);
+  // session path (project, environment, user, session);
+  var sessionPath = dialogflowClient.projectAgentSessionPath(process.env.PROJECT_ID, process.env.DB_ENVIRONMENT, discordClient.user.id);
 
-  log.info("discord message " + m);
+  log.info(m);
   // remove the user name from the message befor sendining it to dialogflow
   const message = remove(discordClient.user.username, m.cleanContent);
 
