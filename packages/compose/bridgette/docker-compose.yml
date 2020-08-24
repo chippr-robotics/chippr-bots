@@ -37,7 +37,7 @@ services:
         condition: any
         
   discord_bridge:
-    image: chipprbots/discord-bridge:latest
+    image: ${DB_IMAGE}
     environment:
      - PROJECT_ID=${DB_PROJECT_ID}
      - DISCORD_TOKEN=${DB_DISCORD_TOKEN}
