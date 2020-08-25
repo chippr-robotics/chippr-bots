@@ -1,0 +1,31 @@
+version: '3.2'
+services:
+    chipprmq:
+        image: ${CMQ_IMAGE}
+        volumes:
+            - type: bind
+              source: "${CMQ_ETC_DIR}"
+              target: /etc/rabbitmq/
+            - type: bind
+              source: "${CMQ_DATA_DIR}"
+              target: /var/lib/rabbitmq/
+            - type: bind
+              source: "${CMQ_LOG_DIR}"
+              target: /var/log/rabbitmq/
+        environment:
+            RABBITMQ_ERLANG_COOKIE: ${CMQ_ERLANG_COOKIE}
+            RABBITMQ_DEFAULT_USER: ${CMQ_DEFAULT_USER}
+            RABBITMQ_DEFAULT_PASS: ${CMQ_DEFAULT_PASS}
+        ports:
+            - "${CMQ_CONSOLE_PORT}:5672"
+            - "${CMQ_PORT}:15672"
+        logging:
+           driver: gelf
+           options:
+             tag: ${GELF_TAG}
+             gelf-address: "${GELF_ADDRESS}"
+        deploy:
+          mode: replicated
+          replicas: 1
+          restart_policy:
+            condition: any
