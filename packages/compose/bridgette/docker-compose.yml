@@ -30,6 +30,11 @@ services:
       - ESEARCH_HOST=${DB_ESEARCH_HOST}
     ports:
      - "${CORE_API_PORT}:3400"
+    logging:
+      driver: gelf
+      options:
+        tag: ${GELF_TAG}
+        gelf-address: "${GELF_ADDRESS}"
     deploy:
       mode: replicated
       replicas: 1
@@ -46,6 +51,11 @@ services:
      - ESEARCH_HOST=${DB_ESEARCH_HOST}
      - GOOGLE_APPLICATION_CREDENTIALS=${DB_GOOG}
      - VAULT_TOKEN=${DB_VAULT_TOKEN}
+    logging:
+      driver: gelf
+      options:
+        tag: ${GELF_TAG}
+        gelf-address: "${GELF_ADDRESS}"
     deploy:
       mode: replicated
       replicas: 1
