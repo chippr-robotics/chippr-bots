@@ -41,17 +41,12 @@ discordClient.on('ready', () => {
 });
 
 discordClient.on('message', m => {
-  //console.log("This should be false:")
-  //console.log(!shouldBeInvoked(m));
   if (!shouldBeInvoked(m)) {
-    console.log('call not invoked')
     return;
   }
-  //console.log("clear");
   // session path (project, environment, user, session);
   var sessionPath = dialogflowClient.projectAgentSessionPath(process.env.PROJECT_ID, discordClient.user.id);
-
-  log.info(m);
+  
   // remove the user name from the message befor sendining it to dialogflow
   const message = remove(discordClient.user.username, m.cleanContent);
 
@@ -68,9 +63,8 @@ discordClient.on('message', m => {
     }
   };
 
-  log.info("sending to dialogflow")
   dialogflowClient.detectIntent(dialogflowRequest).then(responses => {
-  //  log.info(responses);
+    log.info(`${m.author.id} ${m.author.username} [${message}] [${responses[0].queryResult.fulfillmentText}]`)
     m.channel.send(responses[0].queryResult.fulfillmentText);
   });
 });
