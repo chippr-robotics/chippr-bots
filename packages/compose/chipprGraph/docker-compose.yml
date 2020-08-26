@@ -1,0 +1,38 @@
+version: '3.2'
+services:
+  chipprgraph:
+    image: ${CG_IMAGE}
+    volumes:
+      - type: bind
+        source: ${CG_CONF_DIR}
+        target: /conf
+      - type: bind
+        source: ${CG_DATA_DIR}
+        target: /data
+      - type: bind
+        source: ${CG_IMPORT_DIR}
+        target: /import
+      - type: bind
+        source: ${CG_LOGS_DIR}
+        target: /logs
+      - type: bind
+        source: ${CG_PLUGINS_DIR}
+        target: /plugins
+    environment: 
+      # Raise memory limits
+      - NEO4J_dbms_memory_pagecache_size=1G
+      - NEO4J_dbms.memory.heap.initial_size=1G
+      - NEO4J_dbms_memory_heap_max__size=1G
+    ports:
+      - "${CG_CONSOLE_PORT}:7474"
+      - ${CG_API_PORT}:7687
+    logging:
+      driver: gelf
+      options:
+        tag: ${GELF_TAG}
+        gelf-address: "${GELF_ADDRESS}"
+    deploy:
+      mode: replicated
+      replicas: 1
+      restart_policy:
+        condition: any
