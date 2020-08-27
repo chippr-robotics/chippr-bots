@@ -64,7 +64,7 @@ dpt.on('peer:removed', peer => {
 });
 
 if( process.env.ALLOW_BINDING === true){
-    dpt.bind( process.env.BIND_PORT, process.env.BIND_ADDR);
+    dpt.bind( process.env.BIND_PORT || 30000 + Math.floor(Math.random() * Math.floor(500)), process.env.BIND_ADDR);
 }
 
 for (let bootnode of BOOTNODES) {
