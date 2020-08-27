@@ -4,7 +4,7 @@ var { randomBytes } = require('crypto');
 var { log } = require('@chippr-bots/common');
 
 //vars
-var chainFile = require(`${process.env.CHAIN_FILE}`);
+var chainFile = require(`./chains/kotti.json`);
 
 const bootstrapNodes = chainFile.bootstrapNodes;
 
