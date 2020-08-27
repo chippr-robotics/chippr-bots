@@ -1,0 +1,16 @@
+{
+  "name": "blockchain",
+  "version": "1.0.0",
+  "description": "collection of blockchain components",
+  "main": "index.js",
+  "author": "chippr-robotics llc",
+  "license": "Apache 2.0",
+  "private": false,
+  "dependencies": {
+    "chalk": "^4.1.0",
+    "dotenv": "^8.2.0",
+    "ethereumjs-common": "^1.5.2",
+    "ethereumjs-devp2p": "^3.0.1",
+    "winston-logstash-transport": "^2.0.0"
+  }
+}

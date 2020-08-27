@@ -1,0 +1,143 @@
+{
+    "name": "mainnet",
+    "chainId": 1,
+    "networkId": 1,
+    "comment": "The Ethereum main chain",
+    "url": "https://ethstats.net/",
+    "genesis": {
+      "hash": "0xd4e56740f876aef8c010b86a40d5f56745a118d0906a34e69aec8c0db1cb8fa3",
+      "timestamp": null,
+      "gasLimit": 5000,
+      "difficulty": 17179869184,
+      "nonce": "0x0000000000000042",
+      "extraData": "0x11bbe8db4e347b4e8c937c1c8370e4b5ed33adb3db69cbdb7a38e1e50b1b82fa",
+      "stateRoot": "0xd7f8974fb5ac78d9ac099b9ad5018bedc2ce0a72dad1827a1709da30580f0544"
+    },
+    "hardforks": [
+      {
+        "name": "chainstart",
+        "block": 0,
+        "consensus": "pow",
+        "finality": null
+      },
+      {
+        "name": "homestead",
+        "block": 1150000,
+        "consensus": "pow",
+        "finality": null
+      },
+      {
+        "name": "dao",
+        "block": 1920000,
+        "consensus": "pow",
+        "finality": null
+      },
+      {
+        "name": "tangerineWhistle",
+        "block": 2463000,
+        "consensus": "pow",
+        "finality": null
+      },
+      {
+        "name": "spuriousDragon",
+        "block": 2675000,
+        "consensus": "pow",
+        "finality": null
+      },
+      {
+        "name": "byzantium",
+        "block": 4370000,
+        "consensus": "pow",
+        "finality": null
+      },
+      {
+        "name": "constantinople",
+        "block": 7280000,
+        "consensus": "pow",
+        "finality": null
+      },
+      {
+        "name": "petersburg",
+        "block": 7280000,
+        "consensus": "pow",
+        "finality": null
+      },
+      {
+        "name": "istanbul",
+        "block": 9069000,
+        "consensus": "pow",
+        "finality": null
+      },
+      {
+        "name": "muirGlacier",
+        "block": 9200000,
+        "consensus": "pow",
+        "finality": null
+      }
+    ],
+    "bootstrapNodes": [
+      {
+        "ip": "51.141.15.254",
+        "port": 30303,
+        "id": "06333009fc9ef3c9e174768e495722a7f98fe7afd4660542e983005f85e556028410fd03278944f44cfe5437b1750b5e6bd1738f700fe7da3626d52010d2954c",
+        "location": "",
+        "comment": "@paritytech authority"
+      },
+      {
+        "ip": "18.232.185.151",
+        "port": 30303,
+        "id": "ae8658da8d255d1992c3ec6e62e11d6e1c5899aa1566504bc1ff96a0c9c8bd44838372be643342553817f5cc7d78f1c83a8093dee13d77b3b0a583c050c81940",
+        "location": "",
+        "comment": ""
+      },
+      {
+        "ip": "157.230.239.163",
+        "port": 30303,
+        "id": "67913271d14f445689e8310270c304d42f268428f2de7a4ac0275bea97690e021df6f549f462503ff4c7a81d9dd27288867bbfa2271477d0911378b8944fae55",
+        "location": "",
+        "comment": ""
+      },
+      {
+        "ip": "86.103.236.55",
+        "port": 63384,
+        "id": "e8a786a894db053fe6886e283fc4385389ad034e04a692a26335f30b714059efd5cead0e410ecd783ce095888fdafcc21a685f13501594e969d6f5ac7ba0388c",
+        "location": "",
+        "comment": ""
+      },
+      {
+        "ip": "51.15.97.240",
+        "port": 41235,
+        "id": "4956f6924335c951cb70cbc169a85c081f6ff0b374aa2815453b8a3132b49613f38a1a6b8e103f878dbec86364f60091e92a376d7cd3aca9d82d2f2554794e63",
+        "location": "",
+        "comment": ""
+      },
+      {
+        "ip": "51.15.70.7",
+        "port": 41235,
+        "id": "6c9a052c01bb9995fa53bebfcdbc17733fe90708270d0e6d8e38dc57b32e1dbe8c287590b634ee9753b94ba302f411c96519c7fa07df0df6a6848149d819b2c5",
+        "location": "",
+        "comment": "@q9f core-geth polis"
+      },
+      {
+        "ip": "51.15.97.240",
+        "port": 45678,
+        "id": "95a7302fd8f35d9ad716a591b90dfe839dbf2d3d6a6737ef39e07899f844ad82f1659dd6212492922dd36705fb0a1e984c1d5d5c42069d5bd329388831e820c1",
+        "location": "",
+        "comment": "@q9f core-geth ginan"
+      },
+      {
+        "ip": "51.15.70.7",
+        "port": 45678,
+        "id": "8c5c4dec9a0728c7058d3c29698bae888adc244e443cebc21f3d708a20751511acbf98a52b5e5ea472f8715c658913e8084123461fd187a4980a0600420b0791",
+        "location": "",
+        "comment": "@q9f parity polis"
+      },
+      {
+        "ip": "51.158.191.43",
+        "port": 45678,
+        "id": "efd7391a3bed73ad74ae5760319bb48f9c9f1983ff22964422688cdb426c5d681004ece26c47121396653cf9bafe7104aa4ecff70e24cc5b11fd76be8e5afce0",
+        "location": "",
+        "comment": "@q9f besu mizar"
+      }   
+    ]
+  }

@@ -7,6 +7,7 @@ var client =  new Client({ node: process.env.ESEARCH_HOST || 'http://172.16.0.23
 
 // Configure custom app-wide logger
 module.exports = winston.createLogger({
+  format: winston.format.json(),
   transports: [
     new (winston.transports.Console)({
 	level:process.env.LOG_LEVEL
