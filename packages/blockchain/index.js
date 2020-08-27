@@ -1,28 +1,11 @@
 require('dotenv').config();
 var { DPT } = require('ethereumjs-devp2p');
 var { randomBytes } = require('crypto');
-
-//logging
-const winston = require('winston');
-const Elasticsearch = require('winston-elasticsearch');
-const { Client } = require('@elastic/elasticsearch')
-var client =  new Client({ node: process.env.ESEARCH_HOST || 'http://172.16.0.234:9200'});
-
-var logs = winston.createLogger({
-    format: winston.format.json(),
-    transports: [
-    new Elasticsearch({
-        name: 'elasticsearch',
-        client: client,
-        level: 'info'
-      }),
-    new winston.transports.Console()
-    ]
-  });
-  
+var { log } = require('@chippr-bots/common');
 
 //vars
-var chainFile = require('./chains/kotti.json');
+var chainFile = require(process.env.CHAIN_FILE);
+
 const bootstrapNodes = chainFile.bootstrapNodes;
 
 const PRIVATE_KEY = process.env.PRIVATE_KEY || randomBytes(32);
@@ -46,7 +29,10 @@ const dpt = new DPT(Buffer.from(PRIVATE_KEY, 'hex'), {
 
 //processes
 dpt.on('error', err => {
-    logs.error(err.stack || err);
+  log.error({
+    hound : process.env.HOUNDID,
+    error : err.stack || err
+  });
 });
 
 dpt.on('peer:added', peer => {
@@ -61,7 +47,7 @@ dpt.on('peer:added', peer => {
       network   :  `${chainFile.name}`
   };
 
-  logs.info('peer added',logData);
+  log.info('peer added',logData);
 });
 dpt.on('peer:removed', peer => {
     let logData = {
@@ -74,7 +60,7 @@ dpt.on('peer:removed', peer => {
         totalPeer : `${dpt.getPeers().length}`,
         network   :  `${chainFile.name}`
     };
-    logs.info('peerDrop',logData);  
+    log.info('peerDrop',logData);  
 });
 
 if( process.env.ALLOW_BINDING === true){
@@ -83,6 +69,9 @@ if( process.env.ALLOW_BINDING === true){
 
 for (let bootnode of BOOTNODES) {
   dpt.bootstrap(bootnode).catch(err => {
-    logs.error(err.stack || err);
+    log.error({
+      hound : process.env.HOUNDID,
+      error : err.stack || err
+    });
   });
 }

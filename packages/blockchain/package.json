@@ -6,11 +6,14 @@
   "author": "chippr-robotics llc",
   "license": "Apache 2.0",
   "private": false,
+  "scripts": {
+    "start": "node index.js",
+    "test": "mocha --exit",
+    "stop": "forever stop index.js"
+  },
   "dependencies": {
-    "chalk": "^4.1.0",
+    "@chippr-bots/common": "^1.1.48",
     "dotenv": "^8.2.0",
-    "ethereumjs-common": "^1.5.2",
-    "ethereumjs-devp2p": "^3.0.1",
-    "winston-logstash-transport": "^2.0.0"
+    "ethereumjs-devp2p": "^3.0.1"
   }
 }
