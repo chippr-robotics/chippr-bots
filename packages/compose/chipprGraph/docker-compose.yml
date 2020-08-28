@@ -20,9 +20,9 @@ services:
         target: /plugins
     environment: 
       # Raise memory limits
-      - NEO4J_dbms_memory_pagecache_size=4G
-      - NEO4J_dbms.memory.heap.initial_size=4G
-      - NEO4J_dbms_memory_heap_max__size=4G
+      - NEO4J_dbms_memory_pagecache_size=2G
+      - NEO4J_dbms.memory.heap.initial_size=2G
+      - NEO4J_dbms_memory_heap_max__size=2G
     ports:
       - "${CG_CONSOLE_PORT}:7474"
       - ${CG_API_PORT}:7687
