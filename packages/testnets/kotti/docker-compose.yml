@@ -50,10 +50,10 @@ services:
 
   kotti-etherbeat:
     image: ${KT_EB_IMAGE}
-    volumes:
-      - type: bind
-        source: "${KT_EB_DIR}"
-        target: /root/
+  #  volumes:
+  #    - type: bind
+  #      source: "${KT_EB_DIR}"
+  #      target: /root/
     environment:
       - ELASTIC_HOST="${ELASTIC_HOST}"
       - ETH_RPC_ADDR="${ETH_RPC_ADDR}"
