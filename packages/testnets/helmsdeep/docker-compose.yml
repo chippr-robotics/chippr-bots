@@ -5,7 +5,7 @@ services:
     image: ${HD_IMAGE_1}
     volumes:
       - type: bind
-        source: ${HD_1_SRC}
+        source: "${HD_1_SRC}"
         target: /root/
     command: >
                --networkid 777
@@ -17,7 +17,7 @@ services:
                --rpcaddr 0.0.0.0
                --rpcport 8554
                --rpcvhosts="*"
-               --nat extip:172.16.0.234
+               --nat extip 172.16.0.234
     ports:
       - '${HD_1_RPC}:8554'
       - '${HD_1_P2P}:30303'
@@ -37,7 +37,7 @@ services:
     image: ${HD_IMAGE_2}
     volumes:
       - type: bind
-        source: ${HD_2_SRC}
+        source: "${HD_2_SRC}"
         target: /root/
     command: >
                --networkid 777
@@ -69,7 +69,7 @@ services:
     image: ${HD_IMAGE_3}
     volumes:
       - type: bind
-        source: ${HD_3_SRC}
+        source: "${HD_3_SRC}"
         target: /root/
     command: >
                --networkid 777
@@ -97,7 +97,7 @@ services:
     image: ${HD_IMAGE_4}
     volumes:
       - type: bind
-        source: ${HD_4_SRC}
+        source: "${HD_4_SRC}"
         target: /root/
     command: >
                --networkid 777
@@ -125,7 +125,7 @@ services:
     image: ${HD_IMAGE_5}
     volumes:
       - type: bind
-        source: ${HD_5_SRC}
+        source: "${HD_5_SRC}"
         target: /root/
     command: >
                --networkid 777
@@ -153,7 +153,7 @@ services:
     image: ${HD_IMAGE_6}
     volumes:
       - type: bind
-        source: ${HD_6_SRC}
+        source: "${HD_6_SRC}"
         target: /root/
     command: >
                --networkid 777
