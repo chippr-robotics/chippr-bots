@@ -2,10 +2,10 @@ version: '3.2'
 
 services:
   kotti:
-    image: etclabscore/core-geth:latest
+    image: ${KT_IMAGE}
     volumes:
       - type: bind
-        source: /freenas-Burns/blockchain/geth/kotti
+        source: ${KT_ROOT_DIR}
         target: /root
     command: >
                --kotti
@@ -49,11 +49,11 @@ services:
         max_attempts: 3
 
   kotti-etherbeat:
-    image: chipprbots/etherbeat:latest
-#    volumes:
-#      - type: bind
-#        source: /freenas-Burns/blockchain/etherbeat
-#        target: /root/
+    image: ${KT_EB _IMAGE}
+    volumes:
+      - type: bind
+        source: "${KT_EB_DIR}"
+        target: /root/
     environment:
       - ELASTIC_HOST="${ELASTIC_HOST}"
       - ETH_RPC_ADDR="${ETH_RPC_ADDR}"
