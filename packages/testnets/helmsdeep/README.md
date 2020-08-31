@@ -20,6 +20,24 @@ Code => Github => Jenkins => docker-compose - HD_NODE_4       => elk
 ```
                   
                   
-## Test plan
+## Test plans
 
-| Nodes  | Fork block |Status | Date |
+### Crash testing
+
+Node images  | Fork block | Status   | Date 
+------------ | ---------- | -------  | ------
+Chippr-Geth(x6n)  |          0       |  []     | 9/1/2020 
+Chippr-Geth(x6n)  |       30,001     |  | tbd
+Chippr-Geth(x6n)  |    2,000,000       |  []     | tbd
+Chippr-Geth(x2m2n) Core-Geth(x3n) | 2,000,000 | [] | tbd
+Chippr-Geth(x1m2n) Core-Geth(x1m2n) | 2,000,000 | [] | tbd
+
+### Integration testing
+
+Node images  | Fork block | Status   | Date 
+------------ | ---------- | -------  | ------
+Chippr-Geth(x1m2n) Core-Geth(x1m2n) | 2,000,000 | [] | tbd
+Chippr-Geth(x2m2n) Core-Geth(x1n) Besu(x1n) | 2,000,000 | [] | tbd
+Chippr-Geth(x2m1n) Core-Geth(x1n) Besu(x1n) Mantis(x1n) | 2,000,000 | [] | tbd
+
+
