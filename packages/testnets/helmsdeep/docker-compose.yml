@@ -1,0 +1,178 @@
+version: '3.2'
+
+services:
+  HD_MINE_1:
+    image: ${HD_IMAGE_1}
+    volumes:
+      - type: bind
+        source: ${HD_1_SRC}
+        target: /root/
+    command: >
+               --networkid 777
+               --miner.etherbase 0xbb198c7afff7e3a4279ffa39e70eff598240b04e
+               --miner.extradata "HD miner 1"
+               --mine
+               --rpc
+               --rpcapi "eth,web3,net"
+               --rpcaddr 0.0.0.0
+               --rpcport 8554
+               --rpcvhosts="*"
+               --nat extip:172.16.0.234
+    ports:
+      - '${HD_1_RPC}:8554'
+      - '${HD_1_P2P}:30303'
+    deploy:
+      mode: replicated
+      replicas: 1
+      restart_policy:
+        condition: any
+        delay: 5s
+        max_attempts: 3
+    logging:
+      driver: gelf
+      options:
+        gelf-address: "${GELF_ADDRESS}"
+
+  HD_MINE_2:
+    image: ${HD_IMAGE_2}
+    volumes:
+      - type: bind
+        source: ${HD_2_SRC}
+        target: /root/
+    command: >
+               --networkid 777
+               --minerthreads=1 
+               --etherbase 0xbb198c7afff7e3a4279ffa39e70eff598240b04e
+               --miner.extradata "HD miner 2"
+               --mine
+               --rpc
+               --rpcapi "eth,web3,net"
+               --rpcaddr 0.0.0.0
+               --rpcport 8554
+               --rpcvhosts="*"
+    ports:
+      - '${HD_2_RPC}:8554'
+      - '${HD_2_P2P}:30303'
+    deploy:
+      mode: replicated
+      replicas: 1
+      restart_policy:
+        condition: any
+        delay: 5s
+        max_attempts: 3
+    logging:
+      driver: gelf
+      options:
+        gelf-address: "${GELF_ADDRESS}"
+  
+  HD_NODE_3:  
+    image: ${HD_IMAGE_3}
+    volumes:
+      - type: bind
+        source: ${HD_3_SRC}
+        target: /root/
+    command: >
+               --networkid 777
+               --rpc
+               --rpcapi "eth,web3,net"
+               --rpcaddr 0.0.0.0
+               --rpcport 8554
+               --rpcvhosts="*"
+    ports:
+      - '${HD_3_RPC}:8554'
+      - '${HD_3_P2P}:30303'
+    deploy:
+      mode: replicated
+      replicas: 1
+      restart_policy:
+        condition: any
+        delay: 5s
+        max_attempts: 3
+    logging:
+      driver: gelf
+      options:
+        gelf-address: "${GELF_ADDRESS}"
+  
+  HD_NODE_4:
+    image: ${HD_IMAGE_4}
+    volumes:
+      - type: bind
+        source: ${HD_4_SRC}
+        target: /root/
+    command: >
+               --networkid 777
+               --rpc
+               --rpcapi "eth,web3,net"
+               --rpcaddr 0.0.0.0
+               --rpcport 8554
+               --rpcvhosts="*"
+    ports:
+      - '${HD_4_RPC}:8554'
+      - '${HD_4_P2P}:30303'
+    deploy:
+      mode: replicated
+      replicas: 1
+      restart_policy:
+        condition: any
+        delay: 5s
+        max_attempts: 3
+    logging:
+      driver: gelf
+      options:
+        gelf-address: "${GELF_ADDRESS}"
+
+  HD_MINE_5:
+    image: ${HD_IMAGE_5}
+    volumes:
+      - type: bind
+        source: ${HD_5_SRC}
+        target: /root/
+    command: >
+               --networkid 777
+               --rpc
+               --rpcapi "eth,web3,net"
+               --rpcaddr 0.0.0.0
+               --rpcport 8554
+               --rpcvhosts="*"
+    ports:
+      - '${HD_5_RPC}:8554'
+      - '${HD_5_P2P}:30303'
+    deploy:
+      mode: replicated
+      replicas: 1
+      restart_policy:
+        condition: any
+        delay: 5s
+        max_attempts: 3
+    logging:
+      driver: gelf
+      options:
+        gelf-address: "${GELF_ADDRESS}"
+  
+  HD_NODE_6:  
+    image: ${HD_IMAGE_6}
+    volumes:
+      - type: bind
+        source: ${HD_6_SRC}
+        target: /root/
+    command: >
+               --networkid 777
+               --rpc
+               --rpcapi "eth,web3,net"
+               --rpcaddr 0.0.0.0
+               --rpcport 8554
+               --rpcvhosts="*"
+    ports:
+      - '${HD_6_RPC}:8554'
+      - '${HD_6_P2P}:30303'
+    deploy:
+      mode: replicated
+      replicas: 1
+      restart_policy:
+        condition: any
+        delay: 5s
+        max_attempts: 3
+    logging:
+      driver: gelf
+      options:
+        gelf-address: "${GELF_ADDRESS}"
