@@ -9,11 +9,6 @@ services:
         target: /root
     command: >
                --classic
-               --miner.etherbase ${MINER_ETHERBASE}
-               --miner.extradata '${MINER_EXTRADATA}'
-               --mine
-               --unlock ${UNLOCK_ACCOUNT}
-               --password "/root/password.txt"
                --datadir "/root"
                --allow-insecure-unlock
                --rpc
