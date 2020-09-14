@@ -40,4 +40,18 @@ Chippr-Geth(x1m2n) Core-Geth(x1m2n) | 2,000,000 | [] | tbd
 Chippr-Geth(x2m2n) Core-Geth(x1n) Besu(x1n) | 2,000,000 | [] | tbd
 Chippr-Geth(x2m1n) Core-Geth(x1n) Besu(x1n) Mantis(x1n) | 2,000,000 | [] | tbd
 
-
+## Folder structure
+```
+/. 
+ |
+ \- theBurg - files for deploying helmsdeep
+ |    |
+ |    \- helmsdeep - helm chart
+ |    |
+ |    - helmsdeep.tf - terraform script for gcp kube cluster
+ |
+ - docker-compose.yml - dockercompose for local testing with 6 nodes
+ |
+ - hdlogo.png - a logo image for this readme
+ |
+ - helmsdeep.json - genesis file for helmsdeep network
