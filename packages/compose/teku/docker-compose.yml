@@ -15,11 +15,11 @@ services:
                --data-path=/root
                --rpc-http-cors-origins=${BESU_CORS_ORIGINS}
                --rpc-http-host=0.0.0.0
-               --host-whitelist="${HOST_WHITELIST}"
+               --host-whitelist="${BESU_HOST_WHITELIST}"
     ports:
-      - '${RPC_PORT}:8545'
-      - '${WS_PORT}:8546'
-      - '${P2P_PORT}:30303'
+      - '${BESU_RPC_PORT}:8545'
+      - '${BESU_WS_PORT}:8546'
+      - '${BESU_P2P_PORT}:30303'
     logging:
       driver: gelf
       options:
