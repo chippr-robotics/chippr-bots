@@ -1,0 +1,18 @@
+{
+  "name": "octogon",
+  "version": "1.0.0",
+  "description": " And the earth was without form, and void; and darkness was upon the face of the deep. ",
+  "main": "index.js",
+  "author": "Chippr-bots",
+  "license": "Apache2.0",
+  "private": false,
+  "dependencies": {
+    "@tensorflow/tfjs": "^2.6.0",
+    "dotenv": "^8.2.0",
+    "express": "^4.17.1",
+    "lodash": "^4.17.20",
+    "matter-js": "^0.14.2",
+    "resurrect-js": "^1.0.1",
+    "ws": "^7.3.1"
+  }
+}
