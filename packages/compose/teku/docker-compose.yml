@@ -16,10 +16,12 @@ services:
                --rpc-http-cors-origins=${BESU_CORS_ORIGINS}
                --rpc-http-host=0.0.0.0
                --host-whitelist="${BESU_HOST_WHITELIST}"
+               --metrics-enabled
     ports:
       - '${BESU_RPC_PORT}:8545'
       - '${BESU_WS_PORT}:8546'
       - '${BESU_P2P_PORT}:30303'
+      - '${BESU_METRIC_PORT}:9545'
     logging:
       driver: gelf
       options:
@@ -51,6 +53,7 @@ services:
       # Map the p2p port(9000) and REST API port(5051)
       - "${TEKU_P2P_PORT}:9000"
       - "${TEKU_API_PORT}:5051"
+      - "${TEKU_METRIC_PORT}:8008"
     logging:
       driver: gelf
       options:
