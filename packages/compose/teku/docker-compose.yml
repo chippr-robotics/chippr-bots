@@ -66,4 +66,19 @@ services:
         condition: any
         delay: 5s
         max_attempts: 3
+  prometheus:
+    image: ${PROM_IMAGE}
+    command: --web.enable-lifecycle  --config.file=/etc/prometheus/prom.yml
+    volumes:
+      - type: bind
+        source: "${PWD}"
+        target: /etc/prometheus
+      - type: bind
+        source: "${PROM_DATA_PATH}"
+        target: /prometheus  
+    ports:
+      - ${PROM_PORT}:9090
+    
+    
+
 
