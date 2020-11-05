@@ -71,7 +71,7 @@ services:
     command: --web.enable-lifecycle  --config.file=/etc/prometheus/prom.yml
     volumes:
       - type: bind
-        source: "${PWD}"
+        source: "${PROM_DATA_PATH}"
         target: /etc/prometheus
       - type: bind
         source: "${PROM_DATA_PATH}"
