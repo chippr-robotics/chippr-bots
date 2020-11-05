@@ -22,11 +22,11 @@ services:
       - '${BESU_WS_PORT}:8546'
       - '${BESU_P2P_PORT}:30303'
       - '${BESU_METRIC_PORT}:9545'
-    logging:
-      driver: gelf
-      options:
-        tag: ${GELF_TAG}
-        gelf-address: "${GELF_ADDRESS}"
+    #logging:
+    #  driver: gelf
+    #  options:
+    #    tag: ${GELF_TAG}
+    #    gelf-address: "${GELF_ADDRESS}"
     deploy:
       mode: replicated
       replicas: 1
@@ -54,11 +54,11 @@ services:
       - "${TEKU_P2P_PORT}:9000"
       - "${TEKU_API_PORT}:5051"
       - "${TEKU_METRIC_PORT}:8008"
-    logging:
-      driver: gelf
-      options:
-        tag: ${GELF_TAG}
-        gelf-address: "${GELF_ADDRESS}"
+    #logging:
+    #  driver: gelf
+    # options:
+    #    tag: ${GELF_TAG}
+    #    gelf-address: "${GELF_ADDRESS}"
     deploy:
       mode: replicated
       replicas: 1
