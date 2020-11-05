@@ -10,6 +10,7 @@ services:
     command: >
                --network "${BESU_NETWORK}"
                --identity="${BESU_IDENTITY}"                                                                                                                                                                                                                  --rpc-http-enabled=true
+               --p2p-port=${BESU_P2P_PORT}
                --rpc-ws-enabled=true
                --rpc-ws-host=0.0.0.0
                --data-path=/root
@@ -20,7 +21,7 @@ services:
     ports:
       - '${BESU_RPC_PORT}:8545'
       - '${BESU_WS_PORT}:8546'
-      - '${BESU_P2P_PORT}:30303'
+      - '${BESU_P2P_PORT}:${BESU_P2P_PORT}30303'
       - '${BESU_METRIC_PORT}:9545'
     #logging:
     #  driver: gelf
