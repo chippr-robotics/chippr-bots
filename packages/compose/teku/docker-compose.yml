@@ -80,7 +80,7 @@ services:
         target: /root/.config/configstore/
     environment:
       - NODE_ENV=${NETSTAT_ENV}
-      - RPC_HOST='${NETSTAT_BESU_ADDR}'
+      - RPC_HOST=${NETSTAT_BESU_ADDR}
       - RPC_PORT=${BESU_RPC_PORT}
       - LISTENING_PORT=${BESU_P2P_PORT}
       - INSTANCE_NAME=${BESU_IDENTITY}
