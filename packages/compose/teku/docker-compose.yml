@@ -70,6 +70,40 @@ services:
         condition: any
         delay: 5s
         max_attempts: 3
+
+# external stats page
+  netstats:
+    image: ${NETSTAT_IMAGE}
+    volumes:
+      - type: bind
+        source: ${NETSTAT_DATA_PATH}
+        target: /root/.config/configstore/
+    environment:
+      - NODE_ENV=${NETSTAT_ENV}
+      - RPC_HOST=http://besu_node
+      - RPC_PORT=${BESU_RPC_PORT}
+      - LISTENING_PORT=${BESU_P2P_PORT}
+      - INSTANCE_NAME=${BESU_IDENTITY}
+      - CONTACT_DETAILS=${NETSTAT_CONTACT_DETAILS}
+      - WS_SERVER=${NETSTAT_WS_SERVER}
+      - WS_SECRET=${NETSTAT_WS_SECRET}
+      - VERBOSITY=${NETSTAT_VERBOSITY}
+
+# external transaction signer
+#  signer:
+#    image: pegasyseng/ethsigner:latest
+#    volumes:
+#      - type: bind
+#        source: /freenas-Burns/blockchain/besu/kotti/keyfile
+#        target: /opt/ethsigner/keyfile
+#    environment:
+#      - downstream-http-port=8245
+#      - http-listen-host=0.0.0.0
+#      - file-based-signer
+#      - k /opt/ethsigner/keyfile
+#      - p /opt/ethsigner/passwordfile
+
+# event monitoring
   prometheus:
     image: ${PROM_IMAGE}
     command: --web.enable-lifecycle  --config.file=/etc/prometheus/prom.yml
