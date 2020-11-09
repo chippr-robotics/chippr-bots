@@ -88,7 +88,13 @@ services:
       - WS_SERVER=${NETSTAT_WS_SERVER}
       - WS_SECRET=${NETSTAT_WS_SECRET}
       - VERBOSITY=${NETSTAT_VERBOSITY}
-
+    deploy:
+      mode: replicated
+      replicas: 1
+      restart_policy:
+        condition: any
+        delay: 5s
+        max_attempts: 3
 # external transaction signer
 #  signer:
 #    image: pegasyseng/ethsigner:latest
