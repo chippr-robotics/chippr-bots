@@ -41,12 +41,11 @@ services:
     image: ${TEKU_IMAGE}
     command: >
               --network=${TEKU_NETWORK}
-              --eth1-endpoint=http://besu_node:${RPC_PORT}
+              --eth1-endpoint=${NETSTAT_BESU_ADDR}:${RPC_PORT}
               --validator-keys=/opt/teku/data/validator/keys:/opt/teku/data/validator/passwords
               --p2p-port=9000
               --rest-api-enabled=true
               --rest-api-docs-enabled=true
-              --nat-method="Docker"
     depends_on:
       - besu_node
     volumes:
