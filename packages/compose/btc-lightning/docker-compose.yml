@@ -28,7 +28,7 @@ services:
 
   clightning_bitcoin:
     image: ${LND_IMAGE}
-        volumes:
+    volumes:
       - type: bind
         source: "${LND_DATA_DIR}"
         target: /etc/bitcoin
