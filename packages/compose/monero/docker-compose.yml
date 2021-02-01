@@ -1,0 +1,16 @@
+version: '3.2'
+services:
+  monero:
+    image: ${XMR_IMAGE}
+    volumes:
+      - type: bind
+        source: "${XMR_ROOT_DIR}"
+        target: /root/.monero
+    ports:
+      - "${XMR_RPC}:18080"
+      - "${XMR_P2P}:18081"
+    logging:
+      driver: gelf
+      options:
+        tag: ${GELF_TAG}
+        gelf-address: "${GELF_ADDRESS}"
