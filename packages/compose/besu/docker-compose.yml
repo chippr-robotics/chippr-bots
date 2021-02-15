@@ -16,6 +16,7 @@ services:
                --rpc-http-cors-origins=all
                --rpc-http-host=0.0.0.0
                --host-whitelist="${HOST_WHITELIST}"
+               --nat-method=DOCKER
     ports:
       - '${RPC_PORT}:8545'
       - '${WS_PORT}:8546'
