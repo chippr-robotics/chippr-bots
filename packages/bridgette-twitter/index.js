@@ -1,5 +1,4 @@
 var { log, T } =require("@chippr-bots/common");
-var bdb = require("@chippr-bots/bridgettedb");
 const path = require('path')
 
 var {training, character, growth} = require("./mode");
@@ -24,16 +23,17 @@ var b = new bdb({
 
 //set state defaults
 var state = {
-  "activeState" : "training", // set the bot to which mode it should be in
+  "activeState" : "growth", // set the bot to which mode it should be in
   tweetstack : [],            // working memory
   likeTH : 10,                // how many tweets equals a possible 'good' tweet
   rtTH : 20,                  // how many tweets equals a possible 'retweetable' tweet
-  hashtags: [],               // what are we searching for
+  hashtags: ["ethereumclassic"],               // what are we searching for
   naughty: [],                // red flag words
   followersFloor: 2000,       // how many followers someone needs before we follow
   followingFloor: 2000,       // how many followers someone needs before we follow
   ratio: .6,                  // percent that following vs followers to use before following
-  noScrubs: false             // bool on if we drop people that dont follow back
+  noScrubs: false,            // bool on if we drop people that dont follow back
+  coolOff: 900000             // how long to wait to avoid triggering 
 }
 
 /*keep refreshing lists
