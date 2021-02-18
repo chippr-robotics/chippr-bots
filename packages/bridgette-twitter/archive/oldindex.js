@@ -2,15 +2,13 @@ var { log, T } =require("@chippr-bots/common");
 var bdb = require("@chippr-bots/bridgettedb");
 const path = require('path')
 
-var {training, character, growth} = require("./mode");
+var {training, character} = require("../mode");
 
 var {
   tags,
   seeker
-  } = require("./lib");
+  } = require("../lib");
 
-  /*
-not using bdb for now
 log.info("🤖  bridgette-twitter loaded with DBKEY: " + process.env.BDB_DBKEY);
 
 var b = new bdb({
@@ -20,23 +18,18 @@ var b = new bdb({
   "kvsAddr" : process.env.BDB_CONTRACT_ADDR,
   "DBKEY": process.env.BDB_DBKEY
   })
-*/
 
-//set state defaults
 var state = {
-  "activeState" : "training", // set the bot to which mode it should be in
-  tweetstack : [],            // working memory
-  likeTH : 10,                // how many tweets equals a possible 'good' tweet
-  rtTH : 20,                  // how many tweets equals a possible 'retweetable' tweet
-  hashtags: [],               // what are we searching for
-  naughty: [],                // red flag words
-  followersFloor: 2000,       // how many followers someone needs before we follow
-  followingFloor: 2000,       // how many followers someone needs before we follow
-  ratio: .6,                  // percent that following vs followers to use before following
-  noScrubs: false             // bool on if we drop people that dont follow back
+  "activeState" : "training",
+  tweetstack : [],
+  likeTH : 9999999,
+  rtTH : 9999999,
+  hashtags: [],
+  naughty: [],
 }
 
-/*keep refreshing lists
+
+//keep refreshing lists
 setInterval(() => {
   try {
     b.get("likeTH").then(res => {log.debug(`o likeTH: ${res}`); state.likeTH = parseInt(res,10)});
@@ -48,7 +41,6 @@ setInterval(() => {
     log.error(`[bridgette-twitter/index] error getting variables: ${error}`)
   }
 }, process.env.SYNC_LOOP_TIMER);
-*/
 
 function main(){
   log.info(`o likeTH: ${state.likeTH} | rtTH: ${state.rtTH} | Nice ${state.hashtags} | Naughty ${state.naughty}` );
@@ -63,12 +55,6 @@ function main(){
       log.info( `Tweeting on: ${state.hashtags}`);
       //Run loop
       character(T, state);      
-      break;
-    case "growth":
-      //log mode 
-      log.info( `Growth mode based on: ${state.hashtags}`);
-      //Run loop
-      growth(T, state);      
       break;
     default:
       break;
