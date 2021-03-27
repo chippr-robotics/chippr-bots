@@ -1,0 +1,12 @@
+{
+  "name": "landofpi",
+  "version": "1.0.0",
+  "description": "finding pi in unusual places",
+  "main": "index.js",
+  "license": "APACHE 2.0",
+  "private": false,
+  "dependencies": {
+    "@chippr-bots/common": "^1.1.48",
+    "dotenv": "^8.2.0"
+  }
+}

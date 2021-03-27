@@ -3,7 +3,7 @@ const fetch = require('node-fetch');
 const request = require('request');
 const fs = require('fs');
 const snakeCase = require('just-snake-case');
-const sharp = require('sharp');
+
 
 // --- Env variables ---
 require("dotenv").config();

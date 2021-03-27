@@ -10,6 +10,8 @@
   "license": "Apache-2.0",
   "dependencies": {
     "dotenv": "^8.2.0",
+    "images-scraper": "^6.1.1",
+    "jssoup": "0.0.12",
     "just-snake-case": "^1.1.0",
     "node-fetch": "^2.6.1",
     "request": "^2.88.2",
