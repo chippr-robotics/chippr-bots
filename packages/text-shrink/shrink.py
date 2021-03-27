@@ -2,6 +2,11 @@ from nltk.corpus import stopwords
 from nltk.cluster.util import cosine_distance
 import numpy as np
 import networkx as nx
+from os import walk
+
+def get_filelist(mypath):
+    _, _, filenames = next(walk(mypath))
+    return filenames
 
 def read_article(file_name):
     file = open(file_name, "r")
@@ -15,6 +20,12 @@ def read_article(file_name):
     sentences.pop()
 
     return sentences
+
+def save_summary(summary, file_name):
+    file = open(file_name, "a")
+    file.write(". ".join(summary))
+    file.close()
+
 
 def sentence_similarity(sent1, sent2, stopwords=None):
     if stopwords is None:
@@ -78,6 +89,11 @@ def generate_summary(file_name, top_n=5):
 
     # Step 5 - Ofcourse, output the summarize text
     print("Summarize Text: \n", ". ".join(summarize_text))
+    return summarize_text
+
 
 # let's begin
-generate_summary( "msft.txt", 2)
+(filelist) = get_filelist("./articles")
+for files in filelist:
+    (summary) = generate_summary( "./articles/" + files, 3)
+    save_summary(summary, "./summary/" + files)
