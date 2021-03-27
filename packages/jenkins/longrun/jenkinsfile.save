@@ -1,0 +1,28 @@
+// Powered by Infostretch
+timestamps { node () { stage ('BTC_ARCHIVE_MAINNET_24H - Checkout') { 
+ 	 checkout([$class: 'GitSCM', branches: [[name: '*/staging']], 
+ 	 doGenerateSubmoduleConfigurations: false, extensions: [], submoduleCfg: 
+ 	 [], userRemoteConfigs: [[credentialsId: 'cody login', url: 
+ 	 'https://github.com/chippr-robotics/chippr-bots']]])
+	}
+	stage ('BTC_ARCHIVE_MAINNET_24H - Build') {
+ 	
+// Unable to convert a build step referring to 
+// "com.datapipe.jenkins.vault.VaultBuildWrapper". Please verify and convert 
+// manually if required.  // Shell build step
+sh """
+#PULL IMAGES
+docker pull ${BTC_IMAGE} docker pull ${LND_IMAGE} """ // Shell build step sh """
+#remove any running instance
+docker stack rm chippr-btc || echo "No service running" sleep 30s """ // Shell 
+ build step
+sh """ docker stack deploy -c 
+${WORKSPACE}/packages/compose/btc-lightning/docker-compose.yml chippr-btc
+ """ // Shell build step sh """
+# Sleep 1 HR to sync chain
+sleep 1h """ // Shell build step sh """
+#remove any running instance
+docker stack rm chippr-btc || echo "No service running" """
+	}
+}
+}
