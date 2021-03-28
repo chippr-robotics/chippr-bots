@@ -1,38 +1,43 @@
 from nltk.corpus import stopwords
 from nltk.cluster.util import cosine_distance
+from nltk.tokenize import sent_tokenize, word_tokenize
 import numpy as np
 import networkx as nx
-from os import walk
+import os
 
+# file tasks
+
+## get a list of files from a directory
 def get_filelist(mypath):
-    _, _, filenames = next(walk(mypath))
+    _, _, filenames = next(os.walk(mypath))
     return filenames
 
 def read_article(file_name):
     file = open(file_name, "r")
     filedata = file.readlines()
-    article = filedata[0].split(". ")
-    sentences = []
-
-    for sentence in article:
-        print(sentence)
-        sentences.append(sentence.replace("[^a-zA-Z]", " ").split(" "))
-    sentences.pop()
-
+    file.close()
+    rm_input(file_name)
+    sentences = sent_tokenize(filedata[0])
     return sentences
+
+def rm_input(file_name):
+    os.remove(file_name)
+    return True
 
 def save_summary(summary, file_name):
     file = open(file_name, "a")
-    file.write(". ".join(summary))
+    file.write(". \n".join(summary))
     file.close()
 
 
+
+#summary tasks
 def sentence_similarity(sent1, sent2, stopwords=None):
     if stopwords is None:
         stopwords = []
 
-    sent1 = [w.lower() for w in sent1]
-    sent2 = [w.lower() for w in sent2]
+    sent1 = [w.lower() for w in word_tokenize(sent1)]
+    sent2 = [w.lower() for w in word_tokenize(sent2)]
 
     all_words = list(set(sent1 + sent2))
 
@@ -65,12 +70,11 @@ def build_similarity_matrix(sentences, stop_words):
 
     return similarity_matrix
 
-
 def generate_summary(file_name, top_n=5):
     stop_words = stopwords.words('english')
     summarize_text = []
 
-    # Step 1 - Read text anc split it
+    # Step 1 - Read text and split it
     sentences =  read_article(file_name)
 
     # Step 2 - Generate Similary Martix across sentences
@@ -82,18 +86,16 @@ def generate_summary(file_name, top_n=5):
 
     # Step 4 - Sort the rank and pick top sentences
     ranked_sentence = sorted(((scores[i],s) for i,s in enumerate(sentences)), reverse=True)    
-    print("Indexes of top ranked_sentence order are ", ranked_sentence)    
+    #print("Indexes of top ranked_sentence order are ", ranked_sentence)    
 
     for i in range(top_n):
-      summarize_text.append(" ".join(ranked_sentence[i][1]))
+      summarize_text.append("".join(ranked_sentence[i][1]))
 
-    # Step 5 - Ofcourse, output the summarize text
-    print("Summarize Text: \n", ". ".join(summarize_text))
     return summarize_text
 
 
 # let's begin
 (filelist) = get_filelist("./articles")
 for files in filelist:
-    (summary) = generate_summary( "./articles/" + files, 3)
+    (summary) = generate_summary( "./articles/" + files, 5)
     save_summary(summary, "./summary/" + files)
