@@ -5,7 +5,7 @@ services:
     volumes:
       - type: bind
         source: "${XMR_ROOT_DIR}"
-        target: /root/.monero
+        target: /home/monero/.bitmonero
     ports:
       - "${XMR_RPC}:18080"
       - "${XMR_P2P}:18081"
