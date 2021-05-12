@@ -4,11 +4,8 @@ services:
     image: ${DOGE_IMAGE}
     volumes:
       - type: bind
-        source: "${DOGE_DATA_DIR}"
-        target: /data/
-      - type: bind
         source: "${DOGE_ROOT_DIR}"
-        target: /root/
+        target: /home/dogecoin/.dogecoin
     environment:
       BITCOIN_EXTRA_ARGS: |
         testnet=0

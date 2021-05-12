@@ -1,4 +1,5 @@
 from nltk.corpus import stopwords
+from nltk.tokenize import sent_tokenize, word_tokenize
 from nltk.cluster.util import cosine_distance
 import numpy as np
 import networkx as nx
@@ -6,13 +7,7 @@ import networkx as nx
 def read_article(file_name):
     file = open(file_name, "r")
     filedata = file.readlines()
-    article = filedata[0].split(". ")
-    sentences = []
-
-    for sentence in article:
-        print(sentence)
-        sentences.append(sentence.replace("[^a-zA-Z]", " ").split(" "))
-    sentences.pop()
+    sentences = sent_tokenize(filedata[0])
 
     return sentences
 
@@ -20,9 +15,8 @@ def sentence_similarity(sent1, sent2, stopwords=None):
     if stopwords is None:
         stopwords = []
 
-    sent1 = [w.lower() for w in sent1]
-    sent2 = [w.lower() for w in sent2]
-
+    sent1 = [w.lower() for w in word_tokenize(sent1)]
+    sent2 = [w.lower() for w in word_tokenize(sent2)]
     all_words = list(set(sent1 + sent2))
 
     vector1 = [0] * len(all_words)
@@ -49,7 +43,7 @@ def build_similarity_matrix(sentences, stop_words):
     for idx1 in range(len(sentences)):
         for idx2 in range(len(sentences)):
             if idx1 == idx2: #ignore if both are same sentences
-                continue 
+                continue
             similarity_matrix[idx1][idx2] = sentence_similarity(sentences[idx1], sentences[idx2], stop_words)
 
     return similarity_matrix
@@ -61,7 +55,7 @@ def generate_summary(file_name, top_n=5):
 
     # Step 1 - Read text anc split it
     sentences =  read_article(file_name)
-
+    print(sentences)
     # Step 2 - Generate Similary Martix across sentences
     sentence_similarity_martix = build_similarity_matrix(sentences, stop_words)
 
@@ -71,13 +65,13 @@ def generate_summary(file_name, top_n=5):
 
     # Step 4 - Sort the rank and pick top sentences
     ranked_sentence = sorted(((scores[i],s) for i,s in enumerate(sentences)), reverse=True)    
-    print("Indexes of top ranked_sentence order are ", ranked_sentence)    
+#    print("Indexes of top ranked_sentence order are ", ranked_sentence)    
 
     for i in range(top_n):
-      summarize_text.append(" ".join(ranked_sentence[i][1]))
+      summarize_text.append("".join(ranked_sentence[i][1]))
 
     # Step 5 - Ofcourse, output the summarize text
-    print("Summarize Text: \n", ". ".join(summarize_text))
+    print("Summarize Text: \n", " ".join(summarize_text))
 
 # let's begin
-generate_summary( "msft.txt", 2)
+generate_summary( "msft.txt", 3)
