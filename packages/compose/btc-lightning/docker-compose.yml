@@ -17,7 +17,6 @@ services:
         server=1
         rpcuser=${BTC_RPC_USER}
         rpcpassword=${BTC_RPC_PW}
-        rescan=1
     ports:
       - "${BTC_PORT}:8333"
     logging:
