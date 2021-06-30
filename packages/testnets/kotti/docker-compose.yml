@@ -16,11 +16,11 @@ services:
                --rpcport 8554
                --rpcvhosts="${RPC_VHOSTS}"
                --rpccorsdomain ${RPC_CORS_DOMAIN}
-               --ws
-               --wsorigins="${WS_ORIGIN}"
-               --wsport 8556
-               --wsapi "${WS_API}"
-               --wsaddr ${WS_ADDR}
+#               --ws
+#               --wsorigins="${WS_ORIGIN}"
+#               --wsport 8556
+#               --wsapi "${WS_API}"
+#               --wsaddr ${WS_ADDR}
                --shh
                --ethstats "${STATS_SERVER}"
                --nousb
