@@ -16,7 +16,6 @@ services:
                --rpcport 8554
                --rpcvhosts="${RPC_VHOSTS}"
                --rpccorsdomain ${RPC_CORS_DOMAIN}
-               --shh
                --ethstats "${STATS_SERVER}"
                --nousb
                --maxpeers "${MAX_PEERS}"
