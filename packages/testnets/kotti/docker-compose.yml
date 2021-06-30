@@ -35,11 +35,11 @@ services:
       - '${RPC_PORT}:8554'
       - '${WS_PORT}:8556'
       - '${P2P_PORT}:30303'
-    logging:
-      driver: gelf
-      options:
-        tag: ${GELF_TAG}
-        gelf-address: "${GELF_ADDR}"
+#    logging:
+#      driver: gelf
+#      options:
+#        tag: ${GELF_TAG}
+#        gelf-address: "${GELF_ADDR}"
     deploy:
       mode: replicated
       replicas: 1
