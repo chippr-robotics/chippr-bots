@@ -9,13 +9,7 @@ services:
         target: /root
     command: >
                --kotti
-               --miner.etherbase ${MINER_ETHERBASE}
-               --miner.extradata '${MINER_EXTRADATA}'
-               --mine
-               --unlock ${UNLOCK_ACCOUNT}
-               --password "/root/password.txt"
                --datadir "/root"
-               --allow-insecure-unlock
                --rpc
                --rpcapi "${RPC_API}"
                --rpcaddr ${RPC_ADDR}
