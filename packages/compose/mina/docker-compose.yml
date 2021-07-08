@@ -5,10 +5,10 @@ services:
     volumes:
       - type: bind
         source: "${MINA_KEY_DIR}"
-        target: /keys
+        target: /keys/
       - type: bind
         source: "{$MINA_CONFIG_DIR}"
-        target: /root/.mina-config
+        target: /root/.mina-config/
     environment:
       CODA_PRIVKEY_PASS: "{$MINA_PRIVKEY_PASS}"
     command: >
