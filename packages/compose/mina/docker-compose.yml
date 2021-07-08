@@ -7,16 +7,16 @@ services:
         source: "${MINA_KEY_DIR}"
         target: /keys/
       - type: bind
-        source: "{$MINA_CONFIG_DIR}"
+        source: "${MINA_CONFIG_DIR}"
         target: /root/.mina-config/
     environment:
-      CODA_PRIVKEY_PASS: "{$MINA_PRIVKEY_PASS}"
+      CODA_PRIVKEY_PASS: "${MINA_PRIVKEY_PASS}"
     command: >
              --block-producer-key /keys/my-wallet 
              --insecure-rest-server 
-             --file-log-level "{$MINA_FILE_LOG_LEVEL}"
+             --file-log-level "${MINA_FILE_LOG_LEVEL}"
              --log-level "${MINA_LOGLEVEL}" 
-             --peer-list-url "{$MINA_PEER_LIST_URL}"
+             --peer-list-url "${MINA_PEER_LIST_URL}"
     ports:
       - "${MINA_P2P}:8302"
     logging:
