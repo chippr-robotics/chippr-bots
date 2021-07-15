@@ -19,8 +19,8 @@ services:
              --peer-list-url "${MINA_PEER_LIST_URL}"
     ports:
       - "${MINA_P2P}:8302"
-    logging:
-      driver: gelf
-      options:
-        tag: ${MINA_TAG}
-        gelf-address: "${GELF_ADDRESS}"
+   # logging:
+   #   driver: gelf
+   #   options:
+   #     tag: ${MINA_TAG}
+   #     gelf-address: "${GELF_ADDRESS}"
