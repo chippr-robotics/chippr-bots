@@ -18,6 +18,7 @@ services:
              --file-log-level "${MINA_FILE_LOG_LEVEL}"
              --log-level "${MINA_LOGLEVEL}" 
              --peer-list-url "${MINA_PEER_LIST_URL}"
+             --external-ip "${MINA_EXT_IP}"
     ports:
       - "${MINA_P2P}:8302"
       - "${MINA_API}:3085"
