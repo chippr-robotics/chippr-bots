@@ -12,6 +12,8 @@ services:
     environment:
       CODA_PRIVKEY_PASS: "${MINA_PRIVKEY_PASS}"
     command: >
+             daemon
+             --block-producer-key /keys/my-wallet
              --insecure-rest-server 
              --file-log-level "${MINA_FILE_LOG_LEVEL}"
              --log-level "${MINA_LOGLEVEL}" 
