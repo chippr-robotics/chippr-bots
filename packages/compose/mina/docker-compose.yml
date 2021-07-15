@@ -22,6 +22,7 @@ services:
              --snark-worker-fee "${MINA_SNARK_FEE}"
     ports:
       - "${MINA_P2P}:8302"
+      - "${MINA_API}:3085"
    # logging:
    #   driver: gelf
    #   options:
