@@ -9,17 +9,21 @@ services:
       - type: bind
         source: "${MINA_CONFIG_DIR}"
         target: /root/.mina-config/
+      - type: bind
+        source: "${MINA_WORK_DIR}"
+        target: /mina/
     environment:
       CODA_PRIVKEY_PASS: "${MINA_PRIVKEY_PASS}"
     command: >
              daemon
-             --block-producer-key /keys/my-wallet
+             --working-dir /mina
              --insecure-rest-server 
              --file-log-level "${MINA_FILE_LOG_LEVEL}"
              --log-level "${MINA_LOGLEVEL}" 
-             --peer-list-url "${MINA_PEER_LIST_URL}"
+             --peer-list-url "${MINA_PEER_LIST}"
              --run-snark-worker "${MINA_PUBLIC_KEY}" 
              --snark-worker-fee "${MINA_SNARK_FEE}"
+             --external-ip "${MINA_EXT_IP}"
     ports:
       - "${MINA_P2P}:8302"
       - "${MINA_API}:3085"
