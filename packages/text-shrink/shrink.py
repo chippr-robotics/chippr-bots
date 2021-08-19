@@ -1,4 +1,5 @@
 from nltk.corpus import stopwords
+from nltk.tokenize import sent_tokenize, word_tokenize
 from nltk.cluster.util import cosine_distance
 import numpy as np
 import networkx as nx
@@ -14,7 +15,6 @@ def sentence_similarity(sent1, sent2, stopwords=None):
 
     sent1 = [w.lower() for w in word_tokenize(sent1)]
     sent2 = [w.lower() for w in word_tokenize(sent2)]
-
     all_words = list(set(sent1 + sent2))
 
     vector1 = [0] * len(all_words)
@@ -42,8 +42,6 @@ def build_similarity_matrix(sentences, stop_words):
     for idx1 in range(len(sentences)):
         for idx2 in range(len(sentences)):
             if idx1 == idx2: #ignore if both are same sentences
-                continue 
-            elif len(sentences[idx1]) == 0 or len(sentences[idx2]) == 0:
                 continue
             similarity_matrix[idx1][idx2] = sentence_similarity(sentences[idx1], sentences[idx2], stop_words)
     return similarity_matrix
@@ -52,7 +50,8 @@ def generate_summary(file_name, top_n=5):
     stop_words = stopwords.words('english')
     summarize_text = []
     # Step 1 - Read text and split it
-    sentences =  ff.read_article(file_name)
+    sentences =  read_article(file_name)
+    print(sentences)
     # Step 2 - Generate Similary Martix across sentences
     sentence_similarity_martix = build_similarity_matrix(sentences, stop_words)
     # Step 3 - Rank sentences in similarity martix
