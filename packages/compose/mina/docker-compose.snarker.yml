@@ -18,6 +18,7 @@ services:
              daemon
              --working-dir /mina
              --insecure-rest-server 
+             --block-producer-pubkey "${MINA_PUBLIC_KEY}"
              --file-log-level "${MINA_FILE_LOG_LEVEL}"
              --log-level "${MINA_LOGLEVEL}" 
              --peer-list-url "${MINA_PEER_LIST}"
