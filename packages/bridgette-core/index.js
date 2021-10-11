@@ -1,5 +1,5 @@
 const env = process.env.NODE_ENV;
-if ( !== 'production') {
+if ( env !== 'production') {
 	require("dotenv").config();
 }
 
@@ -93,13 +93,12 @@ server.get('/', (req, res) => {
 	log.debug('hello world log', {'file': 'bridgette-core/index.js'});
 });
 
-const apis = require('api');
-
+const apis = require('./api');
+console.log('starting server');
 https.createServer({
 //   key: fs.readFileSync(process.env.VAULT_KEY),
 //   cert: fs.readFileSync(process.env.VAULT_CERT)
-}, server)
-.listen(server.get('port'), function () {
+}, server).listen(server.get('port'), function () {
 	console.log('Express server started on port', server.get('port'));
 });
 
