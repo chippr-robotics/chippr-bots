@@ -1,6 +1,10 @@
-require("dotenv").config();
+const env = process.env.NODE_ENV;
+if ( !== 'production') {
+	require("dotenv").config();
+}
 
 const express = require('express');
+const path = 'path';
 const bodyParser = require('body-parser');
 const https = require('https');
 const { dialogflow, SimpleResponse } = require('actions-on-google');
@@ -8,9 +12,10 @@ const { WebhookClient, Image } = require('dialogflow-fulfillment');
 var fs = require('fs');
 
 const server = express();
-//const assistant = dialogflow();
 
+//const assistant = dialogflow();
 const { log } = require('@chippr-bots/common');
+
 //active controllers
 const { 
 	getBlockNumber, 
@@ -18,10 +23,15 @@ const {
 	blockstreamSat,
 	version } = require( "./controllers" );
 
+// plugins
+
+
+
 /*
 * intent flows
 *
 */
+
 function WebhookProcessing(req, res) {
     const agent = new WebhookClient({request: req, response: res});
 	let intentMap = new Map();
@@ -32,20 +42,12 @@ function WebhookProcessing(req, res) {
 	agent.handleRequest(intentMap);
 }
 
-
 async function etc_getBlockNumber(agent){
 	log.debug('[index.js] etc_getBlockNumber: ');
 	log.debug(agent.parameters);
 	let res = await getBlockNumber(agent.parameters.Blockchain)
 	log.debug('[index.js] etc_getBlockNumber: req: ' + agent +' res: ' + res.message);
 	agent.add( res.message );
-};
-
-async function dapp_bs_sat(agent){
-	let res = await blockstreamSat(agent.parameters.message);
-	agent.add(res.message);
-	agent.add(res.payReq);
-	//agent.add(new Image(process.env.IMAGE_URL + '?file=' +res.qr_image));
 };
 
 async function int_getPrice(agent){
@@ -81,8 +83,6 @@ server.set('port', process.env.PORT || 3400);
 server.use(bodyParser.json({limit: '10mb', extended: true}))
 server.use(bodyParser.urlencoded({limit: '10mb', extended: true}))
 
-
-
 server.post('/webhook', function (req, res) {
 	WebhookProcessing(req, res);
 });
@@ -93,22 +93,19 @@ server.get('/', (req, res) => {
 	log.debug('hello world log', {'file': 'bridgette-core/index.js'});
 });
 
-server.get('/tempImages', function (req, res) { 
-	//really find a better way to do this
-	console.log(req.query);
-	fs.readFile(`./tempImage/${req.query.file}`, function(err,data){
-		if (err) log.error(err);
-		res.send(data);
-	})
-});
+const apis = require('api');
 
 https.createServer({
-   key: fs.readFileSync(process.env.VAULT_KEY),
-   cert: fs.readFileSync(process.env.VAULT_CERT)
+//   key: fs.readFileSync(process.env.VAULT_KEY),
+//   cert: fs.readFileSync(process.env.VAULT_CERT)
 }, server)
 .listen(server.get('port'), function () {
 	console.log('Express server started on port', server.get('port'));
 });
+
+
+
+
 
 module.exports = server
 /*
