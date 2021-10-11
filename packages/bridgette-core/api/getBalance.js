@@ -1,4 +1,4 @@
-export const getBalance = async function (req, res, next) {
+module.exports = async function (req, res, next) {
     logger.info('Method getBalance invoked!');
     logger.debug(`getBalance request body`, req.body);
     try {
