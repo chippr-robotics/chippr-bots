@@ -3,7 +3,7 @@ const Elasticsearch = require('winston-elasticsearch');
 const path = require('path');
 const { Client } = require('@elastic/elasticsearch')
 
-var client =  new Client({ node: process.env.ESEARCH_HOST || 'http://172.16.0.234:9200'});
+var client =  new Client({ node: process.env.ESEARCH_HOST || 'http://192.168.1.30:9200'});
 
 // Configure custom app-wide logger
 module.exports = winston.createLogger({

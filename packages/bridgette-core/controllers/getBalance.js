@@ -1,6 +1,6 @@
 const { log } = require('@chippr-bots/common');
 
-log.info('[dflow/controllers/getBalance.js] getBalance loaded');
+log.info('[../controllers/getBalance.js] getBalance loaded');
 
 //provide a random response
 
