@@ -1,10 +1,13 @@
+const { log } = require('@chippr-bots/common');
+
+const getBalance = require('../controllers/getBalance');
+
 module.exports = async function (req, res, next) {
-    logger.info('Method getBalance invoked!');
-    logger.debug(`getBalance request body`, req.body);
+    log.info('Method getBalance invoked!');
+    log.debug(`getBalance request body`, req.body);
     try {
-      const response = await (req.body);
-      const successResponse = new SuccessResponse(HTTP_STATUS_CODE.ACCEPTED, response);
-      res.json(response);
+      const response = await getBalance(req.body);
+      res.json(response.message);
     } catch (error) {
       next(error);
     }

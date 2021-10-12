@@ -15,8 +15,8 @@ async function getResponse(account){
     return responses[Math.floor(Math.random() * responses.length)]; 
 }
 
-module.exports = async (account) =>{
-    let response = getResponse(account); 
+module.exports = async (body) =>{
+    let response = getResponse(body.account); 
     log.debug('[dflow/controllers/getBalance.js] getResponse(): ' + response);
     return{
         message : response
