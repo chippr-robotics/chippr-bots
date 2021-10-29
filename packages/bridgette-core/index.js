@@ -26,6 +26,7 @@ const {
 
 // plugins
 
+const apis = require('./api');
 
 
 
@@ -47,7 +48,6 @@ server.get('/', (req, res) => {
 	log.debug('hello world log', {'file': 'bridgette-core/index.js'});
 });
 
-const apis = require('./api');
 console.log('starting server');
 
 server.listen(server.get('port'), function () {

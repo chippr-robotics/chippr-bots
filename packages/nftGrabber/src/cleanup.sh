@@ -1,7 +1,7 @@
 ## receives a filelist to archive as $1
-echo "####### \n"
-echo "Cleaning up files \n"
-echo "####### \n"
+echo "#######"
+echo "Cleaning up files"
+echo "#######"
 
 ## step 1: save the old with a time stamp
 current_time=$(date "+%Y.%m.%d-%H.%M.%S")
