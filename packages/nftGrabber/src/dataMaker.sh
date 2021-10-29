@@ -1,5 +1,6 @@
 echo "creating data files"
-while read -r line
-    cat line | jq -r '.assets[]'-o $NFTIMAGE
 
-do "$CACHE/dataList.txt"
+for filename in ./cache/*.json; do
+    #break files down using jq
+    echo "processing $filename"
+done
