@@ -1,0 +1,2 @@
+nftfile.txt
+images.txt
