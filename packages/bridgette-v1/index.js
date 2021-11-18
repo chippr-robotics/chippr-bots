@@ -69,7 +69,7 @@ const blockSTATE = new blkState(
 log.debug(blockSTATE);
 
 //update the local block number every 5 seconds
-if (bot.connected === true){
+
 setInterval( async function(){
    log.info("[bridgette-v1/index.js] bridgette heartbeat");
 
@@ -87,7 +87,7 @@ setInterval( async function(){
    }
 },5000);
 
-}
+
 
 bot.on('message', async function (user, userID, channelID, message, evt) {
 // Our bot needs to know if it will execute a command
