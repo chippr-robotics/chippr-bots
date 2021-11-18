@@ -2,7 +2,7 @@
 require('dotenv').config();
 const fs = require('fs');
 var initialize = require('./data.json');
-const { bot, log, web3, forks, blkState, T, prime } = require('@chippr-bots/common');
+const { bot, log, web3, forks, blkState } = require('@chippr-bots/common');
 
 // Initialize Discord Bot
 
@@ -69,10 +69,11 @@ const blockSTATE = new blkState(
 log.debug(blockSTATE);
 
 //update the local block number every 5 seconds
-
+if (bot.connected === true){
 setInterval( async function(){
    log.info("[bridgette-v1/index.js] bridgette heartbeat");
-  //get the latest block number
+
+ //get the latest block number
    let pastBlock = blockSTATE.blockNumber;
    try{
     blockSTATE.blockNumber = await web3.eth.getBlockNumber();
@@ -86,7 +87,7 @@ setInterval( async function(){
    }
 },5000);
 
-
+}
 
 bot.on('message', async function (user, userID, channelID, message, evt) {
 // Our bot needs to know if it will execute a command
