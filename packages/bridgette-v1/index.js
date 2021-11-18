@@ -2,7 +2,7 @@
 require('dotenv').config();
 const fs = require('fs');
 var initialize = require('./data.json');
-const { bot, log, web3, forks, blkState } = require('@chippr-bots/common');
+const { bot, log, web3, forks, blkState, T } = require('@chippr-bots/common');
 
 // Initialize Discord Bot
 
@@ -28,6 +28,8 @@ const { bridgette, donatehelp, etcmailhelp, tipperError } = require( "./help" );
 /* twitter files
 
 const { quadPrime, twinPrime, sexyPrime } = require("./twitter");
+
+*/
 var vibe = require("./positive.json");
 
 T.post('statuses/update', {
@@ -36,7 +38,7 @@ T.post('statuses/update', {
             log.debug('[index.js] returned data: ' + data);
     });
 
-*/
+
 
 //* end functoin set*//
 
