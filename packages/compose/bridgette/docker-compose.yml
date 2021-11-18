@@ -18,8 +18,6 @@ services:
       - VAULT_KEY=${CORE_VAULT_KEY}
       - VAULT_CERT=${CORE_VAULT_CERT}
       - ESEARCH_HOST=${DB_ESEARCH_HOST}
-    ports:
-     - "${CORE_API_PORT}:3400"
     deploy:
       mode: replicated
       replicas: 1
