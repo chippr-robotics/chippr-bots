@@ -14,7 +14,18 @@ function isNumber(n) {
 
 //* Get functions from library *//
 
-const { getBlockNumber, getBalance, getTransaction, getTXR, sendSignedTransaction, getGasPrice, getBlock, version, error, forkName } = require( "./funcs" );
+const { 
+  getBlockNumber, 
+  getBalance, 
+  getTransaction, 
+  getTXR, 
+  sendSignedTransaction, 
+  getGasPrice, 
+  getBlock, 
+  version, 
+  error, 
+  forkName 
+} = require( "./funcs" );
 
 // dapps
 
