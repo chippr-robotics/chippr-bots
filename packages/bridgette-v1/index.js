@@ -2,7 +2,7 @@
 require('dotenv').config();
 const fs = require('fs');
 var initialize = require('./data.json');
-const { bot, log, web3, forks, blkState, realState, T, prime } = require('@chippr-bots/common');
+const { bot, log, web3, forks, blkState, T, prime } = require('@chippr-bots/common');
 
 // Initialize Discord Bot
 
@@ -25,7 +25,7 @@ const { statebot, multi, etcmail, atlantis, getkotti } = require( "./dapps" );
 const { bridgette, donatehelp, etcmailhelp, tipperError } = require( "./help" );
 
 
-// twitter files
+/* twitter files
 
 const { quadPrime, twinPrime, sexyPrime } = require("./twitter");
 var vibe = require("./positive.json");
@@ -36,7 +36,7 @@ T.post('statuses/update', {
             log.debug('[index.js] returned data: ' + data);
     });
 
-
+*/
 
 //* end functoin set*//
 
@@ -57,7 +57,7 @@ function addReaction(channelID, evt,emoji){
 }
 
 // set initial state move to core
-const blockSTATE = new realState(
+const blockSTATE = new blkState(
   initialize.fate,
   initialize.blkStack,
   initialize.blockNumber,
@@ -66,10 +66,11 @@ const blockSTATE = new realState(
 );
 
 
-console.log(blockSTATE);
+log.debug(blockSTATE);
 
-console.log(blockSTATE.get("fate"));
+log.debug(blockSTATE.get("fate"));
 
+//update the local block number every 5 seconds
 
 setInterval( async function(){
    log.info("[bridgette-v1/index.js] bridgette heartbeat");
