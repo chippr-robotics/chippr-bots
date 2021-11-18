@@ -68,8 +68,6 @@ const blockSTATE = new blkState(
 
 log.debug(blockSTATE);
 
-log.debug(blockSTATE.get("fate"));
-
 //update the local block number every 5 seconds
 
 setInterval( async function(){
