@@ -14,15 +14,38 @@ bot.on('ready', function (evt) {
 
 //* Get functions from library *//
 
-const { getBlockNumber, getBalance, getTransaction, getTXR, sendSignedTransaction, getGasPrice, getBlock, version, error, forkName, forkit } = require( "./funcs" );
+const { 
+  getBlockNumber, 
+  getBalance, 
+  getTransaction, 
+  getTXR, 
+  sendSignedTransaction, 
+  getGasPrice, 
+  getBlock, 
+  version, 
+  error, 
+  forkName, 
+  forkit 
+} = require( "./funcs" );
 
 // dapps
 
-const { statebot, multi, etcmail, atlantis, getkotti } = require( "./dapps" );
+const { 
+  statebot, 
+  multi, 
+  etcmail, 
+  atlantis, 
+  getkotti 
+} = require( "./dapps" );
 
 // help files
 
-const { bridgette, donatehelp, etcmailhelp, tipperError } = require( "./help" );
+const { 
+  bridgette, 
+  donatehelp, 
+  etcmailhelp, 
+  tipperError 
+} = require( "./help" );
 
 
 /* twitter files
