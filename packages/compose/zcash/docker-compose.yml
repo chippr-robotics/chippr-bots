@@ -35,8 +35,6 @@ services:
       - zcashd_data:/srv/zcashd/.zcash-params
 #    command:
 #      - --exportdir=/srv/zcashd/.zcash 
-    env_file:
-      - .env
     mem_limit: 8G
     ports:
       - "0.0.0.0:38232:38232"
@@ -76,8 +74,6 @@ services:
       - grafana-cli plugins install grafana-piechart-panel && /run.sh
     ports:
       - "0.0.0.0:3000:3000"
-    env_file:
-      - .env
     volumes:
       - grafana_data:/etc/grafana
     depends_on:
