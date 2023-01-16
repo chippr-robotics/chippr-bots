@@ -1,16 +1,139 @@
-version: '3.2'
+---
+version: '2'
+
 services:
-  zcash:
-    image: ${ZEC_IMAGE}
-    volumes:
-      - type: bind
-        source: "${ZEC_ROOT_DIR}"
-        target: /root/.zcash
+  lightwalletd:
+    image: electriccoinco/lightwalletd:latest
+    #entrypoint: ["/bin/bash", "-c", "sleep infinity"]
+    command:
+      - --grpc-bind-addr=0.0.0.0:$LWD_GRPC_PORT
+      - --http-bind-addr=0.0.0.0:$LWD_HTTP_PORT
+      - --zcash-conf-path=/var/lib/lightwalletd/zcash.conf
+      - --log-file=/dev/stdout
+      - --log-level=7
+      - --no-tls-very-insecure
+#      - --tls-cert=/var/lib/lightwalletd/cert.pem
+#      - --tls-key=/var/lib/lightwalletd/key.pem 
     ports:
-      - "${ZEC_RPC}:8232"
-      - "${ZEC_P2P}:9050"
+      - "0.0.0.0:$LWD_GRPC_PORT:$LWD_GRPC_PORT"
+      - "0.0.0.0:$LWD_HTTP_PORT:$LWD_HTTP_PORT"      
+    volumes:
+      - lightwalletd_cache:/srv/lightwalletd
+      - lightwalletd_cache:/var/lib/lightwalletd
+    depends_on: 
+      - loki
+      - zcashd
     logging:
-      driver: gelf
+      driver: loki
       options:
-        tag: ${ZEC_TAG}
-        gelf-address: "${GELF_ADDRESS}"
+        loki-url: 'http://localhost:3100/api/prom/push'
+
+  zcashd:
+    image: electriccoinco/zcashd:latest
+    volumes:
+      - zcashd_data:/srv/zcashd/.zcash
+      - zcashd_data:/srv/zcashd/.zcash-params
+#    command:
+#      - --exportdir=/srv/zcashd/.zcash 
+    env_file:
+      - .env
+    mem_limit: 8G
+    ports:
+      - "0.0.0.0:38232:38232"
+      - "9050:9050"
+    depends_on:
+      - loki
+#    logging:
+#      driver: loki
+#      options:
+#        loki-url: 'http://localhost:3100/api/prom/push'
+
+  zcashd_exporter:
+    image: electriccoinco/zcashd_exporter:latest
+    environment:
+      - ZCASHD_RPCUSER=$ZCASHD_RPCUSER
+      - ZCASHD_RPCPASSWORD=$ZCASHD_RPCPASSWORD
+    command:
+      - --rpc.host=zcashd
+      - --rpc.port=$ZCASHD_RPCPORT
+      - --rpc.user=$ZCASHD_RPCUSER
+      - --rpc.password=$ZCASHD_RPCPASSWORD
+    ports:
+      - "127.0.0.1:9100:9100"
+    depends_on:
+      - loki
+      - zcashd
+    logging:
+      driver: loki
+      options:
+        loki-url: 'http://localhost:3100/api/prom/push'
+
+  grafana:
+    image: grafana/grafana:6.4.3
+    entrypoint:
+      - bash
+      - -c
+      - grafana-cli plugins install grafana-piechart-panel && /run.sh
+    ports:
+      - "0.0.0.0:3000:3000"
+    env_file:
+      - .env
+    volumes:
+      - grafana_data:/etc/grafana
+    depends_on:
+      - loki
+    logging:
+      driver: loki
+      options:
+        loki-url: 'http://localhost:3100/api/prom/push'
+
+  prometheus:
+    image: prom/prometheus:v2.13.1
+    ports:
+      - "127.0.0.1:9090:9090"
+    volumes:
+      - ./docker/prometheus/config.yml:/etc/prometheus/prometheus.yml
+      - prometheus_data:/prometheus
+    mem_limit: 2G
+    depends_on:
+      - loki
+    logging:
+      driver: loki
+      options:
+        loki-url: 'http://localhost:3100/api/prom/push'
+
+  loki:
+    image: grafana/loki:master
+    ports:
+      - "127.0.0.1:3100:3100"
+    command: -config.file=/etc/loki/local-config.yaml
+    logging:
+      driver: loki
+      options:
+        loki-url: 'http://localhost:3100/api/prom/push'
+
+volumes:
+  zcashd_data:
+    driver: local
+    driver_opts:
+      type: bind
+      device: $ZCASHD_DATA
+      o: bind
+  prometheus_data:
+    driver: local
+    driver_opts:
+      type: bind
+      device: $PROM_DATA
+      o: bind
+  grafana_data:
+    driver: local
+    driver_opts:
+      type: bind
+      device: $GF_DATA
+      o: bind
+  lightwalletd_cache:
+    driver: local
+    driver_opts: 
+      type: bind
+      device: $LWD_DATA
+      o: bind
