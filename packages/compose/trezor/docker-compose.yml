@@ -3,7 +3,7 @@ services:
   trezor:
     image: ${TZ_IMAGE}
     ports:
-      - "${TZ_PORT}:8000"
+      - "${TZ_PORT}:8080"
     deploy:
       mode: replicated
       replicas: 1
