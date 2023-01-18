@@ -13,9 +13,9 @@ services:
       - "${IPFS_API_PORT}:5001"
       - "${IPFS_UI_PORT}:4001"
       - "${IPFS_P2P_PORT}:8080"
-    logging:
-      driver: gelf
-      options:
-        tag: ${IPFS_TAG}
-        gelf-address: "${GELF_ADDRESS}"
+#    logging:
+#      driver: gelf
+#      options:
+#        tag: ${IPFS_TAG}
+#        gelf-address: "${GELF_ADDRESS}"
 
