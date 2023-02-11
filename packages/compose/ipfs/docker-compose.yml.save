@@ -1,0 +1,14 @@
+version: "3.2"
+services:
+  ipfs:
+    image: ipfs/go-ipfs:latest
+    hostname: ipfs_host1
+    volumes:
+      - "/freenas-Burns/ipfs/export:/export"
+      - "/freenas-Burns/ipfs/data/ipfs:/data/ipfs"
+    ports:
+      - "5001:5001"
+      - "4011:4001"
+      - "8090:8080"
+
+

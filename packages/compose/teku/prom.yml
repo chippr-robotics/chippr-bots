@@ -1,0 +1,19 @@
+global:
+  scrape_interval: 15s
+scrape_configs:
+  - job_name: "prometheus"
+    static_configs:
+    - targets: ["${PROM_IP}:${PROM_PORT}"]
+  - job_name: "teku-dev"
+    scrape_timeout: 10s
+    metrics_path: /metrics
+    scheme: http
+    static_configs:
+    - targets: ["${PROM_TEKU_IP}:${TEKU_METRIC_PORT}"]
+  - job_name: besu
+    scrape_interval: 15s
+    scrape_timeout: 10s
+    metrics_path: /metrics
+    scheme: http
+    static_configs:
+    - targets: ["${PROM_BESU_IP}:${BESU_METRIC_PORT}"]

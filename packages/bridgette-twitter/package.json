@@ -11,7 +11,6 @@
     "stop": "forever stop index.js"
   },
   "dependencies": {
-    "@chippr-bots/bridgettedb": "^1.1.48",
     "@chippr-bots/common": "^1.1.48",
     "dotenv": "^8.2.0",
     "markov-json": "^1.1.7",
