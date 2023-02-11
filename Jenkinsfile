@@ -13,7 +13,12 @@ pipeline {
 
   stages {
 
-   
+    stage('Cloning Git') {
+      steps {
+        git branch: "primary", url: 'https://github.com/chippr-robotics/chippr-bots'
+      }
+    }
+
     stage('Bumping Lerna versions') {
         steps {
             sh 'yarn run new-version'
