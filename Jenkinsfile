@@ -15,7 +15,7 @@ pipeline {
 
     stage('Cloning Git') {
       steps {
-        git branch: "staging", url: 'https://github.com/chippr-robotics/chippr-bots'
+        git branch: "primary", url: 'https://github.com/chippr-robotics/chippr-bots'
       }
     }
 
