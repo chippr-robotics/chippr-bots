@@ -1,6 +1,6 @@
 const { log, btc, etc, zec, kotti } = require('@chippr-bots/common');
 
-log.info('[dflow/controllers/getBlockNumber.js] getBlockNumber loaded');
+log.info('[../controllers/getBlockNumber.js] getBlockNumber loaded');
 
 //provide a random response
 

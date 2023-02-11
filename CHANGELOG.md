@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.1.49](https://github.com/chippr-robotics/chippr-bots/compare/v1.1.48...v1.1.49) (2023-02-11)
+
+
+### Reverts
+
+* Revert "working terraform" ([6b58cb9](https://github.com/chippr-robotics/chippr-bots/commit/6b58cb9a42d0cbfb4f2c1d5dad09bb9b5b1593f1))
+
+
+
+
+
 ## [1.1.48](https://github.com/chippr-robotics/chippr-bots/compare/v1.1.47...v1.1.48) (2020-08-13)
 
 **Note:** Version bump only for package chippr-bots

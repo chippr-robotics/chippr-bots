@@ -1,0 +1,127 @@
+version: '3.4'
+
+services:
+  besu_node:
+    image: ${BESU_IMAGE}
+    volumes:
+      - type: bind
+        source: "${BESU_DATA_PATH}"
+        target: /root
+    command: >
+               --network "${BESU_NETWORK}"
+               --identity="${BESU_IDENTITY}"                                                                                                                                                                                                                  --rpc-http-enabled=true
+               --p2p-port=${BESU_P2P_PORT}
+               --rpc-ws-enabled=true
+               --rpc-ws-host=0.0.0.0
+               --data-path=/root
+               --rpc-http-cors-origins=${BESU_CORS_ORIGINS}
+               --rpc-http-host=0.0.0.0
+               --host-whitelist="${BESU_HOST_WHITELIST}"
+               --nat-method="Docker"
+               --metrics-enabled
+    ports:
+      - '${BESU_RPC_PORT}:8545'
+      - '${BESU_WS_PORT}:8546'
+      - '${BESU_P2P_PORT}:30303'
+      - '${BESU_METRIC_PORT}:9545'
+    #logging:
+    #  driver: gelf
+    #  options:
+    #    tag: ${GELF_TAG}
+    #    gelf-address: "${GELF_ADDRESS}"
+    deploy:
+      mode: replicated
+      replicas: 1
+      restart_policy:
+        condition: any
+        delay: 5s
+        max_attempts: 3
+  
+  teku_node:
+    image: ${TEKU_IMAGE}
+    command: >
+              --network=${TEKU_NETWORK}
+              --eth1-endpoint=${NETSTAT_BESU_ADDR}:${RPC_PORT}
+              --validator-keys=/opt/teku/data/validator/keys:/opt/teku/data/validator/passwords
+              --p2p-port=9000
+              --rest-api-enabled=true
+              --rest-api-docs-enabled=true
+    depends_on:
+      - besu_node
+    volumes:
+      - type: bind
+        source: "${TEKU_DATA_PATH}"
+        target: /opt/teku/data
+    ports:
+      # Map the p2p port(9000) and REST API port(5051)
+      - "${TEKU_P2P_PORT}:9000"
+      - "${TEKU_API_PORT}:5051"
+      - "${TEKU_METRIC_PORT}:8008"
+    #logging:
+    #  driver: gelf
+    # options:
+    #    tag: ${GELF_TAG}
+    #    gelf-address: "${GELF_ADDRESS}"
+    deploy:
+      mode: replicated
+      replicas: 1
+      restart_policy:
+        condition: any
+        delay: 5s
+        max_attempts: 3
+
+# external stats page
+  netstats:
+    image: ${NETSTAT_IMAGE}
+    volumes:
+      - type: bind
+        source: ${NETSTAT_DATA_PATH}
+        target: /root/.config/configstore/
+    environment:
+      - NODE_ENV=${NETSTAT_ENV}
+      - RPC_HOST=${NETSTAT_BESU_ADDR}
+      - RPC_PORT=${BESU_RPC_PORT}
+      - LISTENING_PORT=${BESU_P2P_PORT}
+      - INSTANCE_NAME=${BESU_IDENTITY}
+      - CONTACT_DETAILS=${NETSTAT_CONTACT_DETAILS}
+      - WS_SERVER=${NETSTAT_WS_SERVER}
+      - WS_SECRET=${NETSTAT_WS_SECRET}
+      - VERBOSITY=${NETSTAT_VERBOSITY}
+    deploy:
+      mode: replicated
+      replicas: 1
+      restart_policy:
+        condition: any
+        delay: 5s
+        max_attempts: 3
+# external transaction signer
+#  signer:
+#    image: pegasyseng/ethsigner:latest
+#    volumes:
+#      - type: bind
+#        source: /freenas-Burns/blockchain/besu/kotti/keyfile
+#        target: /opt/ethsigner/keyfile
+#    environment:
+#      - downstream-http-port=8245
+#      - http-listen-host=0.0.0.0
+#      - file-based-signer
+#      - k /opt/ethsigner/keyfile
+#      - p /opt/ethsigner/passwordfile
+
+# event monitoring
+  prometheus:
+    image: ${PROM_IMAGE}
+    command: --web.enable-lifecycle  --config.file=/etc/prometheus/prom.yml
+    volumes:
+      - type: bind
+        source: "${PROM_DATA_PATH}"
+        target: /etc/prometheus
+      - type: bind
+        source: "${PROM_DATA_PATH}"
+        target: /prometheus  
+    ports:
+      - ${PROM_PORT}:9090
+    
+    
+
+
