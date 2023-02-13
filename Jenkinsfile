@@ -74,52 +74,6 @@ pipeline {
         }
     }
 
-    stage('Bridgette V1 build') {
-        when{
-            changeset "**/packages/bridgette-v1/*.*"
-        }
-        steps{
-            dir("./packages/bridgette-v1") {
-<<<<<<< HEAD
-                withCredentials([string(credentialsId: 'discord_webhook', variable: 'WEBHOOK')]) {
-                    sh "npm run test"
-                    sh "docker build -t $V1_IMAGE:$BUILD_NUMBER ."
-                    sh "docker service update --image $V1_IMAGE:$BUILD_NUMBER bridgette_discord"
-                    sh "docker build -t $V1_IMAGE:latest ."  
-                    sh "docker rmi $V1_IMAGE:$BUILD_NUMBER"
-                }
-            } 
-        }
-     }
-  }
-   
-=======
-                sh "npm i"
-                sh "npm run test"
-                sh "docker build -t $V1_IMAGE:latest ."  
-                sh "docker service update --image $V1_IMAGE:latest --force bridgette_discord"
-            }
-        } 
-    }
-  
-<<<<<<< HEAD
->>>>>>> 6472b71fe329190458aaa3d6b67963fa6e1db4cd
-=======
-  stage('Bridgette twitter build') {
-        when{
-            changeset "**/packages/bridgette-twitter/*.*"
-        }
-        steps{
-            dir("./packages/bridgette-twitter") {
-                sh "npm i"
-                sh "docker build -t $TW_IMAGE:latest ."  
-                sh "docker service update --image $TW_IMAGE:latest --force bridgette_twitter"
-            }
-        } 
-    }
-   }
-
->>>>>>> 62d93f87541ebe3e39bbb144f1653a6c86999d05
    post {
     changed {
      withCredentials([string(credentialsId: 'discord_webhook', variable: 'WEBHOOK')]) {
