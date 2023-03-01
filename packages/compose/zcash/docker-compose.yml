@@ -82,10 +82,10 @@ services:
     restart: always
     depends_on:
       - loki
-    logging:
-      driver: loki
-      options:
-        loki-url: 'http://localhost:3100/api/prom/push'
+#    logging:
+#      driver: loki
+#      options:
+#        loki-url: 'http://localhost:3100/api/prom/push'
 
   prometheus:
     image: $PROM_IMAGE
