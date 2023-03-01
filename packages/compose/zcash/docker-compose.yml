@@ -3,7 +3,7 @@ version: '2'
 
 services:
   lightwalletd:
-    image: electriccoinco/lightwalletd:latest
+    image: $LWD_IMAGE
     #entrypoint: ["/bin/bash", "-c", "sleep infinity"]
     command:
       - --grpc-bind-addr=0.0.0.0:$LWD_GRPC_PORT
@@ -30,7 +30,7 @@ services:
         loki-url: 'http://localhost:3100/api/prom/push'
 
   zcashd:
-    image: electriccoinco/zcashd:latest
+    image: $ZEC_IMAGE
     volumes:
       - zcashd_data:/srv/zcashd/.zcash
       - zcashd_data:/srv/zcashd/.zcash-params
@@ -43,13 +43,13 @@ services:
     restart: always
     depends_on:
       - loki
-#    logging:
-#      driver: loki
-#      options:
-#        loki-url: 'http://localhost:3100/api/prom/push'
+    logging:
+      driver: loki
+      options:
+        loki-url: 'http://localhost:3100/api/prom/push'
 
   zcashd_exporter:
-    image: electriccoinco/zcashd_exporter:latest
+    image: $ZEC_EXPORTER_IMAGE
     environment:
       - ZCASHD_RPCUSER=$ZCASHD_RPCUSER
       - ZCASHD_RPCPASSWORD=$ZCASHD_RPCPASSWORD
@@ -70,7 +70,7 @@ services:
         loki-url: 'http://localhost:3100/api/prom/push'
 
   grafana:
-    image: grafana/grafana:6.4.3
+    image: $GF_IMAGE
     entrypoint:
       - bash
       - -c
@@ -88,7 +88,7 @@ services:
         loki-url: 'http://localhost:3100/api/prom/push'
 
   prometheus:
-    image: prom/prometheus:v2.13.1
+    image: $PROM_IMAGE
     ports:
       - "127.0.0.1:9090:9090"
     volumes:
@@ -104,7 +104,7 @@ services:
         loki-url: 'http://localhost:3100/api/prom/push'
 
   loki:
-    image: grafana/loki:master
+    image: $LOKI_IMAGE
     ports:
       - "127.0.0.1:3100:3100"
     command: -config.file=/etc/loki/local-config.yaml
