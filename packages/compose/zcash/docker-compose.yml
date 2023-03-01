@@ -23,6 +23,7 @@ services:
     depends_on: 
       - loki
       - zcashd
+    restart: always
     logging:
       driver: loki
       options:
@@ -35,10 +36,11 @@ services:
       - zcashd_data:/srv/zcashd/.zcash-params
 #    command:
 #      - --exportdir=/srv/zcashd/.zcash 
-    mem_limit: 8G
+    mem_limit: 15G
     ports:
       - "0.0.0.0:38232:38232"
       - "9050:9050"
+    restart: always
     depends_on:
       - loki
 #    logging:
@@ -58,6 +60,7 @@ services:
       - --rpc.password=$ZCASHD_RPCPASSWORD
     ports:
       - "127.0.0.1:9100:9100"
+    restart: always
     depends_on:
       - loki
       - zcashd
@@ -76,6 +79,7 @@ services:
       - "0.0.0.0:3000:3000"
     volumes:
       - grafana_data:/etc/grafana
+    restart: always
     depends_on:
       - loki
     logging:
@@ -91,6 +95,7 @@ services:
       - ./docker/prometheus/config.yml:/etc/prometheus/prometheus.yml
       - prometheus_data:/prometheus
     mem_limit: 2G
+    restart: always
     depends_on:
       - loki
     logging:
@@ -103,6 +108,7 @@ services:
     ports:
       - "127.0.0.1:3100:3100"
     command: -config.file=/etc/loki/local-config.yaml
+    restart: always
     logging:
       driver: loki
       options:
