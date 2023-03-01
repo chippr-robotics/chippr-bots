@@ -71,10 +71,12 @@ services:
 
   grafana:
     image: $GF_IMAGE
+    environment: 
+      - GF_INSTALL_PLUGINS=grafana-piechart-panel 
     entrypoint:
       - bash
-      - -c
-      - "GF_INSTALL_PLUGINS=grafana-piechart-panel" && /run.sh
+      - c 
+      - /run.sh
     ports:
       - "0.0.0.0:3000:3000"
     volumes:
