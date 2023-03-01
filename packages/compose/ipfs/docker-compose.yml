@@ -9,6 +9,7 @@ services:
       - type: bind
         source: "${IPFS_DATA_DIR}"
         target: /data/ipfs
+    restart: always   
     ports:
       - "${IPFS_API_PORT}:5001"
       - "${IPFS_UI_PORT}:4001"
