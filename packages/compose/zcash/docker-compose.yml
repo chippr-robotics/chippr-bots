@@ -74,7 +74,7 @@ services:
     entrypoint:
       - bash
       - -c
-      - grafana-cli plugins install grafana-piechart-panel && /run.sh
+      - "GF_INSTALL_PLUGINS=grafana-piechart-panel" && /run.sh
     ports:
       - "0.0.0.0:3000:3000"
     volumes:
