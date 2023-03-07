@@ -3,7 +3,6 @@ version: "3.7"
 services:
   grafana:
     image: $GF_IMAGE
-    container_name: zcashd-grafana
     depends_on:
       - prometheus
     ports:
@@ -17,6 +16,8 @@ services:
         target: /etc/grafana       
     networks:
       - zcashd-metrics
+    restart: always
+
 
   prometheus:
     image: PROM_IMAGE
@@ -33,6 +34,7 @@ services:
         read_only: true
     networks:
       - zcashd-metrics
+    restart: always
     extra_hosts:
       - "host.docker.internal:host-gateway"
 
