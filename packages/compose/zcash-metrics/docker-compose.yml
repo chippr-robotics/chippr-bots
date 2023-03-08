@@ -30,7 +30,7 @@ services:
         target: /prometheus
       - type: bind
         source: prometheus-config
-        target: /etc/prometheus/prometheus.yml
+        target: /etc/prometheus
         read_only: true
     networks:
       - zcashd-metrics
