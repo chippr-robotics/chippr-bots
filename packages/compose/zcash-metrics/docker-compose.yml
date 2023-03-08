@@ -51,7 +51,7 @@ volumes:
       type: bind
       device: $PROM_CONF
       o: bind
-  grafana-data:
+  grafana-storage:
     driver: local
     driver_opts:
       type: bind
