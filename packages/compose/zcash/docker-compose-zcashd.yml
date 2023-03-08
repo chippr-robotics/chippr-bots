@@ -7,12 +7,18 @@ services:
     volumes:
       - zcashd_data:/srv/zcashd/.zcash
       - zcashd_data:/srv/zcashd/.zcash-params
-#    command:
-#      - --exportdir=/srv/zcashd/.zcash 
+    environment:
+      - ZCASHD_EXPERIMENTALFEATURES=$ZCASHD_EXPERIMENTALFEATURES
+      - ZCASHD_INSIGHTEXPLORER=$ZCASHD_INSIGHTEXPLORER
+      - ZCASHD_NETWORK=$ZCASHD_NETWORK
+      - ZCASHD_PROMETHEUSPORT=$ZCASHD_PROMETHEUSPORT
+      - ZCASHD_RPCPASSWORD=$ZCASHD_RPCPASSWORD
+      - ZCASHD_RPCUSER=$ZCASHD_RPCUSER
+      - ZCASHD_TXINDEX=$ZCASHD_TXINDEX
     mem_limit: 15G
     ports:
       - "0.0.0.0:$ZCASHD_P2P:8232"
-      - "9050:9050"
+      - "$ZCASHD_PROMETHEUSPORT"
     restart: always
 
 volumes:
