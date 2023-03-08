@@ -31,7 +31,6 @@ services:
       - type: bind
         source: prometheus-config
         target: /etc/prometheus
-        read_only: true
     networks:
       - zcashd-metrics
     restart: always
