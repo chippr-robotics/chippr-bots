@@ -39,7 +39,7 @@ services:
       - "host.docker.internal:host-gateway"
 
 volumes:
-  prometheus-data:
+  prometheus-storage:
     driver: local
     driver_opts:
       type: bind
