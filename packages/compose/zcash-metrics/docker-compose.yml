@@ -27,7 +27,7 @@ services:
       - zcashd-metrics
     restart: always
     extra_hosts:
-      - "host.docker.internal:host-gateway"
+      - "host.docker.internal:$ZCASH_IP"
 
 volumes:
   prometheus-storage:
