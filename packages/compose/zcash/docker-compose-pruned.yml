@@ -2,17 +2,25 @@
 version: '2'
 
 services:
-  zcashd:
+  zcashd_lite:
     image: $ZCASHD_IMAGE
     volumes:
       - zcashd_lite_data:/srv/zcashd/.zcash
       - zcashd_lite_data:/srv/zcashd/.zcash-params
+    environment:
+      - ZCASHD_EXPERIMENTALFEATURES=$ZCASHD_EXPERIMENTALFEATURES
+      - ZCASHD_INSIGHTEXPLORER=$ZCASHD_INSIGHTEXPLORER
+      - ZCASHD_NETWORK=$ZCASHD_NETWORK
+      - ZCASHD_PROMETHEUSPORT=$ZCASHD_PROMETHEUSPORT
+      - ZCASHD_RPCPASSWORD=$ZCASHD_RPCPASSWORD
+      - ZCASHD_RPCUSER=$ZCASHD_RPCUSER
+      - ZCASHD_TXINDEX=$ZCASHD_TXINDEX
     command:
       - --prune=$ZCASHD_PRUNE_SIZE 
     mem_limit: 15G
     ports:
       - "0.0.0.0:$ZCASHD_P2P:8232"
-      - "9050:9050"
+      - "$ZCASHD_PROMETHEUSPORT"
     restart: always
 
 volumes:
