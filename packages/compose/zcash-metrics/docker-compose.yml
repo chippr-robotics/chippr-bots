@@ -20,7 +20,7 @@ services:
 
 
   prometheus:
-    image: PROM_IMAGE
+    image: $PROM_IMAGE
     container_name: zcashd-prometheus
     ports:
       - "$PROM_PORT:9090"
