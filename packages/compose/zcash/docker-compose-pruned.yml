@@ -7,8 +7,8 @@ services:
     volumes:
       - zcashd_data:/srv/zcashd/.zcash
       - zcashd_data:/srv/zcashd/.zcash-params
-#    command:
-#      - --exportdir=/srv/zcashd/.zcash 
+    command:
+      - --prune=1 
     mem_limit: 15G
     ports:
       - "0.0.0.0:$ZCASHD_P2P:8232"
