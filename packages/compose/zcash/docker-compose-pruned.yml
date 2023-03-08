@@ -5,8 +5,8 @@ services:
   zcashd:
     image: $ZCASHD_IMAGE
     volumes:
-      - zcashd_data:/srv/zcashd/.zcash
-      - zcashd_data:/srv/zcashd/.zcash-params
+      - zcashd_lite_data:/srv/zcashd/.zcash
+      - zcashd_lite_data:/srv/zcashd/.zcash-params
     command:
       - --prune=1 
     mem_limit: 15G
@@ -16,7 +16,7 @@ services:
     restart: always
 
 volumes:
-  zcashd_data:
+  zcashd_lite_data:
     driver: local
     driver_opts:
       type: bind
