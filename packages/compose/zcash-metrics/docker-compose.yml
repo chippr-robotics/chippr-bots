@@ -8,12 +8,8 @@ services:
     ports:
       - "$GF_SERVER_HTTP_PORT:3030"
     volumes:
-      - type: volume
-        source: grafana-storage
-        target: /var/lib/grafana
-      - type: bind
-        source: grafana-etc
-        target: /etc/grafana       
+      - grafana-storage:/var/lib/grafana
+      - grafana-etc:/etc/grafana       
     networks:
       - zcashd-metrics
     restart: always
@@ -25,12 +21,8 @@ services:
     ports:
       - "$PROM_PORT:9090"
     volumes:
-      - type: volume
-        source: prometheus-storage
-        target: /prometheus
-      - type: bind
-        source: prometheus-config
-        target: /etc/prometheus
+      - prometheus-storage:/prometheus
+      - prometheus-config:/etc/prometheus
     networks:
       - zcashd-metrics
     restart: always
