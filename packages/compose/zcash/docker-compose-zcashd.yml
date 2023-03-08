@@ -1,0 +1,24 @@
+---
+version: '2'
+
+services:
+  zcashd:
+    image: $ZCASHD_IMAGE
+    volumes:
+      - zcashd_data:/srv/zcashd/.zcash
+      - zcashd_data:/srv/zcashd/.zcash-params
+#    command:
+#      - --exportdir=/srv/zcashd/.zcash 
+    mem_limit: 15G
+    ports:
+      - "0.0.0.0:$ZCASHD_P2P:38232"
+      - "9050:9050"
+    restart: always
+
+volumes:
+  zcashd_data:
+    driver: local
+    driver_opts:
+      type: bind
+      device: $ZCASHD_DATA
+      o: bind
