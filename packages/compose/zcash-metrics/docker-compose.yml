@@ -22,7 +22,7 @@ services:
       - "$PROM_PORT:9090"
     volumes:
       - prometheus-storage:/prometheus
-      - prometheus-config/prometheus.yml:/etc/prometheus/prometheus.yml
+      - prometheus-config:/etc/prometheus/
     networks:
       - zcashd-metrics
     restart: always
