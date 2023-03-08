@@ -8,7 +8,7 @@ services:
       - zcashd_lite_data:/srv/zcashd/.zcash
       - zcashd_lite_data:/srv/zcashd/.zcash-params
     command:
-      - --prune=1 
+      - --prune=$ZCASHD_PRUNE_SIZE 
     mem_limit: 15G
     ports:
       - "0.0.0.0:$ZCASHD_P2P:8232"
