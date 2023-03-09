@@ -1,0 +1,20 @@
+---
+version: '2'
+
+services:
+  zcashd_lite:
+    image: $ZCASHD_IMAGE
+    volumes:
+      - zcashd_lite_data:/srv/zcashd/.zcash
+      - zcashd_lite_data:/srv/zcashd/.zcash-params
+    environment:
+      - ZCASHD_NETWORK=$ZCASHD_NETWORK
+    command:
+      - --prune=$ZCASHD_PRUNE_SIZE 
+      - --dbcache=$ZCASHD_DBCACHE_SIZE
+      - --addnode=$ZCASHD_PRIME_NODE
+    mem_limit: 4G
+    restart: always
+
+volumes:
+  zcashd_lite_data:
