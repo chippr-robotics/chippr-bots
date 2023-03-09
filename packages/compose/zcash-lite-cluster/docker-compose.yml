@@ -13,7 +13,7 @@ services:
       - --prune=$ZCASHD_PRUNE_SIZE 
       - --dbcache=$ZCASHD_DBCACHE_SIZE
       - --addnode=$ZCASHD_PRIME_NODE
-    mem_limit: 4G
+    mem_limit: $ZCASHD_MEM_LIM
     restart: always
 
 volumes:
