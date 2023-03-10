@@ -1,12 +1,9 @@
 ---
-version: '2'
+version: '3'
 
 services:
   zcashd_lite:
     image: $ZCASHD_IMAGE
-    volumes:
-      - zcashd_lite_data:/srv/zcashd/.zcash
-      - zcashd_lite_data:/srv/zcashd/.zcash-params
     environment:
       - ZCASHD_NETWORK=$ZCASHD_NETWORK
     command:
@@ -16,5 +13,3 @@ services:
     mem_limit: $ZCASHD_MEM_LIM
     restart: always
 
-volumes:
-  zcashd_lite_data:
