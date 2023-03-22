@@ -1,0 +1,54 @@
+pipeline {
+
+agent any
+
+timestamps {
+    stages {
+        stage('ZCASH_LITE_CLUSTER_START - Checkout') {
+            steps {
+     	        checkout(
+                    git branch: "primary",
+                    url: 'https://github.com/chippr-robotics/chippr-bots')
+            }
+        }
+
+        stage('ZCASH_LITE_CLUSTER_START - Build') {
+            steps {
+                sh 'docker pull "${env.ZCASHD_IMAGE}"'
+            }
+        }
+
+        stage('ZCASH_LITE_CLUSTER_START - Purge') {
+            steps{
+                sh """
+                    cd "${env.WORKSPACE}/packages/compose/zcash-lite-cluster/"
+                    docker-compose down  || echo "No service running"
+                    sleep 10s 
+                """
+            }
+        }
+    
+        stage('ZCASH_LITE_CLUSTER_START - Boot') {
+            steps{
+                sh """
+                    cd "${env.WORKSPACE}/packages/compose/zcash-lite-cluster/"
+                    export ZCASHD_PRIME_NODE=192.168.1.135:38232 #$(docker inspect -f '{{range .NetworkSettings.Networks}}{{.IPAddress}}{{end}}' zcash_zcashd_1)":38232"
+                    docker-compose up -d 
+                """
+            }
+        }
+    }#/STAGES
+} #/TIMESTAMPS
+
+    post {
+        changed {
+            withCredentials([string(credentialsId: 'discord_webhook', variable: 'WEBHOOK')]) {
+                discordSend description: 'Jenkins Pipeline Build', 
+                link: BUILD_URL, 
+                successful: currentBuild.resultIsBetterOrEqualTo('SUCCESS'), 
+                title: JOB_NAME, 
+                webhookURL: WEBHOOK
+            }
+        }
+    } #/POST
+} #/PIPELINE
