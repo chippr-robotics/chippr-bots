@@ -54,7 +54,7 @@ timestamps {
             steps{
                 sh """
                     cd "${env.WORKSPACE}/packages/compose/zcash-lite-cluster/"
-                    export ZCASHD_PRIME_NODE="${env.SERVER_URL}":38232 #$(docker inspect -f '{{range .NetworkSettings.Networks}}{{.IPAddress}}{{end}}' zcash_zcashd_1)":38232"
+                    export ZCASHD_PRIME_NODE=${env.SERVER_URL}:38232 #$(docker inspect -f '{{range .NetworkSettings.Networks}}{{.IPAddress}}{{end}}' zcash_zcashd_1)":38232"
                     docker-compose up -d 
                 """
             }
