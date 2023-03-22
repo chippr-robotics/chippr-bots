@@ -3,14 +3,14 @@ pipeline {
 agent any
 
 environment {
-    # common environment
+    // common environment
     GIT_CRED = vault path: 'secrets/COMMON', key: 'GIT_CRED', vaultUrl: 'https://192.168.1.135:8200', credentialsId: 'vault-root-token', engineVersion: "2"
     GIT_URL = vault path: 'secrets/COMMON', key: 'GIT_URL', vaultUrl: 'https://192.168.1.135:8200', credentialsId: 'vault-root-token', engineVersion: "2"
     SERVER_URL = vault path: 'secrets/COMMON', key: 'SERVER_URL', vaultUrl: 'https://192.168.1.135:8200', credentialsId: 'vault-root-token', engineVersion: "2"
     LOG_LEVEL='debug'
     
-    # pipeline configuration
-    
+    // pipeline configuration
+
     }
 
 timestamps {
@@ -59,8 +59,8 @@ timestamps {
                 """
             }
         }
-    }#/STAGES
-} #/TIMESTAMPS
+    }//STAGES
+} //TIMESTAMPS
 
     post {
         changed {
@@ -72,5 +72,5 @@ timestamps {
                 webhookURL: WEBHOOK
             }
         }
-    } #/POST
-} #/PIPELINE
+    } //POST
+} //PIPELINE
