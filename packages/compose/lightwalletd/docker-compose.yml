@@ -1,0 +1,24 @@
+services:
+  lightwalletd:
+    image: $LWD_IMAGE
+    #entrypoint: ["/bin/bash", "-c", "sleep infinity"]
+    command:
+      - --grpc-bind-addr=0.0.0.0:$LWD_GRPC_PORT
+      - --http-bind-addr=0.0.0.0:$LWD_HTTP_PORT
+      - --zcash-conf-path=/var/lib/lightwalletd/zcash.conf
+      - --log-file=/dev/stdout
+      - --log-level=7
+      - --no-tls-very-insecure
+#      - --tls-cert=/var/lib/lightwalletd/cert.pem
+#      - --tls-key=/var/lib/lightwalletd/key.pem 
+    ports:
+      - "0.0.0.0:$LWD_GRPC_PORT:$LWD_GRPC_PORT"
+      - "0.0.0.0:$LWD_HTTP_PORT:$LWD_HTTP_PORT"      
+    volumes:
+      - lightwalletd_cache:/srv/lightwalletd
+      - lightwalletd_cache:/var/lib/lightwalletd
+    restart: always
+    logging:
+      driver: loki
+      options:
+        loki-url: 'http://localhost:3100/api/prom/push'
