@@ -10,5 +10,5 @@ services:
       - --prune=$ZCASHD_PRUNE_SIZE 
       - --dbcache=$ZCASHD_DBCACHE_SIZE
       - --addnode=$ZCASHD_PRIME_NODE
-    restart: always
+    
 

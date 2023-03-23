@@ -5,7 +5,18 @@ def secrets = [
             [envVar: 'SERVER_URL', vaultKey: 'SERVER_URL']
             ]],
         [path: 'secret/ZCASH_LITE', engineVersion: 2, secretValues: [
-            [envVar: 'ZCASHD_IMAGE', vaultKey: 'ZCASHD_IMAGE']
+            [envVar: 'ZCASHD_DATA', vaultKey: 'ZCASHD_DATA'],
+            [envVar: 'ZCASHD_EXPERIMENTALFEATURES', vaultKey: 'ZCASHD_EXPERIMENTALFEATURES'],
+            [envVar: 'ZCASHD_IMAGE', vaultKey: 'ZCASHD_IMAGE'],
+            [envVar: 'ZCASHD_INSIGHTEXPLORER', vaultKey: 'ZCASHD_INSIGHTEXPLORER'],
+            [envVar: 'ZCASHD_NETWORK', vaultKey: 'ZCASHD_NETWORK'],
+            [envVar: 'ZCASHD_P2P', vaultKey: 'ZCASHD_P2P'],
+            [envVar: 'ZCASHD_PROMETHEUSPORT', vaultKey: 'ZCASHD_PROMETHEUSPORT'],
+            [envVar: 'ZCASHD_PRUNE_SIZE', vaultKey: 'ZCASHD_PRUNE_SIZE'],
+            [envVar: 'ZCASHD_RPCPASSWORD', vaultKey: 'ZCASHD_RPCUSER'],
+            [envVar: 'ZCASHD_TXINDEX', vaultKey: 'ZCASHD_TXINDEX'],
+            [envVar: 'ZCASHD_DBCACHE_SIZE', vaultKey: 'ZCASHD_DBCACHE_SIZE'],
+            [envVar: 'ZCASHD_PRIME_NODE', vaultKey: 'ZCASHD_PRIME_NODE'],
             ]]
     ]
 def configuration = [vaultUrl: 'http://192.168.1.135:8200',
@@ -27,7 +38,7 @@ pipeline {
                         doGenerateSubmoduleConfigurations: 
                             false,
                             extensions: [[$class: 'CloneOption', timeout: 120]], 
-                            submoduleCfg: [], 
+                            submoduleCfg: [],
                             userRemoteConfigs: 
                                 [[
                                     credentialsId: env.GIT_CRED, 
@@ -47,29 +58,34 @@ pipeline {
 
         stage('ZCASH_LITE_CLUSTER_START - Purge') {
             steps{
-                sh """
-                    cd "${env.WORKSPACE}/packages/compose/zcash-lite-cluster/"
-                    docker-compose down  || echo "No service running"
-                    sleep 10s 
-                """
+                withVault([configuration: configuration, vaultSecrets: secrets]) {
+                    sh """
+                        cd packages/compose/zcash-lite-cluster/
+                        docker stack rm ZCASH_LITE_CLUSTER  || echo "No service running"
+                    """
+                    
+                }
             }
         }
     
+        stage('ZCASH_LITE_CLUSTER_START - Rest') {
+            steps{
+                sh 'sleep 10'
+            }
+        }
+        
         stage('ZCASH_LITE_CLUSTER_START - Boot') {
     	   steps{
-    	       withVault([configuration: configuration, vaultSecrets: secrets]) {
-                    sh 'export ZCASHD_PRIME_NODE=$SERVER_URL:38232' 
+    	        withVault([configuration: configuration, vaultSecrets: secrets]) {
+                    sh """
+    	                cd packages/compose/zcash-lite-cluster/
+    	                docker stack deploy -c docker-compose.yml ZCASH_LITE_CLUSTER
+    	            """
     	       }
-    	       sh """
-    	            cd "${env.WORKSPACE}/packages/compose/zcash-lite-cluster/" 
-    	            docker-compose up -d
-    	       """
     	    }
         }
     }//STAGES
-} //PIPELINE
-
-post {
+    post {
     changed {
         withCredentials([string(credentialsId: 'discord_webhook', variable: 'WEBHOOK')]) {
             discordSend description: 'Jenkins Pipeline Build', 
@@ -80,3 +96,6 @@ post {
         }
     }
 } //POST
+
+} //PIPELINE
+
