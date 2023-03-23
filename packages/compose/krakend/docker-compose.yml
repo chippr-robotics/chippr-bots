@@ -1,0 +1,13 @@
+version: "3"
+services:
+  krakend:
+    image: ${KRAKEND_IMAGE}
+    volumes:
+      - "${KRAKEND_DATA}:/etc/krakend/"
+    environment:
+      - FC_ENABLE=1
+      - FC_OUT=/etc/krakend/out.json
+      - FC_PARTIALS=/etc/krakend/config/partials
+      - FC_SETTINGS=/etc/krakend/config/settings/test
+      - FC_TEMPLATES=/etc/krakend/config/templates
+    command: ["run","-dc","krakend.tmpl"]
