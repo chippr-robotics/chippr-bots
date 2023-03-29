@@ -1,0 +1,102 @@
+def secrets = [
+        [path: 'secret/COMMON', engineVersion: 2, secretValues: [
+            [envVar: 'GIT_CRED', vaultKey: 'GIT_CRED'],
+            [envVar: 'GIT_URL', vaultKey: 'GIT_URL'],
+            [envVar: 'SERVER_URL', vaultKey: 'SERVER_URL']
+            ]],
+        [path: 'secret/ZCASH_PROD', engineVersion: 2, secretValues: [
+            [envVar: 'ZCASHD_DATA', vaultKey: 'ZCASHD_DATA'],
+            [envVar: 'ZCASHD_EXPERIMENTALFEATURES', vaultKey: 'ZCASHD_EXPERIMENTALFEATURES'],
+            [envVar: 'ZCASHD_IMAGE', vaultKey: 'ZCASHD_IMAGE'],
+            [envVar: 'ZCASHD_INSIGHTEXPLORER', vaultKey: 'ZCASHD_INSIGHTEXPLORER'],
+            [envVar: 'ZCASHD_NETWORK', vaultKey: 'ZCASHD_NETWORK'],
+            [envVar: 'ZCASHD_P2P', vaultKey: 'ZCASHD_P2P'],
+            [envVar: 'ZCASHD_PROMETHEUSPORT', vaultKey: 'ZCASHD_PROMETHEUSPORT'],
+            [envVar: 'ZCASHD_RPC', vaultKey: 'ZCASHD_RPC'],
+            [envVar: 'ZCASHD_RPCPASSWORD', vaultKey: 'ZCASHD_RPCUSER'],
+            [envVar: 'ZCASHD_TXINDEX', vaultKey: 'ZCASHD_TXINDEX'],
+            [envVar: 'ZCASHD_DBCACHE_SIZE', vaultKey: 'ZCASHD_DBCACHE_SIZE'],
+            [envVar: 'ZCASHD_RPCUSER', vaultKey: 'ZCASHD_RPCUSER'],
+            [envVar: 'ZCASHD_METRICSIP', vaultKey: 'ZCASHD_METRICSIP'],
+            ]]
+    ]
+def configuration = [vaultUrl: 'http://192.168.1.135:8200',
+                         vaultCredentialId: 'vault-token',
+                         engineVersion: 2]
+    
+
+pipeline {
+    agent any
+  
+    stages {
+        stage('ZCASH_PROD_CLUSTER_START - Checkout') {
+            steps {
+    	    withVault([configuration: configuration, vaultSecrets: secrets]) {
+    	        checkout([
+                    $class: 'GitSCM', 
+                    branches: 
+                        [[name: 'refs/heads/primary']],
+                        doGenerateSubmoduleConfigurations: 
+                            false,
+                            extensions: [[$class: 'CloneOption', timeout: 120]], 
+                            submoduleCfg: [],
+                            userRemoteConfigs: 
+                                [[
+                                    credentialsId: env.GIT_CRED, 
+                                    url: env.GIT_URL
+                                ]]
+                ]) 
+            }}
+        }
+
+        stage('ZCASH_PROD_CLUSTER_START - Build') {
+            steps {
+        	    withVault([configuration: configuration, vaultSecrets: secrets]) {
+                    sh 'docker pull $ZCASHD_IMAGE'
+        	    }
+            }
+    	}
+
+        stage('ZCASH_PROD_CLUSTER_START - Purge') {
+            steps{
+                withVault([configuration: configuration, vaultSecrets: secrets]) {
+                    sh """
+                        cd packages/compose/docker-compose-zcashd.yml
+                        docker stack rm ZCASH_PROD_CLUSTER  || echo "No service running"
+                    """
+                    
+                }
+            }
+        }
+    
+        stage('ZCASH_PROD_CLUSTER_START - Rest') {
+            steps{
+                sh 'sleep 10'
+            }
+        }
+        
+        stage('ZCASH_PROD_CLUSTER_START - Boot') {
+    	   steps{
+    	        withVault([configuration: configuration, vaultSecrets: secrets]) {
+                    sh """
+    	                cd packages/compose/zcash/docker-compose-zcashd.yml
+    	                docker stack deploy -c docker-compose.yml ZCASH_PROD_CLUSTER
+    	            """
+    	       }
+    	    }
+        }
+    }//STAGES
+    post {
+    changed {
+        withCredentials([string(credentialsId: 'discord_webhook', variable: 'WEBHOOK')]) {
+            discordSend description: 'Jenkins Pipeline Build', 
+            link: BUILD_URL, 
+            successful: currentBuild.resultIsBetterOrEqualTo('SUCCESS'), 
+            title: JOB_NAME, 
+            webhookURL: WEBHOOK
+        }
+    }
+} //POST
+
+} //PIPELINE
+
