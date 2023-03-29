@@ -1,0 +1,29 @@
+{
+  "$schema": "https://www.krakend.io/schema/v3.json",
+  "version": 3,
+  "name": "{{ env "SERVICE_NAME" }} ({{ .service.environment }})",
+  "port": {{ .service.port }},
+  "timeout": "{{ .service.timeout }}",
+  "cache_ttl":  "{{ .service.cache_ttl }}",
+  "output_encoding": "{{ .service.output_encoding }}",
+  "extra_config": {{ marshal .service.extra_config }},
+  "endpoints": [{{ range $idx, $endpoint := .endpoints.endpoints }}{{if $idx}},{{end}}
+    {
+        "endpoint": "{{ $endpoint.endpoint }}",
+        "method": "{{ $endpoint.method }}",
+        "backend": [
+            {
+              "url_pattern": "{{ $endpoint.backend_url_pattern }}",
+              "method": "{{ $endpoint.backend_method }}",
+              "host": [
+                "{{ $endpoint.backend_host }}"
+              ],
+              "extra_config": {
+                {{ include "rate_limit_backend.tmpl" }}
+              }
+            }
+        ]
+    }{{ end }},
+    {{ template "endpoints.tmpl" . }}
+ ]
+}

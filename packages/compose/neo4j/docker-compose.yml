@@ -1,0 +1,22 @@
+---
+version: '3'
+
+services:
+  neo4j:
+    image: $NEO4J_IMAGE
+    volumes:
+      - neo4j_data:/data
+    environment:
+      - NEO4J_AUTH=$NEO4J_AUTH
+    ports:
+      - "$NEO4J_HTTP:7474"
+      - "$NEO4J_BOLT:7687"
+
+volumes:
+  neo4j_data:
+    driver: local
+    driver_opts:
+      type: bind
+      device: $NEO4J_DATA
+      o: bind
+
