@@ -8,16 +8,16 @@
   "private": false,
   "dependencies": {
     "@chippr-bots/contracts": "^1.1.26",
-    "@elastic/elasticsearch": "^7.8.0",
-    "amqplib": "^0.6.0",
+    "@elastic/elasticsearch": "^8.6.0",
+    "amqplib": "^0.10.3",
     "discord.io-gateway6": "^2.5.3",
     "qr-image": "^3.2.0",
     "request": "^2.88.0",
     "stdrpc": "^1.1.0",
     "twitter": "^1.7.1",
-    "uuid": "^3.3.3",
-    "web3": "^1.2.4",
+    "uuid": "^9.0.0",
+    "web3": "^1.9.0",
     "winston": "^3.2.1",
-    "winston-elasticsearch": "^0.7.12"
+    "winston-elasticsearch": "^0.17.2"
   }
 }

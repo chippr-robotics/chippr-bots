@@ -12,7 +12,7 @@
   },
   "dependencies": {
     "@chippr-bots/common": "^1.1.49",
-    "dotenv": "^8.2.0",
+    "dotenv": "^16.0.3",
     "markov-json": "^1.1.7",
     "twitter": "^1.7.1"
   }

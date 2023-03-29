@@ -4,5 +4,11 @@
   "description": "Graph explorer for the zcash blockchain",
   "main": "index.js",
   "author": "chippr robotics llc",
-  "license": "Apache-2.0"
+  "license": "Apache-2.0",
+  "dependencies": {
+    "lerna": "^6.6.1"
+  },
+  "devDependencies": {
+    "lerna": "^6.6.1"
+  }
 }

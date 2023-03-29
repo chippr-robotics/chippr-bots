@@ -12,23 +12,21 @@
   "license": "Apache-2.0",
   "dependencies": {
     "@chippr-bots/common": "^1.1.49",
-    "actions-on-google": "^2.9.1",
+    "actions-on-google": "^3.0.0",
     "chai": "^4.2.0",
     "chai-http": "^4.3.0",
-    "dialogflow": "^0.8.2",
-    "dialogflow-fulfillment": "dialogflow/dialogflow-fulfillment-nodejs",
-    "dotenv": "^7.0.0",
+    "dialogflow": "^1.2.0",
+    "dotenv": "^16.0.3",
     "express": "^4.17.1",
-    "lerna": "^3.19.0",
-    "mocha": "^6.2.0",
+    "mocha": "^10.2.0",
     "qr-image": "^3.2.0",
     "request": "^2.88.0",
     "stdrpc": "^1.0.0",
     "truffle": "^5.0.29",
-    "uuid": "^3.3.2",
+    "uuid": "^9.0.0",
     "web3": "^1.2.0",
     "winston": "^3.2.1",
-    "winston-elasticsearch": "^0.7.13"
+    "winston-elasticsearch": "^0.17.2"
   },
   "devDependencies": {
     "coveralls": "^3.0.5"
