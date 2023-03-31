@@ -17,8 +17,8 @@ services:
       - ZCASHD_RPCUSER=$ZCASHD_RPCUSER
       - ZCASHD_RPCBIND=$ZCASHD_RPCBIND
     ports:
-      - "$ZCASHD_RPC:8232"
-      - "$ZCASHD_P2P:8233"
+      - "$ZCASHD_P2P:8232"
+      - "$ZCASHD_RPC:8233"
       - "$ZCASHD_PROMETHEUSPORT:$ZCASHD_PROMETHEUSPORT"
     command:
       - --reindex=$ZCASHD_REINDEX
