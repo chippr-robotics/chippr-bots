@@ -13,7 +13,7 @@ def secrets = [
             [envVar: 'ZCASHD_P2P', vaultKey: 'ZCASHD_P2P'],
             [envVar: 'ZCASHD_PROMETHEUSPORT', vaultKey: 'ZCASHD_PROMETHEUSPORT'],
             [envVar: 'ZCASHD_RPC', vaultKey: 'ZCASHD_RPC'],
-            [envVar: 'ZCASHD_RPCPASSWORD', vaultKey: 'ZCASHD_RPCUSER'],
+            [envVar: 'ZCASHD_RPCPASSWORD', vaultKey: 'ZCASHD_RPCPASSWORD'],
             [envVar: 'ZCASHD_TXINDEX', vaultKey: 'ZCASHD_TXINDEX'],
             [envVar: 'ZCASHD_DBCACHE_SIZE', vaultKey: 'ZCASHD_DBCACHE_SIZE'],
             [envVar: 'ZCASHD_RPCUSER', vaultKey: 'ZCASHD_RPCUSER'],
