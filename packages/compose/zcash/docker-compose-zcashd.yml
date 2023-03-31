@@ -15,13 +15,14 @@ services:
       - ZCASHD_TXINDEX=$ZCASHD_TXINDEX
       - ZCASHD_RPCPASSWORD=$ZCASHD_RPCPASSWORD
       - ZCASHD_RPCUSER=$ZCASHD_RPCUSER
-    command:
-      - --reindex=$ZCASHD_REINDEX
-      - --lightwalletd=$ZCASHD_LIGHTWALLETD   
     ports:
       - "$ZCASHD_RPC:8233"
       - "$ZCASHD_P2P:8232"
       - "$ZCASHD_PROMETHEUSPORT:$ZCASHD_PROMETHEUSPORT"
+    command:
+      - --reindex=$ZCASHD_REINDEX
+      - --lightwalletd=$ZCASHD_LIGHTWALLETD   
+    
 
 volumes:
   zcashd_data:
