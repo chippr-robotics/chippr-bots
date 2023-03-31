@@ -29,10 +29,7 @@ pipeline {
     agent any
   
     stages {
-        stage('ZCASH_PROD_CLUSTER_START - Checkout') {
-            
-        }
-
+        
         stage('ZCASH_PROD_CLUSTER_START - Build') {
             steps {
         	    withVault([configuration: configuration, vaultSecrets: secrets]) {
