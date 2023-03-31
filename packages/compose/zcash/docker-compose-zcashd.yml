@@ -15,7 +15,6 @@ services:
       - ZCASHD_RPCPASSWORD=$ZCASHD_RPCPASSWORD
       - ZCASHD_RPCUSER=$ZCASHD_RPCUSER
       - ZCASHD_TXINDEX=$ZCASHD_TXINDEX
-    mem_limit: 15G
     ports:
       - "0.0.0.0:$ZCASHD_P2P:8233"
       - "0.0.0.0:$ZCASHD_RPC:8232"
