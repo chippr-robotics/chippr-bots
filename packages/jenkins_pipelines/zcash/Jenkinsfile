@@ -21,7 +21,7 @@ def secrets = [
             ]]
     ]
 def configuration = [vaultUrl: 'http://192.168.1.135:8200',
-                         vaultCredentialId: 'vault-token',
+                         vaultCredentialId: 'gh-vault',
                          engineVersion: 2]
     
 
