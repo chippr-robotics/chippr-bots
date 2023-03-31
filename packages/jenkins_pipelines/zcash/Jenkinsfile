@@ -42,7 +42,7 @@ pipeline {
             steps{
                 withVault([configuration: configuration, vaultSecrets: secrets]) {
                     sh """
-                        cd packages/compose/docker-compose-zcashd.yml
+                        cd packages/compose/zcash/
                         docker stack rm ZCASH_PROD_CLUSTER  || echo "No service running"
                     """
                     
@@ -60,8 +60,8 @@ pipeline {
     	   steps{
     	        withVault([configuration: configuration, vaultSecrets: secrets]) {
                     sh """
-    	                cd packages/compose/zcash/docker-compose-zcashd.yml
-    	                docker stack deploy -c docker-compose.yml ZCASH_PROD_CLUSTER
+    	                cd packages/compose/zcash/
+    	                docker stack deploy -c docker-compose-zcashd.yml ZCASH_PROD_CLUSTER
     	            """
     	       }
     	    }
