@@ -18,6 +18,8 @@ def secrets = [
             [envVar: 'ZCASHD_DBCACHE_SIZE', vaultKey: 'ZCASHD_DBCACHE_SIZE'],
             [envVar: 'ZCASHD_RPCUSER', vaultKey: 'ZCASHD_RPCUSER'],
             [envVar: 'ZCASHD_METRICSIP', vaultKey: 'ZCASHD_METRICSIP'],
+            [envVar: 'ZCASHD_REINDEX', vaultKey: 'ZCASHD_REINDEX'],
+            [envVar: 'ZCASHD_LIGHTWALLETD', vaultKey: 'ZCASHD_LIGHTWALLETD'],
             ]]
     ]
 def configuration = [vaultUrl: 'http://192.168.1.135:8200',
