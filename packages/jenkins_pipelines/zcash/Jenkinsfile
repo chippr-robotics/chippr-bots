@@ -30,23 +30,7 @@ pipeline {
   
     stages {
         stage('ZCASH_PROD_CLUSTER_START - Checkout') {
-            steps {
-    	    withVault([configuration: configuration, vaultSecrets: secrets]) {
-    	        checkout([
-                    $class: 'GitSCM', 
-                    branches: 
-                        [[name: 'refs/heads/primary']],
-                        doGenerateSubmoduleConfigurations: 
-                            false,
-                            extensions: [[$class: 'CloneOption', timeout: 120]], 
-                            submoduleCfg: [],
-                            userRemoteConfigs: 
-                                [[
-                                    credentialsId: env.GIT_CRED, 
-                                    url: env.GIT_URL
-                                ]]
-                ]) 
-            }}
+            
         }
 
         stage('ZCASH_PROD_CLUSTER_START - Build') {
