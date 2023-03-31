@@ -19,8 +19,8 @@ services:
       - --reindex=$ZCASHD_REINDEX
       - --lightwalletd=$ZCASHD_LIGHTWALLETD   
     ports:
-      - "0.0.0.0:$ZCASHD_P2P:8233"
-      - "0.0.0.0:$ZCASHD_RPC:8232"
+      - "$ZCASHD_P2P:8233"
+      - "$ZCASHD_RPC:8232"
       - "$ZCASHD_PROMETHEUSPORT:$ZCASHD_PROMETHEUSPORT"
 
 volumes:
