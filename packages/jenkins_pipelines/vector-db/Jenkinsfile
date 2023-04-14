@@ -1,0 +1,74 @@
+def secrets = [
+        [path: 'secret/COMMON', engineVersion: 2, secretValues: [
+            [envVar: 'GIT_CRED', vaultKey: 'GIT_CRED'],
+            [envVar: 'GIT_URL', vaultKey: 'GIT_URL'],
+            [envVar: 'SERVER_URL', vaultKey: 'SERVER_URL']
+            ]],
+        [path: 'secret/VECTOR_DB', engineVersion: 2, secretValues: [
+            [envVar: 'VECTOR_API', vaultKey: 'VECTOR_API'],
+            [envVar: 'VECTOR_DATA', vaultKey: 'VECTOR_DATA'],
+            [envVar: 'VECTOR_IMAGE', vaultKey: 'VECTOR_IMAGE'],
+            [envVar: 'VECTOR_UI', vaultKey: 'VECTOR_UI'],
+            ]]
+    ]
+def configuration = [vaultUrl: 'http://192.168.1.135:8200',
+                         vaultCredentialId: 'gh-vault',
+                         engineVersion: 2]
+    
+
+pipeline {
+    agent any
+  
+    stages {
+        
+        stage('VECTOR_DB_CLUSTER_START - Build') {
+            steps {
+        	    withVault([configuration: configuration, vaultSecrets: secrets]) {
+                    sh 'docker pull $VECTOR_IMAGE'
+        	    }
+            }
+    	}
+
+        stage('VECTOR_DB_CLUSTER_START - Purge') {
+            steps{
+                withVault([configuration: configuration, vaultSecrets: secrets]) {
+                    sh """
+                        cd packages/compose/vector-db/
+                        docker stack rm VECTOR_DB_CLUSTER  || echo "No service running"
+                    """
+                    
+                }
+            }
+        }
+    
+        stage('VECTOR_DB_CLUSTER_START - Rest') {
+            steps{
+                sh 'sleep 10'
+            }
+        }
+        
+        stage('VECTOR_DB_CLUSTER_START - Boot') {
+    	   steps{
+    	        withVault([configuration: configuration, vaultSecrets: secrets]) {
+                    sh """
+    	                cd packages/compose/vector-db/
+    	                docker stack deploy -c docker-compose.yml VECTOR_DB_CLUSTER
+    	            """
+    	       }
+    	    }
+        }
+    }//STAGES
+    post {
+    changed {
+        withCredentials([string(credentialsId: 'discord_webhook', variable: 'WEBHOOK')]) {
+            discordSend description: 'Jenkins Pipeline Build', 
+            link: BUILD_URL, 
+            successful: currentBuild.resultIsBetterOrEqualTo('SUCCESS'), 
+            title: JOB_NAME, 
+            webhookURL: WEBHOOK
+        }
+    }
+} //POST
+
+} //PIPELINE
+
