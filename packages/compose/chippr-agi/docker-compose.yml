@@ -1,5 +1,11 @@
 version: '3.7'
 services:
+  chippr-agi:
+    image: $CHIPPRAGI_IMAGE
+    depends_on:
+      - vector-db
+    environment:
+      - REDIS_URL=redis://vector-db:6379
 
   vector-db:
     image: $VECTOR_IMAGE
@@ -23,5 +29,5 @@ volumes:
     driver: local
     driver_opts:
       type: bind
-      device: $VECTOR_DATA
+      device: $VECTOR_DATA 
       o: bind
