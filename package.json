@@ -6,7 +6,9 @@
   ],
   "scripts": {
     "test": "lerna run test",
+    "build" : "lerna run build",
     "new-version": "lerna version --conventional-commits --yes",
+    "publish" : "lerna publish",
     "diff": "lerna diff"
   },
   "name": "chippr-bots",
