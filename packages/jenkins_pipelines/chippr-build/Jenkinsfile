@@ -1,3 +1,18 @@
+def configuration = [vaultUrl: 'http://192.168.1.135:8200', 
+                        vaultCredentialId: 'gh-vault', 
+                        engineVersion: 2]
+def secrets = [ 
+  [path: 'secret/COMMON', engineVersion: 2, secretValues: [ 
+    [envVar: 'GIT_CRED', vaultKey: 'GIT_CRED'], 
+    [envVar: 'GIT_URL', vaultKey: 'GIT_URL'], 
+    [envVar: 'SERVER_URL', vaultKey: 'SERVER_URL'],
+    [envVar: 'DOCKERHUB_USERNAME', vaultKey: 'DOCKERHUB_USERNAME'], 
+    [envVar: 'DOCKERHUB_PASSWORD', vaultKey: 'DOCKERHUB_PASSWORD'], 
+    [envVar: 'DOCKERHUB_REPO', vaultKey: 'DOCKERHUB_REPO'],  
+    ]
+  ]
+]
+
 pipeline {
 
   environment {
@@ -13,92 +28,50 @@ pipeline {
 
   stages {
 
-    stage('Cloning Git') {
+    stage('Checkout the repo Git') {
       steps {
-        git branch: "primary", url: 'https://github.com/chippr-robotics/chippr-bots'
+        checkout scm
       }
     }
 
-    stage('Bumping Lerna versions') {
+    stage('Get latest of all repos'){
+        steps {
+            //use learna to run any git scripts in repos
+            sh 'yarn run git'
+        }
+    }
+
+    stage('Run unit tests'){
+        steps {
+            //run testing on all children
+            sh 'yarn run test'
+        }
+    }
+
+    stage('Bumping versions with Lerna') {
         steps {
             sh 'yarn run new-version'
         }
     }
 
-    stage('Bridgette API build') {
-        when{
-            changeset "**/packages/bridgette-api/*.*"
+    stage('Publish Docker Containers'){
+        steps {
+            //run learna build for docker packages
+            sh 'yarn run build'
         }
-        steps{
-            dir("./packages/bridgette-api") {
-                sh "npm run test"
-                sh "docker build -t $API_IMAGE:$BUILD_NUMBER ."
-                sh "docker build -t $API_IMAGE:latest ."  
-                sh "docker rmi $API_IMAGE:$BUILD_NUMBER"
-                sh "docker service update --image $API_IMAGE:latest bridgette_api"
-        }
-      }
-    }
-
-    stage('Documentation build') {
-        when{
-            changeset "**/packages/docs/*.*"
-        }
-        steps{
-            dir("./packages/docs") {
-                sh "make html"
-           }
-        }
-    }
-
-    stage('Common Files build') {
-        when{
-            changeset "**/packages/common/*.*"
-        }
-        steps{
-            dir("./packages/common") {
-                sh "npm publish"
-        }
-      }
-    }
-
-    stage('BridgetteDB build') {
-        when{
-            changeset "**/packages/bridgetteDB/*.*"
-        }
-        steps{
-            dir("./packages/bridgette-DB") {
-                sh "npm run test"
-                sh "npm publish"
-           }
-        }
-    }
-
-    stage('Bridgette V1 build') {
-        when{
-            changeset "**/packages/bridgette-v1/*.*"
-        }
-        steps{
-            dir("./packages/bridgette-v1") {
-                sh "npm i"
-                sh "npm run test"
-                sh "docker build -t $V1_IMAGE:latest ."  
-                sh "docker service update --image $V1_IMAGE:latest --force bridgette_discord"
+        steps {
+            //login to docker andf push packages
+            withCredentials([usernamePassword(credentialsId: 'dockerhub-credentials', usernameVariable: 'DH_USER', passwordVariable: 'DH_PASS')]) {
+                sh 'docker login -u $DH_USER -p $DH_PASS'
+                sh 'docker push chipprbots/${CHIPPRAGI_IMAGE}:latest'
             }
-        } 
-    }
-  stage('Bridgette twitter build') {
-        when{
-            changeset "**/packages/bridgette-twitter/*.*"
         }
-        steps{
-            dir("./packages/bridgette-twitter") {
-                sh "npm i"
-                sh "docker build -t $TW_IMAGE:latest ."  
-                sh "docker service update --image $TW_IMAGE:latest --force bridgette_twitter"
-            }
-        } 
     }
+
+    stage('Publish npm packages'){
+        //publish NPM pach
+    }
+    
    }
 
    post {
