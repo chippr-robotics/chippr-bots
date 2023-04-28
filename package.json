@@ -6,6 +6,7 @@
   ],
   "scripts": {
     "test": "lerna run test",
+    "git-bump" : "lerna run git",
     "build" : "lerna run build",
     "new-version": "lerna version --conventional-commits --yes",
     "publish" : "lerna publish",
