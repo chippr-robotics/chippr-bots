@@ -1,0 +1,78 @@
+def secrets = [
+        [path: 'secret/COMMON', engineVersion: 2, secretValues: [
+            [envVar: 'GIT_CRED', vaultKey: 'GIT_CRED'],
+            [envVar: 'GIT_URL', vaultKey: 'GIT_URL'],
+            [envVar: 'SERVER_URL', vaultKey: 'SERVER_URL']
+            ]],
+        [path: 'secret/ipfs', engineVersion: 2, secretValues: [
+            [envVar: 'GELF_ADDRESS', vaultKey: 'GELF_ADDRESS'],
+            [envVar: 'IPFS_API_PORT', vaultKey: 'IPFS_API_PORT'],
+            [envVar: 'IPFS_DATA_DIR', vaultKey: 'IPFS_DATA_DIR'],
+            [envVar: 'IPFS_EXPORT_DIR', vaultKey: 'IPFS_EXPORT_DIR'],
+            [envVar: 'IPFS_IMAGE', vaultKey: 'IPFS_IMAGE'],
+            [envVar: 'IPFS_P2P_PORT', vaultKey: 'IPFS_P2P_PORT'],
+            [envVar: 'IPFS_TAG', vaultKey: 'IPFS_TAG'],
+            [envVar: 'IPFS_UI_PORT', vaultKey: 'IPFS_UI_PORT'],
+            ]]
+    ]
+def configuration = [vaultUrl: 'http://192.168.1.135:8200',
+                         vaultCredentialId: 'gh-vault',
+                         engineVersion: 2]
+    
+
+pipeline {
+    agent any
+  
+    stages {
+        
+        stage('KUBO_CLUSTER_START - Build') {
+            steps {
+        	    withVault([configuration: configuration, vaultSecrets: secrets]) {
+                    sh 'docker pull $IPFS_IMAGE'
+        	    }
+            }
+    	}
+
+        stage('KUBO_CLUSTER_START - Purge') {
+            steps{
+                withVault([configuration: configuration, vaultSecrets: secrets]) {
+                    sh """
+                        cd packages/compose/ipfs/
+                        docker stack rm KUBO_CLUSTER  || echo "No service running"
+                    """
+                    
+                }
+            }
+        }
+    
+        stage('KUBO_CLUSTER_START - Rest') {
+            steps{
+                sh 'sleep 10'
+            }
+        }
+        
+        stage('KUBO_CLUSTER_START - Boot') {
+    	   steps{
+    	        withVault([configuration: configuration, vaultSecrets: secrets]) {
+                    sh """
+    	                cd packages/compose/ipfs/
+    	                docker stack deploy -c docker-compose.yml KUBO_CLUSTER
+    	            """
+    	       }
+    	    }
+        }
+    }//STAGES
+    post {
+    changed {
+        withCredentials([string(credentialsId: 'discord_webhook', variable: 'WEBHOOK')]) {
+            discordSend description: 'Jenkins Pipeline Build', 
+            link: BUILD_URL, 
+            successful: currentBuild.resultIsBetterOrEqualTo('SUCCESS'), 
+            title: JOB_NAME, 
+            webhookURL: WEBHOOK
+        }
+    }
+} //POST
+
+} //PIPELINE
+
