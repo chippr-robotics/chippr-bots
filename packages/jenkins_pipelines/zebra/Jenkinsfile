@@ -1,0 +1,93 @@
+def secrets = [
+        [path: 'secret/COMMON', engineVersion: 2, secretValues: [
+            [envVar: 'GIT_CRED', vaultKey: 'GIT_CRED'],
+            [envVar: 'GIT_URL', vaultKey: 'GIT_URL'],
+            [envVar: 'SERVER_URL', vaultKey: 'SERVER_URL']
+            ]],
+        [path: 'secret/ZEBRA', engineVersion: 2, secretValues: [
+            [envVar: 'ZEBRAD_DATA', vaultKey: 'ZEBRAD_DATA'],
+            [envVar: 'ZEBRAD_CACHE', vaultKey: 'ZEBRAD_CACHE'],
+            [envVar: 'ZEBRAD_P2P', vaultKey: 'ZEBRAD_P2P'],
+            [envVar: 'ZEBRAD_IMAGE', vaultKey: 'ZEBRAD_IMAGE'],
+            ]]
+    ]
+def configuration = [vaultUrl: 'http://192.168.1.135:8200',
+                         vaultCredentialId: 'vault-token',
+                         engineVersion: 2]
+    
+
+pipeline {
+    agent any
+  
+    stages {
+        stage('ZEBRA_CLUSTER_START - Checkout') {
+            steps {
+    	    withVault([configuration: configuration, vaultSecrets: secrets]) {
+    	        checkout([
+                    $class: 'GitSCM', 
+                    branches: 
+                        [[name: 'refs/heads/primary']],
+                        doGenerateSubmoduleConfigurations: 
+                            false,
+                            extensions: [[$class: 'CloneOption', timeout: 120]], 
+                            submoduleCfg: [],
+                            userRemoteConfigs: 
+                                [[
+                                    credentialsId: env.GIT_CRED, 
+                                    url: env.GIT_URL
+                                ]]
+                ]) 
+            }}
+        }
+
+        stage('ZEBRAD_START - Build') {
+            steps {
+        	    withVault([configuration: configuration, vaultSecrets: secrets]) {
+                    sh 'docker pull $ZEBRAD_IMAGE'
+        	    }
+            }
+    	}
+
+        stage('ZEBRAD_START - Purge') {
+            steps{
+                withVault([configuration: configuration, vaultSecrets: secrets]) {
+                    sh """
+                        cd packages/compose/zebra/
+                        docker stack rm ZEBRAD  || echo "No service running"
+                    """
+                    
+                }
+            }
+        }
+    
+        stage('ZEBRAD_START - Rest') {
+            steps{
+                sh 'sleep 10'
+            }
+        }
+        
+        stage('ZEBRAD_START - Boot') {
+    	   steps{
+    	        withVault([configuration: configuration, vaultSecrets: secrets]) {
+                    sh """
+    	                cd packages/compose/zebra/
+    	                docker stack deploy -c docker-compose.yml ZEBRAD
+    	            """
+    	       }
+    	    }
+        }
+    }//STAGES
+    post {
+    changed {
+        withCredentials([string(credentialsId: 'discord_webhook', variable: 'WEBHOOK')]) {
+            discordSend description: 'Jenkins Pipeline Build', 
+            link: BUILD_URL, 
+            successful: currentBuild.resultIsBetterOrEqualTo('SUCCESS'), 
+            title: JOB_NAME, 
+            webhookURL: WEBHOOK
+        }
+    }
+} //POST
+
+} //PIPELINE
+
