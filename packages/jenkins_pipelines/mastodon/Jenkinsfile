@@ -1,0 +1,95 @@
+def secrets = [
+        [path: 'secret/COMMON', engineVersion: 2, secretValues: [
+            [envVar: 'GIT_CRED', vaultKey: 'GIT_CRED'],
+            [envVar: 'GIT_URL', vaultKey: 'GIT_URL'],
+            [envVar: 'SERVER_URL', vaultKey: 'SERVER_URL']
+            ]],
+        [path: 'secret/MASTODON', engineVersion: 2, secretValues: [ 
+            [envVar: 'POSTGRES_IMAGE', vaultKey: 'POSTGRES_IMAGE'],
+            [envVar: 'POSTGRES_VOLUME', vaultKey: 'POSTGRES_VOLUME'],
+            [envVar: 'REDIS_IMAGE', vaultKey: 'REDIS_IMAGE'],
+            [envVar: 'REDIS_VOLUME', vaultKey: 'REDIS_VOLUME'],
+            [envVar: 'MASTODON_IMAGE', vaultKey: 'MASTODON_IMAGE'],
+            [envVar: 'MASTODON_SYSTEM_VOLUME', vaultKey: 'MASTODON_SYSTEM_VOLUME'],
+        ]]
+    ]
+def configuration = [vaultUrl: 'http://192.168.1.135:8200',
+                         vaultCredentialId: 'vault-token',
+                         engineVersion: 2]
+    
+
+pipeline {
+    agent any
+  
+    stages {
+        stage('Mastodon - Checkout') {
+            steps {
+    	    withVault([configuration: configuration, vaultSecrets: secrets]) {
+    	        checkout([
+                    $class: 'GitSCM', 
+                    branches: 
+                        [[name: 'refs/heads/primary']],
+                        doGenerateSubmoduleConfigurations: 
+                            false,
+                            extensions: [[$class: 'CloneOption', timeout: 120]], 
+                            submoduleCfg: [],
+                            userRemoteConfigs: 
+                                [[
+                                    credentialsId: env.GIT_CRED, 
+                                    url: env.GIT_URL
+                                ]]
+                ]) 
+            }}
+        }
+
+        stage('Mastodon - Build') {
+            steps {
+        	    withVault([configuration: configuration, vaultSecrets: secrets]) {
+                    sh 'docker pull $NEO4J_IMAGE'
+        	    }
+            }
+    	}
+
+        stage('Mastodon - Purge') {
+            steps{
+                withVault([configuration: configuration, vaultSecrets: secrets]) {
+                    sh """
+                        cd packages/compose/mastodon/
+                        docker stack rm MASTODON_CLUSTER  || echo "No service running"
+                    """
+                    
+                }
+            }
+        }
+    
+        stage('Mastodon - Rest') {
+            steps{
+                sh 'sleep 10'
+            }
+        }
+        
+        stage('Mastodon - Boot') {
+    	   steps{
+    	        withVault([configuration: configuration, vaultSecrets: secrets]) {
+                    sh """
+    	                cd packages/compose/mastodon/
+    	                docker stack deploy -c docker-compose.yml MASTODON_CLUSTER
+    	            """
+    	       }
+    	    }
+        }
+    }//STAGES
+    post {
+    changed {
+        withCredentials([string(credentialsId: 'discord_webhook', variable: 'WEBHOOK')]) {
+            discordSend description: 'Jenkins Pipeline Build', 
+            link: BUILD_URL, 
+            successful: currentBuild.resultIsBetterOrEqualTo('SUCCESS'), 
+            title: JOB_NAME, 
+            webhookURL: WEBHOOK
+        }
+    }
+} //POST
+
+} //PIPELINE
+
