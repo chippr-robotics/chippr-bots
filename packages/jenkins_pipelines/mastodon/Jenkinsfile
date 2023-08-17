@@ -75,7 +75,11 @@ pipeline {
         stage('Mastodon - Build') {
             steps {
         	    withVault([configuration: configuration, vaultSecrets: secrets]) {
-                    sh 'docker pull $NEO4J_IMAGE'
+                    sh 'docker pull $ES_IMAGE'
+                    sh 'docker pull $MASTODON_IMAGE'
+                    sh 'docker pull $POSTGRES_IMAGE'
+                    sh 'docker pull $REDIS_IMAGE'
+                    
         	    }
             }
     	}
