@@ -10,7 +10,7 @@ services:
       test: ['CMD', 'pg_isready', '-U', 'postgres']
     volumes:
       - type: bind
-        source: "${POSTGRES_VOLUME}"
+        source: $POSTGRES_VOLUME
         target: /var/lib/postgresql/data
     environment:
       - 'POSTGRES_HOST_AUTH_METHOD=trust'
@@ -24,7 +24,7 @@ services:
       test: ['CMD', 'redis-cli', 'ping']
     volumes:
       - type: bind
-        source: "${REDIS_VOLUME}"
+        source: $REDIS_VOLUME
         target: /data
 
   # es:
