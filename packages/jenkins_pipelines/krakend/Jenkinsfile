@@ -1,0 +1,93 @@
+def secrets = [
+        [path: 'secret/COMMON', engineVersion: 2, secretValues: [
+            [envVar: 'GIT_CRED', vaultKey: 'GIT_CRED'],
+            [envVar: 'GIT_URL', vaultKey: 'GIT_URL'],
+            [envVar: 'SERVER_URL', vaultKey: 'SERVER_URL']
+            ]],
+        [path: 'secret/KRAKEND', engineVersion: 2, secretValues: [ 
+            [envVar: 'KRAKEND_IMAGE', vaultKey: 'KRAKEND_IMAGE'],
+            [envVar: 'KRAKEND_DATA', vaultKey: 'KRAKEND_DATA'],
+            
+
+        ]]
+    ]
+def configuration = [vaultUrl: 'http://192.168.1.135:8200',
+                         vaultCredentialId: 'vault-token',
+                         engineVersion: 2]
+    
+
+pipeline {
+    agent any
+  
+    stages {
+        stage('Krakend - Checkout') {
+            steps {
+    	    withVault([configuration: configuration, vaultSecrets: secrets]) {
+    	        checkout([
+                    $class: 'GitSCM', 
+                    branches: 
+                        [[name: 'refs/heads/primary']],
+                        doGenerateSubmoduleConfigurations: 
+                            false,
+                            extensions: [[$class: 'CloneOption', timeout: 120]], 
+                            submoduleCfg: [],
+                            userRemoteConfigs: 
+                                [[
+                                    credentialsId: env.GIT_CRED, 
+                                    url: env.GIT_URL
+                                ]]
+                ]) 
+            }}
+        }
+
+        stage('Krakend - Build') {
+            steps {
+        	    withVault([configuration: configuration, vaultSecrets: secrets]) {
+                    sh 'docker pull $KRAKEND_IMAGE'
+        	    }
+            }
+    	}
+
+        stage('Krakend - Purge') {
+            steps{
+                withVault([configuration: configuration, vaultSecrets: secrets]) {
+                    sh """
+                        cd packages/compose/krakend/
+                        docker stack rm KRAKEND_CLUSTER  || echo "No service running"
+                    """
+                    
+                }
+            }
+        }
+    
+        stage('Krakend - Rest') {
+            steps{
+                sh 'sleep 10'
+            }
+        }
+        
+        stage('Krakend - Boot') {
+    	   steps{
+    	        withVault([configuration: configuration, vaultSecrets: secrets]) {
+                    sh """
+    	                cd packages/compose/krakend/
+    	                docker stack deploy -c docker-compose.yml KRAKEND_CLUSTER
+    	            """
+    	       }
+    	    }
+        }
+    }//STAGES
+    post {
+    changed {
+        withCredentials([string(credentialsId: 'discord_webhook', variable: 'WEBHOOK')]) {
+            discordSend description: 'Jenkins Pipeline Build', 
+            link: BUILD_URL, 
+            successful: currentBuild.resultIsBetterOrEqualTo('SUCCESS'), 
+            title: JOB_NAME, 
+            webhookURL: WEBHOOK
+        }
+    }
+} //POST
+
+} //PIPELINE
+
