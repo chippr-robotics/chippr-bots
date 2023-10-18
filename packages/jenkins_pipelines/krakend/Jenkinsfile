@@ -11,9 +11,11 @@ def secrets = [
 
         ]]
     ]
-def configuration = [vaultUrl: 'http://192.168.1.135:8200',
-                         vaultCredentialId: 'vault-token',
-                         engineVersion: 2]
+def configuration = [
+    vaultUrl: 'http://192.168.1.135:8200',                     
+    vaultCredentialId: 'jenkins-role',
+    engineVersion: 2
+    ]
     
 
 pipeline {
