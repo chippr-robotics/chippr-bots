@@ -1,0 +1,98 @@
+def secrets = [
+        [path: 'secret/COMMON', engineVersion: 2, secretValues: [
+            [envVar: 'GIT_CRED', vaultKey: 'GIT_CRED'],
+            [envVar: 'GIT_URL', vaultKey: 'GIT_URL'],
+            [envVar: 'SERVER_URL', vaultKey: 'SERVER_URL']
+            ]],
+        [path: 'secret/Kafka', engineVersion: 2, secretValues: [ 
+            [envVar: 'Kafka_IMAGE', vaultKey: 'Kafka_IMAGE'],
+            [envVar: 'Kafka_PORTS', vaultKey: 'Kafka_PORTS'],
+            [envVar: 'Zookeeper_IMAGE', vaultKey: 'Zookeeper_IMAGE'],
+            [envVar: 'Zookeeper_PORTS', vaultKey: 'Zookeeper_PORTS'],
+            
+
+        ]]
+    ]
+def configuration = [
+    vaultUrl: 'http://192.168.1.135:8200',                     
+    vaultCredentialId: 'jenkins-role',
+    engineVersion: 2
+    ]
+    
+
+pipeline {
+    agent any
+  
+    stages {
+        stage('Kafka - Checkout') {
+            steps {
+    	    withVault([configuration: configuration, vaultSecrets: secrets]) {
+    	        checkout([
+                    $class: 'GitSCM', 
+                    branches: 
+                        [[name: 'refs/heads/primary']],
+                        doGenerateSubmoduleConfigurations: 
+                            false,
+                            extensions: [[$class: 'CloneOption', timeout: 120]], 
+                            submoduleCfg: [],
+                            userRemoteConfigs: 
+                                [[
+                                    credentialsId: env.GIT_CRED, 
+                                    url: env.GIT_URL
+                                ]]
+                ]) 
+            }}
+        }
+
+        stage('Kafka - Build') {
+            steps {
+        	    withVault([configuration: configuration, vaultSecrets: secrets]) {
+                    sh 'docker pull $Kafka_IMAGE'
+                    SH 'DOCKER PULL $Zookeeper_IMAGE'
+        	    }
+            }
+    	}
+
+        stage('Kafka - Purge') {
+            steps{
+                withVault([configuration: configuration, vaultSecrets: secrets]) {
+                    sh """
+                        cd packages/compose/Kafka/
+                        docker stack rm Kafka_CLUSTER  || echo "No service running"
+                    """
+                    
+                }
+            }
+        }
+    
+        stage('Kafka - Rest') {
+            steps{
+                sh 'sleep 10'
+            }
+        }
+        
+        stage('Kafka - Boot') {
+    	   steps{
+    	        withVault([configuration: configuration, vaultSecrets: secrets]) {
+                    sh """
+    	                cd packages/compose/Kafka/
+    	                docker stack deploy -c docker-compose.yml Kafka_CLUSTER
+    	            """
+    	       }
+    	    }
+        }
+    }//STAGES
+    post {
+    changed {
+        withCredentials([string(credentialsId: 'discord_webhook', variable: 'WEBHOOK')]) {
+            discordSend description: 'Jenkins Pipeline Build', 
+            link: BUILD_URL, 
+            successful: currentBuild.resultIsBetterOrEqualTo('SUCCESS'), 
+            title: JOB_NAME, 
+            webhookURL: WEBHOOK
+        }
+    }
+} //POST
+
+} //PIPELINE
+
