@@ -57,7 +57,7 @@ pipeline {
             steps{
                 withVault([configuration: configuration, vaultSecrets: secrets]) {
                     sh """
-                        cd packages/compose/Kafka/
+                        cd packages/compose/kafka/
                         docker stack rm Kafka_CLUSTER  || echo "No service running"
                     """
                     
@@ -75,7 +75,7 @@ pipeline {
     	   steps{
     	        withVault([configuration: configuration, vaultSecrets: secrets]) {
                     sh """
-    	                cd packages/compose/Kafka/
+    	                cd packages/compose/kafka/
     	                docker stack deploy -c docker-compose.yml Kafka_CLUSTER
     	            """
     	       }
