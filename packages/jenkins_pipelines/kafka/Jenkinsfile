@@ -48,7 +48,7 @@ pipeline {
             steps {
         	    withVault([configuration: configuration, vaultSecrets: secrets]) {
                     sh 'docker pull $Kafka_IMAGE'
-                    sh 'DOCKER PULL $Zookeeper_IMAGE'
+                    sh 'docker pull $Zookeeper_IMAGE'
         	    }
             }
     	}
