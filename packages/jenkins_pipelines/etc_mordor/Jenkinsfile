@@ -6,6 +6,7 @@ def secrets = [
             ]],
         [path: 'secret/ETC_MORDOR', engineVersion: 2, secretValues: [ 
             [envVar: 'CG_DATA', vaultKey: 'CG_DATA'],
+            [envVar: 'CG_IMAGE', vaultKey: 'CG_IMAGE'],
             [envVar: 'GETH_HTTP', vaultKey: 'GETH_HTTP'],
             [envVar: 'GETH_MINE', vaultKey: 'GETH_MINE'],
             [envVar: 'GETH_MINER_ETHERBASE', vaultKey: 'GETH_MINER_ETHERBASE'],

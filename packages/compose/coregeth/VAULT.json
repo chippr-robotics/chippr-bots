@@ -1,5 +1,6 @@
 {
     "CG_DATA": "",
+    "CG_IMAGE":"",
     "GETH_HTTP": true,
     "GETH_MINE": true,
     "GETH_MINER_ETHERBASE": "",
