@@ -8,7 +8,7 @@ services:
         source: ${CG_DATA}
         target: /root
     command: >     
-      --${GETH_NETWORK}
+      --${CG_NETWORK}
     ports:
       - '${CG_RPC_PORT}:8545'
       - '${CG_WS_PORT}:8546'
