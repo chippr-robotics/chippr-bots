@@ -1,0 +1,100 @@
+def secrets = [
+        [path: 'secret/COMMON', engineVersion: 2, secretValues: [
+            [envVar: 'GIT_CRED', vaultKey: 'GIT_CRED'],
+            [envVar: 'GIT_URL', vaultKey: 'GIT_URL'],
+            [envVar: 'SERVER_URL', vaultKey: 'SERVER_URL']
+            ]],
+        [path: 'secret/ETC_MORDOR', engineVersion: 2, secretValues: [ 
+            [envVar: 'CG_DATA', vaultKey: 'CG_DATA'],
+            [envVar: 'GETH_HTTP', vaultKey: 'GETH_HTTP'],
+            [envVar: 'GETH_MINE', vaultKey: 'GETH_MINE'],
+            [envVar: 'GETH_MINER_ETHERBASE', vaultKey: 'GETH_MINER_ETHERBASE'],
+            [envVar: 'GETH_MINER_EXTRADATA', vaultKey: 'GETH_MINER_EXTRADATA'],
+            [envVar: 'CG_NETWORK', vaultKey: 'CG_NETWORK'],
+            [envVar: 'CG_P2P_PORT', vaultKey: 'CG_P2P_PORT'],
+            [envVar: 'CG_RPC_PORT', vaultKey: 'CG_RPC_PORT'],
+            [envVar: 'CG_WS_PORT', vaultKey: 'CG_WS_PORT'],
+        ]]
+    ]
+def configuration = [
+    vaultUrl: 'http://192.168.1.135:8200',                     
+    vaultCredentialId: 'jenkins-role',
+    engineVersion: 2
+    ]
+    
+
+pipeline {
+    agent any
+  
+    stages {
+        stage('MORDOR - Checkout') {
+            steps {
+    	    withVault([configuration: configuration, vaultSecrets: secrets]) {
+    	        checkout([
+                    $class: 'GitSCM', 
+                    branches: 
+                        [[name: 'refs/heads/primary']],
+                        doGenerateSubmoduleConfigurations: 
+                            false,
+                            extensions: [[$class: 'CloneOption', timeout: 120]], 
+                            submoduleCfg: [],
+                            userRemoteConfigs: 
+                                [[
+                                    credentialsId: env.GIT_CRED, 
+                                    url: env.GIT_URL
+                                ]]
+                ]) 
+            }}
+        }
+
+        stage('MORDOR - Build') {
+            steps {
+        	    withVault([configuration: configuration, vaultSecrets: secrets]) {
+                    sh 'docker pull $CG_IMAGE'
+        	    }
+            }
+    	}
+
+        stage('MORDOR - Purge') {
+            steps{
+                withVault([configuration: configuration, vaultSecrets: secrets]) {
+                    sh """
+                        cd packages/compose/coregeth/
+                        docker stack rm MORDOR_CLUSTER  || echo "No service running"
+                    """
+                    
+                }
+            }
+        }
+    
+        stage('MORDOR - Rest') {
+            steps{
+                sh 'sleep 10'
+            }
+        }
+        
+        stage('MORDOR - Boot') {
+    	   steps{
+    	        withVault([configuration: configuration, vaultSecrets: secrets]) {
+                    sh """
+    	                cd packages/compose/coregeth/
+    	                docker stack deploy -c docker-compose.yml MORDOR_CLUSTER
+    	            """
+    	       }
+    	    }
+        }
+    }//STAGES
+    post {
+    changed {
+        withCredentials([string(credentialsId: 'discord_webhook', variable: 'WEBHOOK')]) {
+            discordSend description: 'Jenkins Pipeline Build', 
+            link: BUILD_URL, 
+            successful: currentBuild.resultIsBetterOrEqualTo('SUCCESS'), 
+            title: JOB_NAME, 
+            webhookURL: WEBHOOK
+        }
+    }
+} //POST
+
+} //PIPELINE
+

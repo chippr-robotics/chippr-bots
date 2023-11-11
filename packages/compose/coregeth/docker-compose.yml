@@ -1,0 +1,15 @@
+version: '3.2'
+
+services:
+  coregeth:
+    image: ${CG_IMAGE}
+    volumes:
+      - type: bind
+        source: ${CG_DATA}
+        target: /root
+    command: >     
+      --${GETH_NETWORK}
+    ports:
+      - '${CG_RPC_PORT}:8545'
+      - '${CG_WS_PORT}:8546'
+      - '${CG_P2P_PORT}:30303'
