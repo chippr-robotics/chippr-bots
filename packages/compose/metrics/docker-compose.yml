@@ -21,7 +21,7 @@ services:
       - "$PROM_PORT:9090"
     volumes:
       - prometheus-storage:/prometheus
-      - prometheus-config:/etc/prometheus/prometheus.yml
+      - $PROM_CONF:/etc/prometheus/prometheus.yml
     networks:
       - chippr-metrics
     restart: always
@@ -32,12 +32,6 @@ volumes:
     driver_opts:
       type: bind
       device: $PROM_DATA
-      o: bind
-  prometheus-config:
-    driver: local
-    driver_opts:
-      type: bind
-      device: $PROM_CONF
       o: bind
   grafana-storage:
     driver: local
