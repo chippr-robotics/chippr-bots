@@ -11,7 +11,5 @@ services:
       - FC_SETTINGS=/etc/krakend/config/settings/test
       - FC_TEMPLATES=/etc/krakend/config/templates
     ports:
-      - target: ${KRAKEND_HTTP} 
-        published: 8100
-        mode: host
+      - '${KRAKEND_HTTP}:8100'
     command: ["run","-dc","krakend.tmpl"]
