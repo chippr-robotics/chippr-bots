@@ -11,10 +11,13 @@ def secrets = [
             [envVar: 'GETH_MINE', vaultKey: 'GETH_MINE'],
             [envVar: 'GETH_MINER_ETHERBASE', vaultKey: 'GETH_MINER_ETHERBASE'],
             [envVar: 'GETH_MINER_EXTRADATA', vaultKey: 'GETH_MINER_EXTRADATA'],
+            [envVar: 'GETH_METRICS_ADDR', vaultKey: 'GETH_METRICS_ADDR'],
             [envVar: 'CG_NETWORK', vaultKey: 'CG_NETWORK'],
             [envVar: 'CG_P2P_PORT', vaultKey: 'CG_P2P_PORT'],
             [envVar: 'CG_RPC_PORT', vaultKey: 'CG_RPC_PORT'],
             [envVar: 'CG_WS_PORT', vaultKey: 'CG_WS_PORT'],
+            [envVar: 'GETH_METRICS', vaultKey: 'GETH_METRICS'],
+            [envVar: 'CG_METRIC_PORT', vaultKey: 'CG_METRIC_PORT'],
         ]]
     ]
 def configuration = [

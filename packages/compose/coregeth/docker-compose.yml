@@ -13,3 +13,4 @@ services:
       - '${CG_RPC_PORT}:8545'
       - '${CG_WS_PORT}:8546'
       - '${CG_P2P_PORT}:30303'
+      - '${CG_METRIC_PORT}:6060'
