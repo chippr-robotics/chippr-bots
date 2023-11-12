@@ -7,6 +7,7 @@ def secrets = [
         [path: 'secret/KRAKEND', engineVersion: 2, secretValues: [ 
             [envVar: 'KRAKEND_IMAGE', vaultKey: 'KRAKEND_IMAGE'],
             [envVar: 'KRAKEND_DATA', vaultKey: 'KRAKEND_DATA'],
+            [envVar: 'KRAKEND_HTTP', vaultKey: 'KRAKEND_HTTP'],]
             
 
         ]]
