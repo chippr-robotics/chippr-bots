@@ -11,24 +11,21 @@ services:
       - grafana-storage:/var/lib/grafana
       - grafana-etc:/etc/grafana       
     networks:
-      - zcashd-metrics
+      - chippr-metrics
     restart: always
 
 
   prometheus:
     image: $PROM_IMAGE
-    container_name: zcashd-prometheus
     ports:
       - "$PROM_PORT:9090"
     volumes:
       - prometheus-storage:/prometheus
-      - ./configs/prometheus.yml:/etc/prometheus/prometheus.yml
+      - prometheus-config:/etc/prometheus/prometheus.yml
     networks:
-      - zcashd-metrics
+      - chippr-metrics
     restart: always
-    extra_hosts:
-      - "host.docker.internal:$ZCASH_IP"
-
+    
 volumes:
   prometheus-storage:
     driver: local
@@ -56,4 +53,4 @@ volumes:
       o: bind
   
 networks:
-  zcashd-metrics:
+  chippr-metrics:

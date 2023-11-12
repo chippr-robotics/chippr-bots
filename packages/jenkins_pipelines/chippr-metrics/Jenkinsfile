@@ -1,0 +1,100 @@
+def secrets = [
+        [path: 'secret/COMMON', engineVersion: 2, secretValues: [
+            [envVar: 'GIT_CRED', vaultKey: 'GIT_CRED'],
+            [envVar: 'GIT_URL', vaultKey: 'GIT_URL'],
+            [envVar: 'SERVER_URL', vaultKey: 'SERVER_URL']
+            ]],
+        [path: 'secret/CHIPPR-METRICS', engineVersion: 2, secretValues: [ 
+            [envVar: 'GF_DATA', vaultKey: 'GF_DATA'],
+            [envVar: 'GF_ETC', vaultKey: 'GF_ETC'],
+            [envVar: 'GF_IMAGE', vaultKey: 'GF_IMAGE'],
+            [envVar: 'GF_SERVER_HTTP_PORT', vaultKey: 'GF_SERVER_HTTP_PORT'],
+            [envVar: 'PROM_CONF', vaultKey: 'PROM_CONF'],
+            [envVar: 'PROM_DATA', vaultKey: 'PROM_DATA'],
+            [envVar: 'PROM_IMAGE', vaultKey: 'PROM_IMAGE'],
+            [envVar: 'PORM_PORT', vaultKey: 'PROM_PORT'],
+        ]]
+    ]
+def configuration = [
+    vaultUrl: 'http://192.168.1.135:8200',                     
+    vaultCredentialId: 'jenkins-role',
+    engineVersion: 2
+    ]
+    
+
+pipeline {
+    agent any
+  
+    stages {
+        stage('METRICS - Checkout') {
+            steps {
+    	    withVault([configuration: configuration, vaultSecrets: secrets]) {
+    	        checkout([
+                    $class: 'GitSCM', 
+                    branches: 
+                        [[name: 'refs/heads/primary']],
+                        doGenerateSubmoduleConfigurations: 
+                            false,
+                            extensions: [[$class: 'CloneOption', timeout: 120]], 
+                            submoduleCfg: [],
+                            userRemoteConfigs: 
+                                [[
+                                    credentialsId: env.GIT_CRED, 
+                                    url: env.GIT_URL
+                                ]]
+                ]) 
+            }}
+        }
+
+        stage('METRICS - Build') {
+            steps {
+        	    withVault([configuration: configuration, vaultSecrets: secrets]) {
+                    sh 'docker pull $GF_IMAGE'
+                    sh 'docker pull $PROM_IMAGE'
+        	    }
+            }
+    	}
+
+        stage('METRICS - Purge') {
+            steps{
+                withVault([configuration: configuration, vaultSecrets: secrets]) {
+                    sh """
+                        cd packages/compose/metrics/
+                        docker stack rm METRICS_CLUSTER  || echo "No service running"
+                    """
+                    
+                }
+            }
+        }
+    
+        stage('METRICS - Rest') {
+            steps{
+                sh 'sleep 10'
+            }
+        }
+        
+        stage('METRICS - Boot') {
+    	   steps{
+    	        withVault([configuration: configuration, vaultSecrets: secrets]) {
+                    sh """
+    	                cd packages/compose/metrics/
+    	                docker stack deploy -c docker-compose.yml MERTICS_CLUSTER
+    	            """
+    	       }
+    	    }
+        }
+    }//STAGES
+    post {
+    changed {
+        withCredentials([string(credentialsId: 'discord_webhook', variable: 'WEBHOOK')]) {
+            discordSend description: 'Jenkins Pipeline Build', 
+            link: BUILD_URL, 
+            successful: currentBuild.resultIsBetterOrEqualTo('SUCCESS'), 
+            title: JOB_NAME, 
+            webhookURL: WEBHOOK
+        }
+    }
+} //POST
+
+} //PIPELINE
+

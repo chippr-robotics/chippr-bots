@@ -1,0 +1,10 @@
+{
+    "GF_DATA": "/path/to/metrics/grafana",
+    "GF_ETC": "/path/to/metrics/grafana/grafana",
+    "GF_IMAGE": "grafana/grafana",
+    "GF_SERVER_HTTP_PORT": "3030",
+    "PROM_CONF": "/path/to/metrics/prometheus/config",
+    "PROM_DATA": "/path/to/metrics/grafana",
+    "PROM_IMAGE": "prom/prometheus",
+    "PROM_PORT": "9090"
+}
