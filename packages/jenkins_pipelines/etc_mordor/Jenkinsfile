@@ -26,7 +26,7 @@ def secrets = [
             [envVar: 'GETH_WS_ADDR', vaultKey: 'GETH_WS_ADDR'],
             [envVar: 'GETH_WS_API', vaultKey: 'GETH_WS_API'],
             [envVar: 'GETH_WS_PORT', vaultKey: 'GETH_WS_PORT'],
-            [envVar: 'GETH_WS_ORIGIN', vaultKey: 'GETH_WS_ORIGIN'],
+            [envVar: 'GETH_WS_ORIGINS', vaultKey: 'GETH_WS_ORIGINS'],
          
 //GETH MINE                       
             [envVar: 'GETH_MINE', vaultKey: 'GETH_MINE'],
