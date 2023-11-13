@@ -12,7 +12,8 @@ def secrets = [
             [envVar: 'CG_P2P_PORT', vaultKey: 'CG_P2P_PORT'],
             [envVar: 'CG_RPC_PORT', vaultKey: 'CG_RPC_PORT'],
             [envVar: 'CG_WS_PORT', vaultKey: 'CG_WS_PORT'],
-
+            
+            [envVar: 'GETH_FLAGS', vaultKey: 'GETH_FLAGS'], 
             [envVar: 'GETH_NOUSB', vaultKey: 'GETH_NOUSB'],     
 //GETH RPC            
             [envVar: 'GETH_HTTP', vaultKey: 'GETH_HTTP'],

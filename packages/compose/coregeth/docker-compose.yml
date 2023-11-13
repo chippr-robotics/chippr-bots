@@ -9,6 +9,7 @@ services:
         target: /root
     command: >     
       --${CG_NETWORK}
+      ${GETH_FLAGS}
     ports:
       - '${CG_RPC_PORT}:${GETH_HTTP_PORT}'
       - '${CG_WS_PORT}:${GETH_WS_PORT}'
