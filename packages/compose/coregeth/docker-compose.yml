@@ -10,7 +10,7 @@ services:
     command: >     
       --${CG_NETWORK}
     ports:
-      - '${CG_RPC_PORT}:8545'
-      - '${CG_WS_PORT}:8546'
+      - '${CG_RPC_PORT}:${GETH_HTTP_PORT}'
+      - '${CG_WS_PORT}:${GETH_WS_PORT}'
       - '${CG_P2P_PORT}:30303'
-      - '${CG_METRIC_PORT}:6060'
+      - '${CG_METRIC_PORT}:${GETH_METRICS_PORT}'
