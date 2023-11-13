@@ -16,9 +16,9 @@
           "sd": "static",
           "method": "GET",
           "host": [
-            "http://192.168.1.135:8080"
+            "http://192.168.1.135:9090"
           ],
-          "disable_host_sanitize": false,
+          "disable_host_sanitize": true,
           "extra_config": {
             "qos/http-cache": {
               "shared": true
@@ -39,6 +39,28 @@
           "method": "GET",
           "host": [
             "http://192.168.1.135:8200"
+          ],
+          "disable_host_sanitize": false
+        }
+      ]
+    },
+    {
+      "endpoint": "/v1/ETC-mordor",
+      "method": "GET",
+      "output_encoding": "no-op",
+      "backend": [
+        {
+          "url_pattern": "/",
+          "encoding": "no-op",
+          "sd": "static",
+          "method": "GET",
+          "extra_config": {
+            "qos/http-cache": {
+              "shared": true
+            }
+          },
+          "host": [
+            "http://192.168.1.135:8545"
           ],
           "disable_host_sanitize": false
         }
