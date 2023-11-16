@@ -1,9 +1,9 @@
+@load 'packages/jenkins_pipelines/vars/common.groovy'
+@load 'packages/jenkins_pipelines/vars/mordor.groovy'
 
 pipeline {
     agent any
     environment{
-        common = load 'packages/jenkins_pipelines/vars/common.groovy'
-        mordor = load 'packages/jenkins_pipelines/vars/mordor.groovy'
     }
     stages {
         stage('MORDOR - Checkout') {
