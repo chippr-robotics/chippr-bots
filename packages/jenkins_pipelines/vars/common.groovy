@@ -13,3 +13,5 @@ def vaultConfiguration = [
     vaultCredentialId: 'jenkins-role',
     engineVersion: 2
     ]
+
+return this
