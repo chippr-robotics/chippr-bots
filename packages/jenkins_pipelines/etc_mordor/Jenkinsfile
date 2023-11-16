@@ -1,9 +1,9 @@
+def common = load 'packages/jenkins_pipelines/vars/common.groovy'
+def mordor = load 'packages/jenkins_pipelines/vars/mordor.groovy'
+
 pipeline {
     agent any
-    environment{
-    }
-    def common = load 'packages/jenkins_pipelines/vars/common.groovy'
-    def mordor = load 'packages/jenkins_pipelines/vars/mordor.groovy'
+ 
     stages {
         stage('MORDOR - Checkout') {
             steps {
