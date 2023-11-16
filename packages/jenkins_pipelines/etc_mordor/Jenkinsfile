@@ -1,13 +1,10 @@
-@Library('common') _ 
-@Library('mordor') _
-
 pipeline {
     agent any
-    
+
     stages {
         stage('MORDOR - Checkout') {
             steps {
-    	    withVault([configuration: configuration, vaultSecrets: secrets]) {
+    	    withVault([configuration: common.configuration, vaultSecrets: common.secrets]) {
     	        checkout([
                     $class: 'GitSCM', 
                     branches: 
@@ -27,7 +24,7 @@ pipeline {
 
         stage('MORDOR - Build') {
             steps {
-        	    withVault([configuration: configuration, vaultSecrets: mordor]) {
+        	    withVault([configuration: common.configuration, vaultSecrets: mordor.secrets]) {
                     sh 'docker pull $CG_IMAGE'
         	    }
             }
@@ -35,7 +32,7 @@ pipeline {
 
         stage('MORDOR - Purge') {
             steps{
-                withVault([configuration: configuration, vaultSecrets: mordor]) {
+                withVault([configuration: common.configuration, vaultSecrets: mordor.secrets]) {
                     sh """
                         cd packages/compose/coregeth/
                         docker stack rm MORDOR_CLUSTER  || echo "No service running"
@@ -53,7 +50,7 @@ pipeline {
         
         stage('MORDOR - Boot') {
     	   steps{
-    	        withVault([configuration: configuration, vaultSecrets: mordor]) {
+    	        withVault([configuration: common.configuration, vaultSecrets: mordor.secrets]) {
                     sh """
     	                cd packages/compose/coregeth/
     	                docker stack deploy -c docker-compose.yml MORDOR_CLUSTER

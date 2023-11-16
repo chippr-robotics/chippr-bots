@@ -1,5 +1,7 @@
-def etc_mordor = 
-        [path: 'secret/ETC_MORDOR', engineVersion: 2, secretValues: [ 
+def secrets = 
+        [path: 'secret/ETC_MORDOR', 
+        engineVersion: 2, 
+        secretValues: [ 
             [envVar: 'CG_DATA', vaultKey: 'CG_DATA'],
             [envVar: 'CG_IMAGE', vaultKey: 'CG_IMAGE'],
             [envVar: 'CG_METRIC_PORT', vaultKey: 'CG_METRIC_PORT'],
