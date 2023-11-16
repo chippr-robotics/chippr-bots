@@ -104,7 +104,7 @@ pipeline {
 
 @NonCPS 
 def pullAll(list){
-    for (int i = 1; i < list.size(); i++) {
-        sh "echo ${list[i]}"
+    list.each{ item ->
+        sh "echo ${item}"
     }
 }
