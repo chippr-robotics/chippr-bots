@@ -1,6 +1,6 @@
+def common = load '../vars/common.groovy'
+def mordor = load '..vars/mordor.grovvy'
 
- @Library ('coldStart') _
- 
 pipeline {
     agent any
 
