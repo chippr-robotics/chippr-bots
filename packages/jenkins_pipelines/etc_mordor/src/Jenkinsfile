@@ -1,4 +1,6 @@
 
+ @Library ('coldStart') _
+ 
 pipeline {
     agent any
 
