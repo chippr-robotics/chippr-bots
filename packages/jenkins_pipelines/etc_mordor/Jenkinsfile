@@ -105,6 +105,7 @@ pipeline {
 @NonCPS 
 def pullAll(list){
     list.each { item ->
-        docker pull ${item}
+        sh "echo ${list}"
+        sh "docker pull ${item}"
     }
 }
