@@ -1,10 +1,10 @@
-node{
-   def common = load '../vars/common.groovy'
-   def mordor = load '..vars/mordor.grovvy'    
-     
+
 pipeline {
     agent any
-
+    environment{
+        common = load '../vars/common.groovy'
+        mordor = load '../vars/mordor.groovy'
+    }
     stages {
         stage('MORDOR - Checkout') {
             steps {
@@ -63,6 +63,7 @@ pipeline {
     	    }
         }
     }//STAGES
+
     post {
     changed {
         withCredentials([string(credentialsId: 'discord_webhook', variable: 'WEBHOOK')]) {
@@ -71,9 +72,8 @@ pipeline {
             successful: currentBuild.resultIsBetterOrEqualTo('SUCCESS'), 
             title: JOB_NAME, 
             webhookURL: WEBHOOK
+            }
         }
-    }
-} //POST
+    } //POST
 
 } //PIPELINE
-}
