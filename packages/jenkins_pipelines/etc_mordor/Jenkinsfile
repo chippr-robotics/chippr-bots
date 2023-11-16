@@ -49,15 +49,13 @@ pipeline {
     agent any
  
     stages {
-        stage('MORDOR - Checkout') {
-            steps {
-    	    sh 'echo "made it this far"'
-        }}
 
-        stage('MORDOR - Build') {
+        stage('Pull Images') {
             steps {
         	    withVault([vaultSecrets: secrets]) {
-                    sh 'docker pull $CG_IMAGE'
+                    CG_IMAGE.each { item ->
+                        sh 'docker pull ${item}'
+                    }
         	    }
             }
     	}
@@ -74,18 +72,18 @@ pipeline {
             }
         }
     
-        stage('MORDOR - Rest') {
+        stage('Rest') {
             steps{
                 sh 'sleep 10'
             }
         }
         
-        stage('MORDOR - Boot') {
+        stage('Boot') {
     	   steps{
     	        withVault([vaultSecrets: secrets]) {
                     sh """
     	                cd packages/compose/coregeth/
-    	                docker stack deploy -c docker-compose.yml MORDOR_CLUSTER
+    	                docker stack deploy -c docker-compose.yml ${env.JOB_NAME}_CLUSTER
     	            """
     	       }
     	    }
