@@ -1,5 +1,3 @@
-library 'common'
-library 'mordor'
 
 pipeline {
     agent any
