@@ -2,8 +2,8 @@
 pipeline {
     agent any
     environment{
-        common = load 'packages/jenkins_pipeline/vars/common.groovy'
-        mordor = load 'packages/jenkins_pipeline/vars/mordor.groovy'
+        common = load 'chippr-bots/packages/jenkins_pipeline/vars/common.groovy'
+        mordor = load 'chippr-bots/packages/jenkins_pipeline/vars/mordor.groovy'
     }
     stages {
         stage('MORDOR - Checkout') {
