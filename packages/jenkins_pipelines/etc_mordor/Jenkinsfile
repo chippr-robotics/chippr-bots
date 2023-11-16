@@ -1,11 +1,11 @@
 def secrets = [
-        path: 'secret/COMMON', 
+        [path: 'secret/COMMON', 
         engineVersion: 2, 
         secretValues: [
             [envVar: 'GIT_CRED', vaultKey: 'GIT_CRED'],
             [envVar: 'GIT_URL', vaultKey: 'GIT_URL'],
             [envVar: 'SERVER_URL', vaultKey: 'SERVER_URL']
-        ],
+        ]],
         [path: 'secret/ETC_MORDOR', 
         engineVersion: 2, 
         secretValues: [ 
@@ -41,8 +41,7 @@ def secrets = [
             [envVar: 'GETH_METRICS', vaultKey: 'GETH_METRICS'],
             [envVar: 'GETH_METRICS_ADDR', vaultKey: 'GETH_METRICS_ADDR'],
             [envVar: 'GETH_METRICS_PORT', vaultKey: 'GETH_METRICS_PORT'],
-        ]
-        ]
+        ]]
     ]
 
 
