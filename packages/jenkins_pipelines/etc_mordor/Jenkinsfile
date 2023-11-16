@@ -53,8 +53,10 @@ pipeline {
         stage('Pull Images') {
             steps {
         	    withVault([vaultSecrets: secrets]) {
+                    script{
                     CG_IMAGE.each { item ->
                         sh 'docker pull ${item}'
+                    }
                     }
         	    }
             }
