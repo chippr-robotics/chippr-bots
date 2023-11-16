@@ -53,7 +53,7 @@ pipeline {
         stage('MORDOR - Checkout') {
             steps {
     	    
-        }
+        }}
 
         stage('MORDOR - Build') {
             steps {
