@@ -1,9 +1,11 @@
+node{
+   def common = load '../vars/common.groovy'
+   def mordor = load '..vars/mordor.grovvy'    
+     
 pipeline {
     agent any
 
     stages {
-        def common = load '../vars/common.groovy'
-        def mordor = load '..vars/mordor.grovvy'    
         stage('MORDOR - Checkout') {
             steps {
     	    withVault([configuration: common.vaultConfiguration, vaultSecrets: common.secrets]) {
@@ -74,4 +76,4 @@ pipeline {
 } //POST
 
 } //PIPELINE
-
+}
