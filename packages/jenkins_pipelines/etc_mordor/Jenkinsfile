@@ -53,10 +53,7 @@ pipeline {
         stage('Pull Images') {
             steps {
         	    withVault([vaultSecrets: secrets]) {
-                    script{
-                    ${CG_IMAGE}.each { item ->
-                        sh 'docker pull ${item}'
-                    }
+                    pullAll(CG_IMAGE)
                     }
         	    }
             }
@@ -105,3 +102,10 @@ pipeline {
     } //POST
 
 } //PIPELINE
+
+@NonCPS 
+def pullAll(list){
+    list.each { item ->
+        sh 'docker pull ${item}'
+    }
+}
