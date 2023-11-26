@@ -50,20 +50,12 @@ pipeline {
  
     stages {
 
-        stage('Pull Images') {
-            steps {
-        	    withVault([vaultSecrets: secrets]) {
-                    pullAll(CG_IMAGE)
-                    }
-        	    }
-            }
-
-        stage('MORDOR - Purge') {
+        stage(' Purge') {
             steps{
                 withVault([vaultSecrets: secrets]) {
                     sh """
                         cd packages/compose/coregeth/
-                        docker stack rm MORDOR_CLUSTER  || echo "No service running"
+                        docker stack rm ${env.JOB_NAME}_CLUSTER  || echo "No service running"
                     """
                     
                 }
@@ -102,9 +94,3 @@ pipeline {
 
 } //PIPELINE
 
-@NonCPS 
-def pullAll(list){
-    list.each{ item ->
-        sh "echo ${item}"
-    }
-}
