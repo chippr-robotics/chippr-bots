@@ -11,7 +11,6 @@ def secrets = [
         secretValues: [ 
             [envVar:   "WEB3SIGNER_OPTIONS", vaultKey:    "WEB3SIGNER_OPTIONS"],
             [envVar:   "WEB3SIGNER_IMAGE", vaultKey:    "WEB3SIGNER_IMAGE"],
-            [envVar:   "WEB3SIGNER_API", vaultKey:    "WEB3SIGNER_API"],
             [envVar:   "WEB3SIGNER_HTTP_LISTEN_HOST", vaultKey:    "WEB3SIGNER_HTTP_LISTEN_HOST"],
             [envVar:   "WEB3SIGNER_HTTP_LISTEN_PORT", vaultKey:    "WEB3SIGNER_HTTP_LISTEN_PORT"],
             [envVar:   "WEB3SIGNER_HTTP_HOST_ALLOWLIST", vaultKey:    "WEB3SIGNER_HTTP_HOST_ALLOWLIST"],
