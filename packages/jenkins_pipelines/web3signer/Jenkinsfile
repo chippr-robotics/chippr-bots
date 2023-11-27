@@ -6,7 +6,7 @@ def secrets = [
             [envVar: 'GIT_URL', vaultKey: 'GIT_URL'],
             [envVar: 'SERVER_URL', vaultKey: 'SERVER_URL']
         ]],
-        [path: 'secret/${env.JOB_NAME}', 
+        [path: 'secret/ETC_MORDOR_SIGNER', 
         engineVersion: 2, 
         secretValues: [ 
             [envVar:   "WEB3SIGNER_OPTIONS", vaultKey:    "WEB3SIGNER_OPTIONS"],
