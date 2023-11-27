@@ -5,7 +5,7 @@ services:
     image: $WEB3SIGNER_IMAGE
     ports:
       - "$WEB3SIGNER_HTTP_LISTEN_PORT:$WEB3SIGNER_HTTP_LISTEN_PORT"
-      - "$WEB3SIGNER_METRICS_PORT:WEB3SIGNER_METRICS_PORT"
+      - "$WEB3SIGNER_METRICS_PORT:$WEB3SIGNER_METRICS_PORT"
     healthcheck:
       test: ["CMD", "redis-cli", "-h", "localhost", "-p", "6379", "ping"]
       interval: 2s
