@@ -1,0 +1,23 @@
+# Chain          
+chain-id: 63 
+eth1.chain-id: "63" 
+
+
+# logging 
+logging: "INFO" 
+
+# HTTP 
+http-cors-origins: ["*"] 
+http-listen-host: "0.0.0.0" 
+http-listen-port: 6174 
+http-host-allowlist: ["*"] 
+
+# metrics 
+metrics-enabled: true 
+metrics-host: "0.0.0.0" 
+metrics-port: 6174 
+metrics-category: ["HTTP", "SIGNING", "JVM"] 
+metrics-host-allowlist: ["chipprbots.com", "192.168.1.0/24"] 
+
+# other 
+swagger-ui-enabled: true 
