@@ -6,9 +6,6 @@ services:
     ports:
       - "$WEB3SIGNER_HTTP_LISTEN_PORT:$WEB3SIGNER_HTTP_LISTEN_PORT"
       - "$WEB3SIGNER_METRICS_PORT:$WEB3SIGNER_METRICS_PORT"
-    healthcheck:
-      test: ["CMD", "redis-cli", "-h", "localhost", "-p", "6379", "ping"]
-      interval: 2s
-      timeout: 1m30s
-      retries: 5
-      start_period: 5s
+    command:
+      -  web3signer eth1
+    
