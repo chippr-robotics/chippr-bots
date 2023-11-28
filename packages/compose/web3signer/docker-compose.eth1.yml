@@ -7,6 +7,6 @@ services:
       - "$WEB3SIGNER_HTTP_LISTEN_PORT:$WEB3SIGNER_HTTP_LISTEN_PORT"
       - "$WEB3SIGNER_METRICS_PORT:$WEB3SIGNER_METRICS_PORT"
     command:
-      -  eth1
-      - --chain-id=${WEB3SIGNER_ETH1_CHAIN_ID}
+      - --config-file==${WEB3SIGNER_CONFIG_FILE}
+      - eth1
     
