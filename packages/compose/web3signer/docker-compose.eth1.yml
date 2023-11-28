@@ -9,6 +9,12 @@ services:
     command:
       - --config-file=/opt/web3Signer/${WEB3SIGNER_CONFIG_FILE}
       - eth1
+    healthcheck:
+      test: ["CMD", "curl", "-X", "GET", "localhost:6174/healthcheck", "-H", "accept: application/json"]
+      interval: 2s
+      timeout: 1m30s
+      retries: 5
+      start_period: 5s
     volumes:
       - type: bind
         source: ${WEB3SIGNER_DATA_PATH}
