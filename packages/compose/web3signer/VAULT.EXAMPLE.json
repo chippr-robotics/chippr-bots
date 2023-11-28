@@ -30,5 +30,6 @@
     "WEB3SIGNER_ETH1_HTTP_TLS_CA_AUTH_ENABLED":"false",
     "WEB3SIGNER_ETH1_KEYSTORES_PASSWORD_FILE":"/Users/me/passwds/keystore_passwords.txt",
     "WEB3SIGNER_ETH1_KEYSTORES_PASSWORDS_PATH":"/Users/me/passwds",
-    "WEB3SIGNER_ETH1_KEYSTORES_PATH":"/Users/me/keystores"
+    "WEB3SIGNER_ETH1_KEYSTORES_PATH":"/Users/me/keystores",
+    "WEB3SIGNER_ETH1_CHAIN_ID" : "1"
 }
