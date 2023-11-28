@@ -7,6 +7,9 @@ services:
       - "$WEB3SIGNER_HTTP_LISTEN_PORT:$WEB3SIGNER_HTTP_LISTEN_PORT"
       - "$WEB3SIGNER_METRICS_PORT:$WEB3SIGNER_METRICS_PORT"
     command:
-      - --config-file=${WEB3SIGNER_CONFIG_FILE}
+      - --config-file=/opt/web3Signer/${WEB3SIGNER_CONFIG_FILE}
       - eth1
-    
+    volumes:
+      - type: bind
+        source: ${WEB3SIGNER_DATA_PATH}
+        target: /opt/web3Signer

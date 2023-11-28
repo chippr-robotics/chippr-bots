@@ -14,7 +14,8 @@ def secrets = [
             [envVar:   "WEB3SIGNER_HTTP_LISTEN_PORT", vaultKey:    "WEB3SIGNER_HTTP_LISTEN_PORT"],
             [envVar:   "WEB3SIGNER_CONFIG_FILE", vaultKey:    "WEB3SIGNER_CONFIG_FILE"],
             [envVar:   "WEB3SIGNER_METRICS_PORT", vaultKey:    "WEB3SIGNER_METRICS_PORT"],
-                  ]]
+            [envVar:   "WEB3SIGNER_DATA_PATH", vaultKey:    "WEB3SIGNER_DATA_PATH"],
+        ]]
     ]
 
 
