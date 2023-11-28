@@ -7,5 +7,5 @@ services:
       - "$WEB3SIGNER_HTTP_LISTEN_PORT:$WEB3SIGNER_HTTP_LISTEN_PORT"
       - "$WEB3SIGNER_METRICS_PORT:$WEB3SIGNER_METRICS_PORT"
     command:
-      -  web3signer eth1
+      -  eth1
     
