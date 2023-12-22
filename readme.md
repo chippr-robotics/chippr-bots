@@ -1,11 +1,21 @@
-# mono repo for Chippr Robotics
+# Monorepo for Chippr Robotics
 
-## packages
+## Packages
 
+## Publicly useful
 ### attestation
 public attestions to events and multiparty computations 
 ### common
 common use functions across the mono repo
+### dreadnought
+erc-1155 for ethereum classic token projects
+
+## Internal 
+### jenkins_pipelines
+### compose
+
+
+## To be Archived
 ### bridgetteDB
 kvs DB using kotti network
 ### bridgette-twitter
