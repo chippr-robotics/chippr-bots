@@ -1,7 +1,7 @@
 import { ethers, upgrades } from "hardhat";
 
 async function main() {
-  const ContractFactory = await ethers.getContractFactory("ETCArmy");
+  const ContractFactory = await ethers.getContractFactory("Dreadnought");
 
   // TODO: Set addresses for the contract arguments below
   const instance = await upgrades.deployProxy(ContractFactory, [defaultAdmin, pauser, minter, upgrader]);

@@ -1,7 +1,7 @@
 {
-  "name": "hardhat-sample",
+  "name": "dreadnought",
   "version": "0.0.1",
-  "description": "",
+  "description": "ERC 1155 for chippr robotics",
   "main": "index.js",
   "scripts": {
     "test": "hardhat test"
