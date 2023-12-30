@@ -40,7 +40,7 @@ pipeline {
                 withVault([vaultSecrets: secrets]) {
                     sh 'echo todo'
             }
-        }
+        }}
 
         stage('Boot') {
     	   steps{
@@ -67,4 +67,3 @@ pipeline {
     } //POST
 
 } //PIPELINE
-
