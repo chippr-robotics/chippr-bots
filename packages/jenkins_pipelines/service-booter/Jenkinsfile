@@ -8,7 +8,7 @@ def secrets = [
             [envVar: 'RPC_PORTS', vaultKey: 'RPC_PORTS'],
             [envVar: 'P2P_PORTS', vaultKey: 'P2P_PORTS'],
             [envVar: 'METRIC_PORTS', vaultKey: 'METRIC_PORTS'],
-            [envVar: 'COMPOSE_FILE', vaultKey: ${env.JOB_NAME}]
+            [envVar: 'COMPOSE_FILE', vaultKey: "${env.JOB_NAME}"]
         ]],
 ]
 
