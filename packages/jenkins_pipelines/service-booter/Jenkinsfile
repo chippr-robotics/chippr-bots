@@ -1,0 +1,69 @@
+def secrets = [
+        [path: 'secret/COMMON', 
+        engineVersion: 2, 
+        secretValues: [
+            [envVar: 'GIT_CRED', vaultKey: 'GIT_CRED'],
+            [envVar: 'GIT_URL', vaultKey: 'GIT_URL'],
+            [envVar: 'SERVER_URL', vaultKey: 'SERVER_URL'],
+            [envVar: 'RPC_PORTS', vaultKey: 'RPC_PORTS'],
+            [envVar: 'P2P_PORTS', vaultKey: 'P2P_PORTS'],
+            [envVar: 'METRIC_PORTS', vaultKey: 'METRIC_PORTS'],
+            [envVar: 'COMPOSE_FILE', vaultKey: "${env.JOB_NAME}"]
+        ]],
+]
+
+pipeline {
+    agent any
+    
+   
+    stages {
+
+        stage(' Purge') {
+            steps{
+                withVault([vaultSecrets: secrets]) {
+                    sh """
+                        cd packages/compose/${env.COMPOSE_FILE}
+                        docker stack rm ${env.JOB_NAME}_CLUSTER  || echo "No service running"
+                    """
+                }
+            }
+        }
+    
+        stage('Rest') {
+            steps{
+                sh 'sleep 10'
+            }
+        }
+        
+        stage('Network setup') {
+            steps{
+                withVault([vaultSecrets: secrets]) {
+                    sh 'echo todo'
+            }
+        }}
+
+        stage('Boot') {
+    	   steps{
+    	        withVault([vaultSecrets: secrets]) {
+                    sh """
+    	                cd packages/compose/${env.COMPOSE_FILE}
+    	                docker stack deploy -c docker-compose.yml ${env.JOB_NAME}_CLUSTER
+    	            """
+    	       }
+    	    }
+        }
+    }//STAGES
+
+    post {
+    changed {
+        withCredentials([string(credentialsId: 'discord_webhook', variable: 'WEBHOOK')]) {
+            discordSend description: 'Jenkins Pipeline Build', 
+            link: BUILD_URL, 
+            successful: currentBuild.resultIsBetterOrEqualTo('SUCCESS'), 
+            title: JOB_NAME, 
+            webhookURL: WEBHOOK
+            }
+        }
+    } //POST
+
+} //PIPELINE
