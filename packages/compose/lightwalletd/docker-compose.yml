@@ -4,6 +4,8 @@ services:
   lightwalletd:
     image: ${LWD_IMAGE}
     #entrypoint: ["/bin/bash", "-c", "sleep infinity"]
+    volumes:
+        - "./zcash.conf:~/.config/zcash.conf"
     command: 
       - --grpc-bind-addr=0.0.0.0:8000
       - --http-bind-addr=0.0.0.0:8100
