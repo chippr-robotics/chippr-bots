@@ -6,10 +6,10 @@ services:
     volumes:
       - type: bind
         source: ${ZEBRAD_DATA}
-        target: /etc/zebra
+        target: /etc/zebrad
       - type: bind
         source: ${ZEBRAD_CACHE}
-        target: /srv/ZEBRAD/.zcash
+        target: /srv/zebrad/.zcash
     command: >     
       ${ZEBRAD_FLAGS}
     ports:
