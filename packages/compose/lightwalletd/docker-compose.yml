@@ -10,7 +10,8 @@ services:
       - --log-file=/dev/stdout
       - --log-level=7
       - --no-tls-very-insecure
-#     --tls-cert=/var/lib/lightwalletd/cert.pem
+      - --zcash-conf-path=~/.config/zcash.conf
+      #     --tls-cert=/var/lib/lightwalletd/cert.pem
 #     --tls-key=/var/lib/lightwalletd/key.pem 
     ports:
       - '${LWD_GRPC_PORT}:8000'
