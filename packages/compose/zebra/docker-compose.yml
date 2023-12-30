@@ -9,8 +9,8 @@ services:
         target: /etc/zebrad
       - type: bind
         source: ${ZEBRAD_CACHE}
-        target: /srv/zebrad/.zcash
+        target: /var/cache/zebrad-cache
     command: >     
       ${ZEBRAD_FLAGS}
     ports:
-      - '${ZEBRAD_P2P}:8233'
+      - '${ZEBRAD_P2P}:8232'
