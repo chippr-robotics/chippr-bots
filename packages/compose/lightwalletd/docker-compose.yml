@@ -4,12 +4,12 @@ services:
   lightwalletd:
     image: ${LWD_IMAGE}
     #entrypoint: ["/bin/bash", "-c", "sleep infinity"]
-    command: >
-      --grpc-bind-addr=0.0.0.0:8000
-      --http-bind-addr=0.0.0.0:8100
-      --log-file=/dev/stdout
-      --log-level=7
-      --no-tls-very-insecure
+    command: 
+      - --grpc-bind-addr=0.0.0.0:8000
+      - --http-bind-addr=0.0.0.0:8100
+      - --log-file=/dev/stdout
+      - --log-level=7
+      - --no-tls-very-insecure
 #     --tls-cert=/var/lib/lightwalletd/cert.pem
 #     --tls-key=/var/lib/lightwalletd/key.pem 
     ports:
