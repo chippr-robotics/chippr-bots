@@ -1,26 +1,17 @@
----
-version: '3'
+version: '3.2'
 
 services:
   ZEBRAD:
-    image: $ZEBRAD_IMAGE
+    image: ${ZEBRAD_IMAGE}
     volumes:
-      - ZEBRAD_data:/etc/zebra 
-      - ZEBRAD_cache:/srv/ZEBRAD/.zcash
+      - type: bind
+        source: ${ZEBRAD_DATA}
+        target: /etc/zebra
+      - type: bind
+        source: ${ZEBRAD_CACHE}
+        target: /srv/ZEBRAD/.zcash
+    command: >     
+      --${ZEBRAD_NETWORK}
+      ${ZEBRAD_FLAGS}
     ports:
-      - "$ZEBRAD_P2P:8233"
-
-volumes:
-  ZEBRAD_data:
-    driver: local
-    driver_opts:
-      type: bind
-      device: $ZEBRAD_DATA
-      o: bind
-
-  ZEBRAD_cache:
-    driver: local
-    driver_opts:
-      type: bind
-      device: $ZEBRAD_CACHE
-      o: bind
+      - '${ZEBRAD_P2P}:8233'
