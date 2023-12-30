@@ -5,14 +5,14 @@ services:
     image: ${LWD_IMAGE}
     #entrypoint: ["/bin/bash", "-c", "sleep infinity"]
     volumes:
-        - "./zcash.conf:~/.config/zcash.conf"
+        - "./zcash.conf:/root/zcash.conf"
     command: 
       - --grpc-bind-addr=0.0.0.0:8000
       - --http-bind-addr=0.0.0.0:8100
       - --log-file=/dev/stdout
       - --log-level=7
       - --no-tls-very-insecure
-      - --zcash-conf-path=~/.config/zcash.conf
+      - --zcash-conf-path=/root/zcash.conf
       #     --tls-cert=/var/lib/lightwalletd/cert.pem
 #     --tls-key=/var/lib/lightwalletd/key.pem 
     ports:
