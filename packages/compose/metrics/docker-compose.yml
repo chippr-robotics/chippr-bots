@@ -1,4 +1,4 @@
-version: "3.7"
+version: "3.8"
 
 services:
   grafana:
@@ -24,8 +24,8 @@ services:
       - $PROM_CONF:/etc/prometheus/prometheus.yml
     networks:
       - chippr-metrics
-    restart: always
-    
+      - backbone
+
 volumes:
   prometheus-storage:
     driver: local
@@ -47,4 +47,7 @@ volumes:
       o: bind
   
 networks:
+  backbone:
+    name: chipprbackbone
+    external: true
   chippr-metrics:

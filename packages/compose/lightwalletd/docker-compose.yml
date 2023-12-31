@@ -5,7 +5,7 @@ services:
     image: ${LWD_IMAGE}
     networks: 
       - backbone
-    entrypoint: ["/bin/bash", "-c", "sleep infinity"]
+    #entrypoint: ["/bin/bash", "-c", "sleep infinity"]
     volumes:
         - type: bind
           source: ${PWD}
