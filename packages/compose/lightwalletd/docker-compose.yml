@@ -1,4 +1,4 @@
-version: '3.2'
+version: '3.8'
 
 services:
   lightwalletd:
@@ -13,15 +13,15 @@ services:
         - type: volume
           source: lightwalletd_cache
           target: /var/lib/lightwalletd
-#    command: 
-#      - --grpc-bind-addr=0.0.0.0:8000
-#      - --http-bind-addr=0.0.0.0:8100
-#      - --log-file=/dev/stdout
-#      - --log-level=7
-#      - --rpchost=${LWD_ZEBRAHOST}
-#      - --rpcport=${LWD_ZEBRAPORT}
-#      - --no-tls-very-insecure
-#      - --zcash-conf-path=/srv/lightwalletd/zcash.conf
+    command: 
+      - --grpc-bind-addr=0.0.0.0:8000
+      - --http-bind-addr=0.0.0.0:8100
+      - --log-file=/dev/stdout
+      - --log-level=7
+      - --rpchost=${LWD_ZEBRAHOST}
+      - --rpcport=${LWD_ZEBRAPORT}
+      - --no-tls-very-insecure
+      - --zcash-conf-path=/srv/lightwalletd/zcash.conf
       #     --tls-cert=/var/lib/lightwalletd/cert.pem
 #     --tls-key=/var/lib/lightwalletd/key.pem 
     ports:
