@@ -1,8 +1,10 @@
-version: '3.2'
+version: '3.8'
 
 services:
   ZEBRAD:
     image: ${ZEBRAD_IMAGE}
+    networks: 
+      - backbone
     volumes:
       - type: bind
         source: ${ZEBRAD_DATA}
@@ -15,8 +17,7 @@ services:
     ports:
       - '0.0.0.0:${ZEBRAD_RPC}:8232'
       - '0.0.0.0:${ZEBRAD_METRICS}:9999'
-    networks: 
-      - backboneintheservice
+
 
 networks:
   backbone:
