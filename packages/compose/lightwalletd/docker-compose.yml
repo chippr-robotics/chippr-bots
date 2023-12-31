@@ -3,7 +3,7 @@ version: '3.2'
 services:
   lightwalletd:
     image: ${LWD_IMAGE}
-    #entrypoint: ["/bin/bash", "-c", "sleep infinity"]
+    entrypoint: ["/bin/bash", "-c", "sleep infinity"]
     volumes:
         - "${PWD}/zcash.conf:/root/zcash.conf"
     command: 
