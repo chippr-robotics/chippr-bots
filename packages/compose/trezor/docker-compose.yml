@@ -1,7 +1,9 @@
-version: '3.2'
+version: '3.8'
 services:
   trezor:
     image: ${TZ_IMAGE}
+    networks:
+      - backbone
     ports:
       - "${TZ_PORT}:8080"
     deploy:
@@ -12,3 +14,7 @@ services:
         delay: 5s
         max_attempts: 3        
 
+networks:
+  backbone:
+    name: chipprbackbone
+    external: true

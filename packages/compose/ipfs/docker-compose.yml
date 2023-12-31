@@ -1,7 +1,10 @@
-version: "3.2"
+version: "3.8"
+
 services:
-  ipfs:
+  IPFS:
     image: ${IPFS_IMAGE}
+    networks:
+      - backbone
     volumes:
       - type: bind
         source: "${IPFS_EXPORT_DIR}"
@@ -10,13 +13,9 @@ services:
         source: "${IPFS_DATA_DIR}"
         target: /data/ipfs
     restart: always   
-    ports:
-      - "${IPFS_API_PORT}:5001"
-      - "${IPFS_UI_PORT}:4001"
-      - "${IPFS_P2P_PORT}:8080"
-#    logging:
-#      driver: gelf
-#      options:
-#        tag: ${IPFS_TAG}
-#        gelf-address: "${GELF_ADDRESS}"
+
+networks:
+  backbone:
+    name: chipprbackbone
+    external: true
 
