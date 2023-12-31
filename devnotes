@@ -9,7 +9,8 @@ Jenkins - good
 compose
  - remove inactive
  - all files version 3.8
- - same order
+ - add names to the common file 
+ - same order in file
 services
    ALLCAPSNAME
       images : ${IMAGE} 
@@ -17,10 +18,22 @@ services
        - type: bind 
          source: ${DATA}
          target: /root
-      ports
-         
-      volumes
-      commands
+      networks:
+       - chipprbackbone
+      ports:
+       - ""
+      commands:
+        ${MULTI_LINE_STRING}
 
 networks
 volumes
+
+coregeth +
+ipfs +
+krakend 
+lightwalletd +
+metrics
+trezor
+vector-db
+web3signer
+zebra +

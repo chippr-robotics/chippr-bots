@@ -3,8 +3,6 @@ version: "3.8"
 services:
   IPFS:
     image: ${IPFS_IMAGE}
-    networks:
-      - backbone
     volumes:
       - type: bind
         source: "${IPFS_EXPORT_DIR}"
@@ -12,7 +10,8 @@ services:
       - type: bind
         source: "${IPFS_DATA_DIR}"
         target: /data/ipfs
-    restart: always   
+    networks:
+      - backbone
 
 networks:
   backbone:
