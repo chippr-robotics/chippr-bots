@@ -24,8 +24,10 @@ services:
       - '${LWD_HTTP_PORT}:8100'      
     restart: always
     networks:
-      - chippr-backbone
+      - backbone
 volumes:
   lightwalletd_cache: 
 networks:
-  chippr-backbone:
+  backbone:
+    external:
+      name: chippr-backbone
