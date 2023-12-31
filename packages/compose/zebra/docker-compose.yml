@@ -13,5 +13,5 @@ services:
     command: >     
       ${ZEBRAD_FLAGS}
     ports:
-      - '${ZEBRAD_RPC}:8232'
-      - '${ZEBRAD_METRICS}:9999'
+      - '0.0.0.0:${ZEBRAD_RPC}:8232'
+      - '0.0.0.0:${ZEBRAD_METRICS}:9999'
