@@ -27,7 +27,7 @@ services:
       - backbone
 networks:
   backbone:
-    name: chippr-backbone
+    name: chipprbackbone
     external: true
 
 volumes:
