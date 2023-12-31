@@ -19,10 +19,10 @@ services:
     image: ${PROM_IMAGE}
     volumes:
       - type: bind
-        source: $PROM_DATA
+        source: ${PROM_DATA}
         target: /prometheus
       - type: bind
-        source: $PROM_CONF
+        source: ${PROM_CONF}
         target: /etc/prometheus/prometheus.yml
     networks:
       - backbone
