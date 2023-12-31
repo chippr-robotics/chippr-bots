@@ -23,7 +23,7 @@ services:
       - '${LWD_GRPC_PORT}:8000'
       - '${LWD_HTTP_PORT}:8100'      
     restart: always
-    network:
+    networks:
       - 'chippr-backbone' 
 volumes:
   lightwalletd_cache: 
