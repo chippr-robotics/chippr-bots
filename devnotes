@@ -30,10 +30,10 @@ volumes
 
 coregeth +
 ipfs +
-krakend 
+krakend + 
 lightwalletd +
-metrics
-trezor
-vector-db 
+metrics +
+trezor +
+vector-db  
 web3signer +
 zebra +

@@ -1,27 +1,19 @@
 version: '3.8'
 services:
-
-  vector-db:
-    image: $VECTOR_IMAGE
-    ports:
-      - "$VECTOR_API:6379"
-      - "$VECTOR_UI:8001"
+  REDIS:
+    image: ${VECTOR_IMAGE}
     environment:
       - REDISEARCH_ARGS=CONCURRENT_WRITE_MODE
     volumes:
-      - vector-db:/var/lib/redis
-      - ./redis.conf:/usr/local/etc/redis/redis.conf
+      - type: bind
+        source: ${VECTOR_DATA}
+        target: /var/lib/redis
+      - type: volume
+        source: ./redis.conf
+        target: /usr/local/etc/redis/redis.conf
     healthcheck:
       test: ["CMD", "redis-cli", "-h", "localhost", "-p", "6379", "ping"]
       interval: 2s
       timeout: 1m30s
       retries: 5
       start_period: 5s
-
-volumes:
-  vector-db:
-    driver: local
-    driver_opts:
-      type: bind
-      device: $VECTOR_DATA
-      o: bind
