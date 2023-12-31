@@ -34,6 +34,6 @@ krakend
 lightwalletd +
 metrics
 trezor
-vector-db
-web3signer
+vector-db 
+web3signer +
 zebra +
