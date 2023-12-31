@@ -1,1 +1,26 @@
 goal of the branch:
+make all file name and format consistant...
+
+tasks
+Jenkins - good
+ - foldernames_are_snake_case
+ - no unused stuff
+
+compose
+ - remove inactive
+ - all files version 3.8
+ - same order
+services
+   ALLCAPSNAME
+      images : ${IMAGE} 
+      volumes:
+       - type: bind 
+         source: ${DATA}
+         target: /root
+      ports
+         
+      volumes
+      commands
+
+networks
+volumes
