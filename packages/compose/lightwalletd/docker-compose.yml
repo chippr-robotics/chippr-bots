@@ -5,7 +5,7 @@ services:
     image: ${LWD_IMAGE}
     #entrypoint: ["/bin/bash", "-c", "sleep infinity"]
     volumes:
-        - "${PWD}/zcash.conf:/srv/lightwalletd/zcash.conf"
+        - "${PWD}:/srv/lightwalletd"
         - lightwalletd_cache:/var/lib/lightwalletd
 
     command: 
