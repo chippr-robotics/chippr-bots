@@ -9,7 +9,8 @@ services:
       - type: bind 
         source: ${DATA}
         target: /root
-    command: [ ${GETH_FLAGS} ]
+    command: 
+      ${GETH_FLAGS} 
 
 networks:
   backbone:
