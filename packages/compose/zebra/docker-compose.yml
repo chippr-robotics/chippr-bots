@@ -16,7 +16,7 @@ services:
       - '0.0.0.0:${ZEBRAD_RPC}:8232'
       - '0.0.0.0:${ZEBRAD_METRICS}:9999'
     networks: 
-      - backbone
+      - backboneintheservice
 
 networks:
   backbone:
