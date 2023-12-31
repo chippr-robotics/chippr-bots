@@ -11,6 +11,8 @@ services:
       - --http-bind-addr=0.0.0.0:8100
       - --log-file=/dev/stdout
       - --log-level=7
+      - --rpchost=${LWD_ZEBRAHOST}
+      - --rpcport=${LWD_ZEBRAPORT}
       - --no-tls-very-insecure
       - --zcash-conf-path=/srv/lightwalletd/zcash.conf
       #     --tls-cert=/var/lib/lightwalletd/cert.pem
