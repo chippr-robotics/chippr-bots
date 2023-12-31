@@ -1,10 +1,12 @@
-version: '3.2'
+version: '3.8'
 
 services:
   coregeth:
     image: ${CG_IMAGE}
+    networks:
+      - backbone
     volumes:
-      - type: bind
+      - type: bind 
         source: ${CG_DATA}
         target: /root
     command: >     
@@ -15,3 +17,8 @@ services:
       - '${CG_WS_PORT}:${GETH_WS_PORT}'
       - '${CG_P2P_PORT}:30303'
       - '${CG_METRIC_PORT}:${GETH_METRICS_PORT}'
+
+networks:
+  backbone:
+    name: chipprbackbone
+    external: true

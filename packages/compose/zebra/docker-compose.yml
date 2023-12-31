@@ -1,8 +1,10 @@
-version: '3.2'
+version: '3.8'
 
 services:
   ZEBRAD:
     image: ${ZEBRAD_IMAGE}
+    networks: 
+      - backbone
     volumes:
       - type: bind
         source: ${ZEBRAD_DATA}
@@ -10,7 +12,14 @@ services:
       - type: bind
         source: ${ZEBRAD_CACHE}
         target: /var/cache/zebrad-cache
-    command: >     
-      ${ZEBRAD_FLAGS}
+    #command: >     
+    #  ${ZEBRAD_FLAGS}
     ports:
-      - '${ZEBRAD_P2P}:8232'
+      - '0.0.0.0:${ZEBRAD_RPC}:8232'
+      - '0.0.0.0:${ZEBRAD_METRICS}:9999'
+
+
+networks:
+  backbone:
+    name: chipprbackbone
+    external: true

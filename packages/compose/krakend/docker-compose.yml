@@ -1,9 +1,13 @@
-version: "3"
+version: "3.8"
 services:
-  krakend:
+  KRAKEND:
     image: ${KRAKEND_IMAGE}
+    networks: 
+      - backbone
     volumes:
-      - "${KRAKEND_DATA}:/etc/krakend/"
+      - type: bind
+        source: ${KRAKEND_DATA}
+        target: /etc/krakend/
     environment:
       - FC_ENABLE=1
       - FC_OUT=/etc/krakend/out.json
@@ -13,3 +17,9 @@ services:
     ports:
       - '${KRAKEND_HTTP}:8100'
     command: ["run","-dc","krakend.tmpl"]
+
+
+networks:
+  backbone:
+    name: chipprbackbone
+    external: true
