@@ -3,7 +3,7 @@ version: '3.2'
 services:
   lightwalletd:
     image: ${LWD_IMAGE}
-    #entrypoint: ["/bin/bash", "-c", "sleep infinity"]
+    entrypoint: ["/bin/bash", "-c", "sleep infinity"]
     volumes:
         - "${PWD}:/srv/lightwalletd"
         - lightwalletd_cache:/var/lib/lightwalletd
