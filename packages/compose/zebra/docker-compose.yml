@@ -19,5 +19,5 @@ services:
       - backbone
 networks:
   backbone:
-    external:
-      name: chippr-backbone
+    name: chippr-backbone
+    external: true
