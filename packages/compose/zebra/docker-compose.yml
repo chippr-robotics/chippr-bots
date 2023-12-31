@@ -17,6 +17,7 @@ services:
       - '0.0.0.0:${ZEBRAD_METRICS}:9999'
     networks: 
       - backbone
+
 networks:
   backbone:
     name: chippr-backbone
