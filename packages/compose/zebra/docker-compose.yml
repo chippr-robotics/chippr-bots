@@ -10,8 +10,8 @@ services:
       - type: bind
         source: ${ZEBRAD_CACHE}
         target: /var/cache/zebrad-cache
-    command: >     
-      ${ZEBRAD_FLAGS}
+    #command: >     
+    #  ${ZEBRAD_FLAGS}
     ports:
       - '0.0.0.0:${ZEBRAD_RPC}:8232'
       - '0.0.0.0:${ZEBRAD_METRICS}:9999'

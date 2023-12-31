@@ -25,11 +25,11 @@ services:
     restart: always
     networks:
       - backbone
-
-volumes:
-  lightwalletd_cache: 
-
 networks:
   backbone:
     name: chippr-backbone
     external: true
+
+volumes:
+  lightwalletd_cache: 
+
