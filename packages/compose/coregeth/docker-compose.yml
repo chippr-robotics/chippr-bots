@@ -1,22 +1,16 @@
 version: '3.8'
 
 services:
-  coregeth:
-    image: ${CG_IMAGE}
+  COREGETH:
+    image: ${IMAGE}
     networks:
       - backbone
     volumes:
       - type: bind 
-        source: ${CG_DATA}
+        source: ${DATA}
         target: /root
-    command: >     
-      --${CG_NETWORK}
-      ${GETH_FLAGS}
-    ports:
-      - '${CG_RPC_PORT}:${GETH_HTTP_PORT}'
-      - '${CG_WS_PORT}:${GETH_WS_PORT}'
-      - '${CG_P2P_PORT}:30303'
-      - '${CG_METRIC_PORT}:${GETH_METRICS_PORT}'
+    command: 
+      ${GETH_FLAGS} 
 
 networks:
   backbone:

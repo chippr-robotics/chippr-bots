@@ -1,1 +1,39 @@
 goal of the branch:
+make all file name and format consistant...
+
+tasks
+Jenkins - good
+ - foldernames_are_snake_case
+ - no unused stuff
+
+compose
+ - remove inactive
+ - all files version 3.8
+ - add names to the common file 
+ - same order in file
+services
+   ALLCAPSNAME
+      images : ${IMAGE} 
+      volumes:
+       - type: bind 
+         source: ${DATA}
+         target: /root
+      networks:
+       - chipprbackbone
+      ports:
+       - ""
+      commands:
+        ${MULTI_LINE_STRING}
+
+networks
+volumes
+
+coregeth +
+ipfs +
+krakend + 
+lightwalletd +
+metrics +
+trezor +
+vector-db  
+web3signer +
+zebra +
