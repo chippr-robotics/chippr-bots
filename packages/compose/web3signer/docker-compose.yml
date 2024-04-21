@@ -6,5 +6,7 @@ services:
       - type: bind
         source: ${WEB3SIGNER_DATA_PATH}
         target: /opt/web3Signer
+    ports:
+      - ${WEB3SIGNER_HTTP_LISTEN_EXT}:${WEB3SIGNER_HTTP_LISTEN_INT}
     command:
       ${SIGNER_FLAGS}
