@@ -11,3 +11,7 @@ services:
       - '${WEB3SIGNER_RPC_EXT}:8545'
     command:
       ${SIGNER_FLAGS}
+networks:
+  backbone:
+    name: chipprbackbone
+    external: true
