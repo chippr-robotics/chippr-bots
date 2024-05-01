@@ -2,6 +2,8 @@ version: '3.8'
 services:
   WEB3SIGNER:
     image: ${WEB3SIGNER_IMAGE}
+    networks:
+      - backbone
     volumes:
       - type: bind
         source: ${WEB3SIGNER_DATA_PATH}
