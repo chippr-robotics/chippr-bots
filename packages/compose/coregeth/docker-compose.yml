@@ -5,6 +5,8 @@ services:
     image: ${IMAGE}
     networks:
       - backbone
+    ports: 
+      - 8545:8545
     volumes:
       - type: bind 
         source: ${DATA}
