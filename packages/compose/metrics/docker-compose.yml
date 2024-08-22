@@ -7,7 +7,9 @@ services:
         target: /var/lib/grafana
       - type: bind
         source: ${GF_ETC}
-        target: /etc/grafana       
+        target: /etc/grafana
+    ports:
+      - '0.0.0.0:${GF_SERVER_HTTP_PORT}:8232'
     depends_on:
       - prometheus
     networks:
