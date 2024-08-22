@@ -24,6 +24,8 @@ services:
       - type: bind
         source: ${PROM_CONF}
         target: /etc/prometheus/prometheus.yml
+    ports:
+      - '0.0.0.0:${PROM_PORT}:9090'
     networks:
       - backbone
 
