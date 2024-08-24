@@ -10,7 +10,7 @@ services:
         - type: bind
           source: ${LWD_CACHE}
           target: /var/lib/lightwalletd
-    command: 
+    command: >
       - --grpc-bind-addr=0.0.0.0:8000
       - --http-bind-addr=0.0.0.0:8100
       - --log-file=/dev/stdout
