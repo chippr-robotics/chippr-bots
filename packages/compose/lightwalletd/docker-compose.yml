@@ -8,9 +8,6 @@ services:
     #entrypoint: ["/bin/bash", "-c", "sleep infinity"]
     volumes:
         - type: bind
-          source: ${LWD_CONF}
-          target: /srv/lightwalletd
-        - type: volume
           source: ${LWD_CACHE}
           target: /var/lib/lightwalletd
     command: 
@@ -21,7 +18,7 @@ services:
       - --rpchost=${LWD_ZEBRAHOST}
       - --rpcport=${LWD_ZEBRAPORT}
       - --no-tls-very-insecure
-      - --zcash-conf-path=/srv/lightwalletd/zcash.conf
+      - --zcash-conf-path=/var/lib/lightwalletd/zcash.conf
       #     --tls-cert=/var/lib/lightwalletd/cert.pem
 #     --tls-key=/var/lib/lightwalletd/key.pem 
     ports:
