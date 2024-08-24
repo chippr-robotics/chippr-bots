@@ -8,10 +8,10 @@ services:
     #entrypoint: ["/bin/bash", "-c", "sleep infinity"]
     volumes:
         - type: bind
-          source: ${PWD}
+          source: ${LWD_CONF}
           target: /srv/lightwalletd
         - type: volume
-          source: lightwalletd_cache
+          source: ${LWD_CACHE}
           target: /var/lib/lightwalletd
     command: 
       - --grpc-bind-addr=0.0.0.0:8000
@@ -32,7 +32,3 @@ networks:
   backbone:
     name: chipprbackbone
     external: true
-
-volumes:
-  lightwalletd_cache: 
-
