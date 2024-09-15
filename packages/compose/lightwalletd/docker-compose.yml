@@ -18,9 +18,8 @@ services:
       - --log-level=7
       - --rpchost=${LWD_ZEBRAHOST}
       - --rpcport=${LWD_ZEBRAPORT}
-      - --no-tls-very-insecure
-#     --tls-cert=/var/lib/lightwalletd/cert.pem
-#     --tls-key=/var/lib/lightwalletd/key.pem 
+      - --tls-cert=${LWD_TLS_CERT}
+      - --tls-key=${LWD_TLS_KEY}
     ports:
       - '${LWD_GRPC_PORT}:8000'
       - '${LWD_HTTP_PORT}:8100'
