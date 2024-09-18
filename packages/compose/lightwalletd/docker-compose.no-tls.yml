@@ -1,1 +1,27 @@
---no-tls-very-insecure
+services:
+  lightwalletd:
+    image: ${LWD_IMAGE}
+    networks: 
+      - backbone
+    #entrypoint: ["/bin/bash", "-c", "sleep infinity"]
+    volumes:
+        - type: bind
+          source: ${LWD_CACHE}
+          target: /var/lib/lightwalletd
+    command: >
+      - --zcash-conf-path=/var/lib/lightwalletd/zcash.conf
+      - --grpc-bind-addr=0.0.0.0:8000
+      - --http-bind-addr=0.0.0.0:8100
+      - --log-file=/dev/stdout
+      - --log-level=7
+      - --rpchost=${LWD_ZEBRAHOST}
+      - --rpcport=${LWD_ZEBRAPORT}
+      - --no-tls-very-insecure
+    ports:
+      - '${LWD_GRPC_PORT}:8000'
+      - '${LWD_HTTP_PORT}:8100'
+
+networks:
+  backbone:
+    name: chipprbackbone
+    external: true
