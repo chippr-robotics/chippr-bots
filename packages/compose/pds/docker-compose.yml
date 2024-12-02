@@ -1,5 +1,5 @@
 services:
-  ZEBRAD:
+  PDS:
     image: ${PDS_IMAGE}
     networks: 
       - backbone
