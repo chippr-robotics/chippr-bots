@@ -1,0 +1,18 @@
+services:
+  ZEBRAD:
+    image: ${PDS_IMAGE}
+    networks: 
+      - backbone
+    volumes:
+      - type: bind
+        source: ${PDS_DATA}
+        target: ${PDS_DATA_DIRECTORY}
+    #command: >     
+    #  ${ZEBRAD_FLAGS}
+    ports:
+      - '0.0.0.0:${PDS_PORTS}:3000'
+      
+networks:
+  backbone:
+    name: chipprbackbone
+    external: true
