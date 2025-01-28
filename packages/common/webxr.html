@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Geospatial XR Experience</title>
+    <style>
+        canvas { width: 100%; height: 100%; }
+        body { margin: 0; overflow: hidden; }
+        #info {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            color: white;
+            font-family: Arial;
+            z-index: 100;
+        }
+    </style>
+</head>
+<body>
+    <canvas id="renderCanvas"></canvas>
+    <div id="info">
+        <div>Location: <span id="locationStatus">Acquiring...</span></div>
+        <div>Coordinates: <span id="coordinates"></span></div>
+    </div>
+
+    <!-- Babylon.js dependencies -->
+    <script src="https://cdn.babylonjs.com/babylon.js"></script>
+    <script src="https://cdn.babylonjs.com/loaders/babylonjs.loaders.min.js"></script>
+    <script src="https://cdn.babylonjs.com/materials/babylonjs.materials.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/h3-js@3.7.2/dist/h3-js.umd.js"></script>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', async function() {
+            // Create Babylon.js engine
+            const canvas = document.getElementById('renderCanvas');
+            const engine = new BABYLON.Engine(canvas, true);
+            
+            // Create scene
+            const scene = new BABYLON.Scene(engine);
+            scene.createDefaultEnvironment();
+
+            // Enable XR
+            const xr = await scene.createDefaultXRExperienceAsync({
+                floorMeshes: [scene.getMeshByName("ground")],
+                disableDefaultUI: true
+            });
+
+            // Create camera
+            const camera = new BABYLON.FreeCamera("camera", new BABYLON.Vector3(0, 1.6, 0), scene);
+            camera.attachControl(canvas, true);
+
+            // Create ground
+            const ground = BABYLON.MeshBuilder.CreateGround("ground", { width: 100, height: 100 }, scene);
+            ground.position.y = -0.5;
+
+            // Add lighting
+            new BABYLON.HemisphericLight("light1", new BABYLON.Vector3(1, 1, 0), scene);
+
+            // Geolocation tracking
+            let currentHex = null;
+            let currentLocation = null;
+            let hexMesh = null;
+
+            function updateLocation(position) {
+                currentLocation = {
+                    lat: position.coords.latitude,
+                    lng: position.coords.longitude
+                };
+
+                // Update UI
+                document.getElementById('coordinates').textContent = 
+                    `${currentLocation.lat.toFixed(6)}, ${currentLocation.lng.toFixed(6)}`;
+                document.getElementById('locationStatus').textContent = "Located";
+
+                // Convert to H3 hexagon (resolution 10 - ~0.1km precision)
+                const hex = h3.geoToH3(currentLocation.lat, currentLocation.lng, 10);
+                
+                if (hex !== currentHex) {
+                    currentHex = hex;
+                    updateHexagonDisplay();
+                }
+            }
+
+            function handleLocationError(error) {
+                console.error('Geolocation error:', error);
+                document.getElementById('locationStatus').textContent = "Error getting location";
+            }
+
+            function updateHexagonDisplay() {
+                // Remove previous hexagon
+                if (hexMesh) {
+                    hexMesh.dispose();
+                }
+
+                // Get hexagon boundaries
+                const hexBoundary = h3.h3ToGeoBoundary(currentHex);
+                
+                // Convert geographic coordinates to 3D space (simple projection)
+                const points = hexBoundary.map(coord => {
+                    // Scale coordinates for visibility (adjust scaling factor as needed)
+                    return new BABYLON.Vector3(
+                        (coord[1] - currentLocation.lng) * 10000,
+                        0.1,
+                        (coord[0] - currentLocation.lat) * 10000
+                    );
+                });
+
+                // Close the polygon
+                points.push(points[0]);
+
+                // Create hexagon lines
+                hexMesh = BABYLON.MeshBuilder.CreateLines("hex", { points: points }, scene);
+                hexMesh.color = new BABYLON.Color3(1, 0.5, 0);
+
+                // Create transparent hexagon plane
+                const hexPlane = BABYLON.MeshBuilder.CreatePolygon("hexPlane", {
+                    shape: points.slice(0, -1),
+                    updatable: true,
+                    sideOrientation: BABYLON.Mesh.DOUBLESIDE
+                }, scene);
+                hexPlane.position.y = 0.1;
+                hexPlane.material = new BABYLON.StandardMaterial("hexMat", scene);
+                hexPlane.material.alpha = 0.3;
+                hexPlane.material.diffuseColor = new BABYLON.Color3(1, 0.6, 0);
+            }
+
+            // Start geolocation tracking
+            if (navigator.geolocation) {
+                navigator.geolocation.watchPosition(updateLocation, handleLocationError, {
+                    enableHighAccuracy: true,
+                    maximumAge: 30000,
+                    timeout: 27000
+                });
+            } else {
+                document.getElementById('locationStatus').textContent = "Geolocation not supported";
+            }
+
+            // Engine render loop
+            engine.runRenderLoop(() => {
+                scene.render();
+            });
+
+            // Window resize handler
+            window.addEventListener('resize', () => {
+                engine.resize();
+            });
+        });
+    </script>
+</body>
+</html>
