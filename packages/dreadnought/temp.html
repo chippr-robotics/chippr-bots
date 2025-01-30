@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Neurosity Crown Brain Ball</title>
+    <script src="https://cdn.babylonjs.com/babylon.js"></script>
+    <script src="https://cdn.babylonjs.com/loaders/babylonjs.loaders.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@neurosity/crown/dist/crown.browser.js"></script>
+    <style>
+        canvas { width: 100%; height: 100%; }
+        #xrButton { position: absolute; top: 10px; left: 10px; z-index: 1; }
+    </style>
+</head>
+<body>
+    <canvas id="renderCanvas"></canvas>
+    <button id="xrButton">Enter XR</button>
+
+    <script>
+        const neurosity = new NeurosityCrown();
+
+        async function initializeApp() {
+            // Initialize Neurosity Crown
+            try {
+                await neurosity.login({
+                    deviceId: "YOUR_DEVICE_ID",
+                    email: "YOUR_EMAIL",
+                    password: "YOUR_PASSWORD"
+                });
+                console.log("Logged in to Neurosity Crown");
+            } catch (error) {
+                console.error("Neurosity login failed:", error);
+                return;
+            }
+
+            // Create Babylon.js engine
+            const canvas = document.getElementById("renderCanvas");
+            const engine = new BABYLON.Engine(canvas, true);
+
+            // Create scene
+            const scene = new BABYLON.Scene(engine);
+            scene.createDefaultCameraOrLight(true, true, true);
+            
+            // Create ball
+            const ball = BABYLON.MeshBuilder.CreateSphere("ball", 
+                { diameter: 0.5 }, scene);
+            ball.position.y = 1;
+
+            // Create ground
+            BABYLON.MeshBuilder.CreateGround("ground", 
+                { width: 10, height: 10 }, scene);
+
+            // Initialize WebXR
+            const xr = await scene.createDefaultXRExperienceAsync({
+                floorMeshes: [scene.getMeshByName("ground")]
+            });
+
+            // XR button handler
+            document.getElementById("xrButton").onclick = () => {
+                xr.baseExperience.enterXRAsync("immersive-vr", "local-floor");
+            };
+
+            // Brainwave data handling
+            let brainwaveValue = 0;
+            neurosity.brainwaves("raw").subscribe((data) => {
+                // Simple example: Use average of first 5 EEG channels
+                const values = data.data.slice(0, 5);
+                const avg = values.reduce((a, b) => a + b, 0) / values.length;
+                brainwaveValue = Math.abs(avg) * 0.1; // Scale factor
+            });
+
+            // Animation loop
+            engine.runRenderLoop(() => {
+                // Update ball position based on brainwave value
+                ball.position.y = 1 + brainwaveValue;
+                scene.render();
+            });
+
+            // Resize handling
+            window.addEventListener("resize", () => engine.resize());
+        }
+
+        initializeApp().catch(console.error);
+    </script>
+</body>
+</html>
