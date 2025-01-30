@@ -1,5 +1,3 @@
-version: '3.8'
-
 services:
   COREGETH:
     image: ${IMAGE}
@@ -12,7 +10,9 @@ services:
         source: ${DATA}
         target: /root
     command: 
-      ${GETH_FLAGS} 
+      ${GETH_FLAGS}
+    deploy: 
+      stop_grace_period: 100s
 
 networks:
   backbone:
