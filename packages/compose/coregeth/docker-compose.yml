@@ -12,8 +12,7 @@ services:
         target: /root
     command: 
       ${GETH_FLAGS}
-    deploy: 
-      stop_grace_period: 100s
+    stop_grace_period: 100s
 
 networks:
   backbone:
