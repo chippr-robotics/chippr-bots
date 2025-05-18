@@ -18,11 +18,6 @@ services:
         dbcache=4000
     ports:
       - "${BTC_PORT}:8333"
-    logging:
-      driver: gelf
-      options:
-        tag: ${BTC_TAG}
-        gelf-address: "${GELF_ADDRESS}"
 
   clightning_bitcoin:
     image: ${LND_IMAGE}
