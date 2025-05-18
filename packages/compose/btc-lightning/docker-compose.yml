@@ -48,9 +48,4 @@ services:
       - "${LND_PORT}:9735"
     links:
       - bitcoind
-    logging:
-      driver: gelf
-      options:
-        tag: ${LND_TAG}
-        gelf-address: "${GELF_ADDRESS}"
 
