@@ -37,6 +37,20 @@ jobs:
         working-directory: repo
         run: node --test "scripts/infra/__tests__/*.test.js"
 
+      # ubuntu-latest no longer ships terraform. Install a PINNED release, verified against
+      # HashiCorp's published SHA256SUMS, in a run: step — no third-party action, no floating version.
+      - name: Install terraform (pinned, checksum-verified)
+        run: |
+          set -euo pipefail
+          cd "$RUNNER_TEMP"
+          curl -fsSLO "https://releases.hashicorp.com/terraform/${TF_VERSION}/terraform_${TF_VERSION}_linux_amd64.zip"
+          curl -fsSLO "https://releases.hashicorp.com/terraform/${TF_VERSION}/terraform_${TF_VERSION}_SHA256SUMS"
+          grep "terraform_${TF_VERSION}_linux_amd64.zip" "terraform_${TF_VERSION}_SHA256SUMS" | sha256sum -c -
+          unzip -oq "terraform_${TF_VERSION}_linux_amd64.zip" -d "$RUNNER_TEMP/tf"
+          "$RUNNER_TEMP/tf/terraform" version
+        env:
+          TF_VERSION: "1.15.8"
+
       - name: terraform fmt
         working-directory: repo
-        run: terraform version && terraform fmt -check -recursive infra/terraform
+        run: "$RUNNER_TEMP/tf/terraform" fmt -check -recursive infra/terraform
