@@ -10,7 +10,7 @@
     "preApproved": true,
     "batch": "2026-fairwins-backlog",
     "approvedBy": "realcodywburns",
-    "note": "Pre-approved per decision 2026-09-12. blog.md and the X/LinkedIn/Image sections of social.md are VERBATIM from the source; the Mastodon and Bluesky sections are net-new derivations of the approved X copy. The item was introduced by #174 (a code PR merged under delegation, no human review); the publisher's verifier requires the PR that LAST touched this file to carry an APPROVED review from MARKETING_APPROVERS — the content PR that records this note is that artifact."
+    "note": "Pre-approved per decision 2026-09-12. blog.md and the X/LinkedIn/Image sections of social.md are VERBATIM from the source; the Mastodon and Bluesky sections are net-new derivations of the approved X copy. Approval artifact: the github-actions[bot]-authored PR that last touched this file (opened by marketing-content-pr from branch content/2026-passkey-smart-accounts) carrying an APPROVED review from MARKETING_APPROVERS. #174 introduced the item and #178 this record, both merged without a review the verifier could read (author = approver)."
   },
   "provenance": {
     "repo": "chippr-robotics/prediction-dao-research",
