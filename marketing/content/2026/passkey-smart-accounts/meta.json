@@ -1,0 +1,20 @@
+{
+  "slug": "passkey-smart-accounts",
+  "title": "Passkey Smart Accounts: A Wallet You Open With Your Fingerprint",
+  "brand": "fairwins",
+  "series": "engineering",
+  "state": "approved",
+  "platforms": ["wordpress", "linkedin", "mastodon", "bluesky"],
+  "tags": ["passkeys", "wallets", "self-custody", "onboarding", "account-abstraction"],
+  "review": {
+    "preApproved": true,
+    "batch": "2026-fairwins-backlog",
+    "approvedBy": "realcodywburns",
+    "note": "Pre-approved per decision 2026-09-12. blog.md and the X/LinkedIn/Image sections of social.md are VERBATIM from the source; the Mastodon and Bluesky sections are net-new derivations of the approved X copy, reviewed with the PR that introduced this item."
+  },
+  "provenance": {
+    "repo": "chippr-robotics/prediction-dao-research",
+    "path": "docs/blog/posts/04-passkey-smart-accounts",
+    "commit": "ef5afb8841689269bbcea346787e71bcd660d3e8"
+  }
+}

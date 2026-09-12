@@ -1,0 +1,46 @@
+# marketing-gates: PR checks for the marketing workspace.
+# INVARIANT (gated by marketing/check.js G4): no `uses:` steps — this workflow
+# runs on run: steps and the runner's preinstalled toolchain only, so there is
+# no third-party action to pin or poison. PR-triggered runs get no secrets and
+# no id-token (constitution IV / PLAN.md 2.4).
+name: marketing-gates
+
+on:
+  pull_request:
+    paths:
+      - 'marketing/**'
+      - '.github/workflows/marketing-*.yml'
+      - '.github/CODEOWNERS'
+
+permissions:
+  contents: read
+
+jobs:
+  gates:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out PR head (no actions)
+        run: |
+          git init --quiet repo
+          cd repo
+          git remote add origin "https://x-access-token:${GH_TOKEN}@github.com/${GITHUB_REPOSITORY}.git"
+          git fetch --quiet --depth 1 origin "${HEAD_SHA}"
+          git checkout --quiet FETCH_HEAD
+        env:
+          GH_TOKEN: ${{ github.token }}
+          HEAD_SHA: ${{ github.event.pull_request.head.sha }}
+
+      - name: Toolchain
+        run: node --version && npm --version
+
+      - name: Install (workspace has zero runtime deps)
+        working-directory: repo/marketing
+        run: npm ci --ignore-scripts
+
+      - name: Structural gates
+        working-directory: repo/marketing
+        run: node check.js
+
+      - name: Tests (unit + mock e2e)
+        working-directory: repo/marketing
+        run: node --test

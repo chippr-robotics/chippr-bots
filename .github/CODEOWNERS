@@ -1,0 +1,8 @@
+# The human gate (constitution I): content and the workflows that publish it
+# require an approving review from these owners. The agents' machine identity
+# must NEVER be added here — a bot that owns the gate is no gate.
+
+/marketing/content/           @realcodywburns
+/.github/workflows/           @realcodywburns
+/.github/CODEOWNERS           @realcodywburns
+/.specify/memory/constitution.md  @realcodywburns

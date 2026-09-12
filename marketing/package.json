@@ -1,0 +1,22 @@
+{
+  "name": "@chippr-bots/marketing",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Chippr Robotics marketing department: content pipeline, platform adapters, publisher. Zero runtime dependencies by design (the publisher is the security-critical surface).",
+  "type": "module",
+  "license": "Apache-2.0",
+  "engines": {
+    "node": ">=20"
+  },
+  "workspaces": [
+    "contract",
+    "pipeline",
+    "adapters/*",
+    "secrets"
+  ],
+  "scripts": {
+    "test": "node --test",
+    "check": "node check.js",
+    "tick": "node pipeline/bin/tick.js"
+  }
+}
