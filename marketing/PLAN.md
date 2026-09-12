@@ -2,17 +2,16 @@
 
 Status: **Accepted — phased approach approved 2026-09-12** (rev 3) · Owner: Cody · Home: `chippr-bots/marketing/`
 Scope: automate the blog → image → review → publish → distribute flow for all Chippr
-projects (FairWins, Fukuii, ClearPath, King's Edge, Chippr Robotics itself), with agents
-doing every step except one human review gate.
+projects, with agents doing every step except one human review gate.
 
 Decisions taken (2026-09-12): the **GitHub PR + Actions process is the human gate**;
 the **78 backlog posts are pre-approved** (they enter the pipeline as `approved`; any
 edit re-enters review); a **GitHub Project** provides content management — issues track
 concepts, PRs track the steps. Phase 0 widened: this repo becomes Chippr's core
 brand-management and central-functions home (Spec Kit + shared skills + prompts +
-asset-management packages), and the coordination surface for dormant projects
-(fukuii, Sigil) via the same issues/Project machinery. The repo's constitution now
-lives at `.specify/memory/constitution.md`.
+asset-management packages), and the coordination surface for other Chippr projects
+via the same issues/Project machinery. The repo's constitution now lives at
+`.specify/memory/constitution.md`.
 
 ---
 
@@ -328,7 +327,7 @@ directly. Phase 0 installs, in this order:
 Content management and cross-project coordination live on a GitHub Project board:
 
 - **Issues are concepts**: a blog topic, a campaign, a phase epic, a coordination
-  thread for a dormant project (fukuii, Sigil). The Editor opens topic issues and
+  thread for another Chippr project. The Editor opens topic issues and
   keeps them current.
 - **PRs are the steps**: draft, design, promotion, and pipeline changes land as PRs
   referencing their issue (`Part of #N`; `Closes #N` on the finishing PR — and read
@@ -371,7 +370,7 @@ central-functions repo**, not just the marketing dir.
 - **Constitution** written: `.specify/memory/constitution.md` (the gate, content-as-
   git, honest states, secrets, frozen legacy, injection posture, spec-driven dev).
 - `CLAUDE.md` (agent working guide) + root `readme.md` rewritten for the new
-  mission, including the coordination model for dormant projects (fukuii, Sigil).
+  mission, including the cross-project coordination model.
 - Hygiene: broken `chippr-agi` gitlink removed; `dependabot.yml` fixed (valid,
   scoped to new surfaces only — legacy stays frozen).
 
@@ -500,7 +499,7 @@ changes it.
 gate; the 78 backlog posts are pre-approved (edits re-enter review); a GitHub Project
 for content management (issues = concepts, PRs = steps); Phase 0 widened to prepare
 the repo as the brand-management/central-functions home with Spec Kit + shared
-skills, coordinating dormant projects (fukuii, Sigil) here.
+skills, coordinating other Chippr projects here.
 
 **Still open:**
 

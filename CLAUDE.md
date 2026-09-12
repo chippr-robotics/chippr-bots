@@ -3,8 +3,8 @@
 `chippr-bots` is Chippr Robotics' **brand-management and central-functions repo**:
 the marketing department (agents that publish the blog and social channels), shared
 skills and prompts, asset-management packages, and the coordination surface for
-Chippr projects — including dormant ones (fukuii, Sigil, …) that use this repo's
-issues and project board to coordinate without hosting code here.
+Chippr projects, which use this repo's issues and project board to coordinate
+without hosting code here.
 
 **The constitution at `.specify/memory/constitution.md` is binding.** Read it before
 planning or implementing. The short version: one human gate on outbound content

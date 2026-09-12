@@ -3,7 +3,7 @@
 This constitution defines the non-negotiable standards for this repository in its
 role as Chippr Robotics' brand-management and central-functions home: the marketing
 department, shared skills and prompts, asset-management packages, and the
-coordination surface for Chippr projects (active and dormant alike). Spec Kit
+coordination surface for Chippr projects. Spec Kit
 artifacts (`spec.md`, `plan.md`, `tasks.md`) and all generated code are bound by
 these principles. When guidance here conflicts with convenience, this document wins.
 

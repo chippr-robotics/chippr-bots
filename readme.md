@@ -17,10 +17,9 @@ coordination surface for Chippr projects.
 
 ## Coordination
 
-Chippr projects — including dormant ones like **fukuii** and **Sigil** — coordinate
-through this repo: concepts and campaigns are **issues**, the work is **PRs**
-referencing them, and the GitHub Project board tracks flow. An issue's state is its
-assignee, linked PRs, and open/closed.
+Chippr projects coordinate through this repo: concepts and campaigns are **issues**,
+the work is **PRs** referencing them, and the GitHub Project board tracks flow. An
+issue's state is its assignee, linked PRs, and open/closed.
 
 ## Ground rules
 
