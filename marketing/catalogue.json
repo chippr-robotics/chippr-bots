@@ -1,0 +1,83 @@
+{
+  "$comment": "Platform capability catalogue - constitution IV: every configured platform credential/destination is enumerable here, and check.js fails CI when a row, adapter, or registry entry is missing its counterparts. The publisher publishes in array order (wordpress first: social copy needs the post URL).",
+  "platforms": [
+    {
+      "id": "wordpress",
+      "kind": "adapter",
+      "adapter": "adapters/wordpress",
+      "role": "primary",
+      "formats": { "media": ["image/png", "image/jpeg"], "body": "html" },
+      "schedulingModel": "at-time",
+      "authModel": "basic-app-password",
+      "credentialEnv": ["WP_APP_PASSWORD"],
+      "configEnv": ["WP_BASE_URL", "WP_USERNAME"],
+      "enabled": true
+    },
+    {
+      "id": "mastodon",
+      "kind": "adapter",
+      "adapter": "adapters/mastodon",
+      "role": "social",
+      "formats": { "media": ["image/png", "image/jpeg"], "maxChars": 500 },
+      "copySections": ["mastodon", "x"],
+      "schedulingModel": "at-time",
+      "authModel": "bearer-token",
+      "credentialEnv": ["MASTODON_TOKEN"],
+      "configEnv": ["MASTODON_BASE_URL"],
+      "enabled": true
+    },
+    {
+      "id": "bluesky",
+      "kind": "adapter",
+      "adapter": "adapters/bluesky",
+      "role": "social",
+      "formats": { "media": ["image/png", "image/jpeg"], "maxChars": 300 },
+      "copySections": ["bluesky", "x"],
+      "schedulingModel": "at-time",
+      "authModel": "app-password-session",
+      "credentialEnv": ["BSKY_APP_PASSWORD"],
+      "configEnv": ["BSKY_SERVICE", "BSKY_IDENTIFIER"],
+      "enabled": true
+    },
+    {
+      "id": "linkedin",
+      "kind": "delegated",
+      "delegatedVia": "wordpress",
+      "mechanism": "jetpack-social",
+      "$comment": "No adapter and no credential on purpose (PLAN.md 1.1): Jetpack Social fans out the WP publish. The publisher records state 'delegated', never a fabricated ok. Read-back of share status is a Phase-1 verify item.",
+      "credentialEnv": [],
+      "configEnv": [],
+      "enabled": true
+    },
+    {
+      "id": "x",
+      "kind": "adapter",
+      "adapter": null,
+      "role": "social",
+      "$comment": "Phase 2 (issue #165). Row exists so item platform lists can name it; disabled until the adapter lands with its credential row.",
+      "credentialEnv": [],
+      "configEnv": [],
+      "enabled": false
+    },
+    {
+      "id": "instagram",
+      "kind": "adapter",
+      "adapter": null,
+      "role": "social",
+      "$comment": "Phase 2 (issue #165). JPEG-only media when it lands.",
+      "credentialEnv": [],
+      "configEnv": [],
+      "enabled": false
+    },
+    {
+      "id": "tiktok",
+      "kind": "adapter",
+      "adapter": null,
+      "role": "social",
+      "$comment": "Phase 3 (issue #166). Content Posting API audit required before launch.",
+      "credentialEnv": [],
+      "configEnv": [],
+      "enabled": false
+    }
+  ]
+}

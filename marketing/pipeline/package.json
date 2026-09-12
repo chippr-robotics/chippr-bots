@@ -1,0 +1,21 @@
+{
+  "name": "@chippr-bots/marketing-pipeline",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "license": "Apache-2.0",
+  "engines": {
+    "node": ">=20"
+  },
+  "exports": {
+    ".": "./src/publisher.js",
+    "./item": "./src/item.js",
+    "./states": "./src/states.js",
+    "./calendar": "./src/calendar.js",
+    "./reading": "./src/reading.js",
+    "./receipts": "./src/receipts.js",
+    "./approval": "./src/approval.js",
+    "./markdown": "./src/markdown.js",
+    "./social": "./src/social.js"
+  }
+}
