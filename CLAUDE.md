@@ -53,7 +53,8 @@ new functions go through Spec Kit.
 
 Topic → brief → draft → design (Canva brand templates) → **human PR review** →
 merge → deterministic publisher (WordPress REST first, then platform adapters;
-LinkedIn is delegated to Jetpack Social with read-back). Receipts are committed to
+LinkedIn is delegated to the site's WP LinkedIn Auto Publish plugin with read-back; X is
+omitted for now). Receipts are committed to
 the `receipts` ref. The 78-item 2026 FairWins backlog
 (`prediction-dao-research/docs/blog/`) is **pre-approved**: it enters the pipeline
 as `approved` with that provenance; any edit re-enters review. Details, phases, and

@@ -13,5 +13,9 @@ workload_identity_pool_name = "projects/000000000000/locations/global/workloadId
 secret_ids = [
   "chipprbots-mkt-wp-app-password",
   "chipprbots-mkt-mastodon-token",
-  "chipprbots-mkt-bsky-app-password",
+]
+
+# Pre-existing owner-managed containers (registry `preExisting: true`): granted, never created.
+secret_accessor_secrets = [
+  "chippr-social-bluesky",
 ]

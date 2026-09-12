@@ -42,4 +42,4 @@ third-party actions); PR gates are `.github/workflows/marketing-gates.yml`.
 |---|---|---|
 | topic → draft → images | agents | Strategist / Writer / Designer (Canva brand templates) |
 | review | **yes — the one gate** | PR review on the content item |
-| publish → distribute | deterministic worker | WordPress REST, then Mastodon / Bluesky / X / IG / TikTok adapters; LinkedIn via Jetpack Social |
+| publish → distribute | deterministic worker | WordPress REST, then Mastodon / Bluesky adapters (X omitted for now; IG / TikTok later); LinkedIn via the site's WP LinkedIn Auto Publish plugin |

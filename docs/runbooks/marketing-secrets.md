@@ -31,11 +31,22 @@ until they exist).
 |---|---|---|---|
 | WordPress (`chipprbots.com`) | wp-admin ▸ Users | a **dedicated user** `marketing-bot`, role **Editor** (Author cannot create tags/categories over REST); then Profile ▸ Application Passwords ▸ name `marketing-publisher` | one user, one app password; revoke = delete the app password |
 | Mastodon | Preferences ▸ Development ▸ New application | app `chippr-marketing-publisher`, scopes **`write:statuses`** only (add `read:accounts` for claim verification) | copy the access token |
-| Bluesky | Settings ▸ App Passwords | name `chippr-marketing-publisher` | an app password, never the account password |
+| Bluesky | **already exists** — owner-managed container `chippr-social-bluesky` (app password for `chipprbots.com`, verified 2026-09-12 against bsky.social and the account's PDS) | nothing; Terraform grants the publisher `secretAccessor` on it (`secret_accessor_secrets`) | rotate by adding a new version to that container; never copy it into a second one |
 
-Also on the WP host (ops node, one-time): `define('DISABLE_WP_CRON', true)` in `wp-config.php` and a
-system cron `*/5 * * * * curl -s https://chipprbots.com/wp-cron.php?doing_wp_cron` — Jetpack sharing
-and ActivityPub delivery ride WP-Cron even though the publisher posts at-time.
+Also on the WP host (ops node, one-time — **done 2026-09-12**): `define('DISABLE_WP_CRON', true)` in
+`wp-config.php` and a root cron `*/5 * * * * curl -s --max-time 60 'https://chipprbots.com/wp-cron.php?doing_wp_cron'`
+— LinkedIn auto-publish and ActivityPub delivery ride WP-Cron even though the publisher posts at-time.
+
+### 1b. The must-use plugin (X omitted)
+
+`infra/wordpress/mu-plugins/chippr-marketing-rails.php` is the source of truth; deploy it to
+`/var/www/html/wp-content/mu-plugins/` on the host (owner `www-data`, mode 644). Ship it **base64 over
+ssh** (`base64 -w0 file` → `echo <b64> | base64 -d | sudo tee …`) — a heredoc inside
+`gcloud compute ssh --command '…'` strips the PHP quotes and the result passes `php -l` (a bare
+constant is valid syntax) while fataling at runtime on every request. Verify with
+`wp plugin list --status=must-use` and by listing `transition_post_status` callbacks at priorities 9
+and 10. **WP-CLI on this host needs `php -d memory_limit=512M /usr/local/bin/wp …`** — the CLI php.ini
+caps at 128M and WooCommerce + ActivityPub exhaust it while loading; run as `www-data`.
 
 ## 2. Add the payloads (byte-exact)
 
@@ -45,7 +56,7 @@ and shell history). Paste from a prompt that does not echo:
 ```bash
 read -rs WP_APP && printf '%s' "$WP_APP" | gcloud secrets versions add chipprbots-mkt-wp-app-password --project chippr-bots-site-wp --data-file=- && unset WP_APP
 read -rs MASTO  && printf '%s' "$MASTO"  | gcloud secrets versions add chipprbots-mkt-mastodon-token  --project chippr-bots-site-wp --data-file=- && unset MASTO
-read -rs BSKY   && printf '%s' "$BSKY"   | gcloud secrets versions add chipprbots-mkt-bsky-app-password --project chippr-bots-site-wp --data-file=- && unset BSKY
+# Bluesky: nothing to add — `chippr-social-bluesky` already holds the app password (§1).
 ```
 
 Verify readback length only, never the value:
@@ -60,8 +71,9 @@ Verify readback length only, never the value:
 | `MARKETING_APPROVERS` | `realcodywburns` (comma-separated logins) | the publisher refuses items whose meta.json PR lacks an APPROVED review from this list |
 | `WP_BASE_URL` | `https://chipprbots.com` | public config |
 | `WP_USERNAME` | `marketing-bot` | public config |
-| `MASTODON_BASE_URL` | the instance URL | public config |
-| `BSKY_IDENTIFIER` | the brand handle (e.g. `chipprbots.com`) | public config |
+| `MASTODON_BASE_URL` | the instance URL | public config — unset until PLAN.md §7 item 3 is decided |
+| `BSKY_SERVICE` | `https://bsky.social` | public config — the entryway; the account's own PDS also accepts the session |
+| `BSKY_IDENTIFIER` | `chipprbots.com` | public config (set 2026-09-12) |
 | `MARKETING_LIVE` | **unset** until steps 0–3 are verified, then `true` | the second key; flips the cron from short-circuit to live |
 
 ## 4. First live run
@@ -71,7 +83,7 @@ Verify readback length only, never the value:
 2. Set `MARKETING_LIVE=true`. The next tick verifies approval, publishes WordPress, then Mastodon and
    Bluesky with the real post URL, writes receipts to the `receipts` ref.
 3. Read back: `git fetch origin receipts && git show origin/receipts --stat`; confirm the LinkedIn
-   share landed via Jetpack (the receipt says `delegated` — go look).
+   share landed via the WP LinkedIn Auto Publish plugin (the receipt says `delegated` — the post's `_sent_to_linkedin` meta and the LinkedIn page are the proof; go look).
 
 ## Rotation / revocation
 

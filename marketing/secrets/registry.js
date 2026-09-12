@@ -1,5 +1,7 @@
 // Data-only secret registry (constitution IV, after FairWins spec 097).
-// Payloads live ONLY in GCP Secret Manager under the chipprbots-mkt- prefix;
+// Payloads live ONLY in GCP Secret Manager — under the chipprbots-mkt- prefix
+// (containers Terraform creates) or in a PRE-EXISTING owner-managed container
+// marked `preExisting: true` (Terraform only GRANTS access to those);
 // this table says what exists, which env var it feeds, its class, and which
 // least-privilege profile delivers it. check.js enforces catalogue parity:
 // every enabled adapter's credentialEnv must resolve here, and every entry
@@ -14,21 +16,22 @@ export const REGISTRY = [
     env: ['WP_APP_PASSWORD'],
     class: 'password',
     profiles: ['publish'],
-    note: 'WordPress Application Password for the marketing service user on chipprbots.com. Blast radius EXCEEDS WordPress: Jetpack Social fans posts out to LinkedIn and the ActivityPub plugin federates them, so treat as a distribution credential, not a CMS login.',
+    note: 'WordPress Application Password for the marketing service user on chipprbots.com. Blast radius EXCEEDS WordPress: the WP LinkedIn Auto Publish plugin on the site fans posts out to LinkedIn and the ActivityPub plugin federates them (twitter-auto-publish is unhooked for this user by the chippr-marketing-rails must-use plugin), so treat as a distribution credential, not a CMS login.',
   },
   {
     id: 'chipprbots-mkt-mastodon-token',
     env: ['MASTODON_TOKEN'],
     class: 'token',
     profiles: ['publish'],
-    note: 'Mastodon access token (write:statuses) for the brand account.',
+    note: 'Mastodon access token (write:statuses) for the brand account. No brand account exists yet (PLAN.md §7): the blog already federates as @chipprbots@chipprbots.com via the ActivityPub plugin. Container stays empty (honest not-configured) until that decision lands.',
   },
   {
-    id: 'chipprbots-mkt-bsky-app-password',
+    id: 'chippr-social-bluesky',
+    preExisting: true,
     env: ['BSKY_APP_PASSWORD'],
     class: 'password',
     profiles: ['publish'],
-    note: 'Bluesky app password for the brand account on bsky.social.',
+    note: 'Bluesky app password for @chipprbots.com (did:plc:hyckc5a4scdii4oijbouaiug, PDS truffle.us-east.host.bsky.network). PRE-EXISTING owner-managed container (2026-08-23, user-managed replication): Terraform grants secretAccessor via secret_accessor_secrets and never creates it. Verified 2026-09-12 — createSession succeeds against bsky.social and the PDS.',
   },
 ];
 

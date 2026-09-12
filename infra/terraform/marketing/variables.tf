@@ -21,6 +21,12 @@ variable "default_branch" {
 }
 
 variable "secret_ids" {
-  description = "Secret Manager containers for the publisher's platform credentials. MUST equal the ids in marketing/secrets/registry.js — marketing/check.js gates the parity."
+  description = "Secret Manager containers this root CREATES for the publisher's platform credentials. MUST equal the non-preExisting ids in marketing/secrets/registry.js — marketing/check.js gates the parity."
   type        = list(string)
+}
+
+variable "secret_accessor_secrets" {
+  description = "PRE-EXISTING, owner-managed Secret Manager containers the publisher may read. Granted per secret (secretAccessor), never created or destroyed here. MUST equal the `preExisting: true` ids in marketing/secrets/registry.js — marketing/check.js gates the parity."
+  type        = list(string)
+  default     = []
 }
