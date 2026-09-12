@@ -4,13 +4,24 @@
   "brand": "fairwins",
   "series": "engineering",
   "state": "approved",
-  "platforms": ["wordpress", "linkedin", "mastodon", "bluesky"],
-  "tags": ["passkeys", "wallets", "self-custody", "onboarding", "account-abstraction"],
+  "platforms": [
+    "wordpress",
+    "linkedin",
+    "mastodon",
+    "bluesky"
+  ],
+  "tags": [
+    "passkeys",
+    "wallets",
+    "self-custody",
+    "onboarding",
+    "account-abstraction"
+  ],
   "review": {
     "preApproved": true,
     "batch": "2026-fairwins-backlog",
     "approvedBy": "realcodywburns",
-    "note": "Pre-approved per decision 2026-09-12. blog.md and the X/LinkedIn/Image sections of social.md are VERBATIM from the source; the Mastodon and Bluesky sections are net-new derivations of the approved X copy. Approval artifact: the github-actions[bot]-authored PR that last touched this file (opened by marketing-content-pr from branch content/2026-passkey-smart-accounts) carrying an APPROVED review from MARKETING_APPROVERS. #174 introduced the item and #178 this record, both merged without a review the verifier could read (author = approver)."
+    "note": "Pre-approved per decision 2026-09-12. blog.md and the X/LinkedIn/Image sections of social.md are VERBATIM from the source; the Mastodon and Bluesky sections are net-new derivations of the approved X copy. APPROVAL ARTIFACT: the github-actions[bot] pull request that last touched this file, carrying an APPROVED review from MARKETING_APPROVERS and merged (marketing-content-pr workflow). #174 (code PR, no review) and #178 (session-authored, merged unreviewed — GitHub forbids an author approving their own PR) do not count; the publisher's verifier reads the review, not this note."
   },
   "provenance": {
     "repo": "chippr-robotics/prediction-dao-research",
