@@ -21,3 +21,7 @@ img/
 models/
 
 leviathan/
+# Terraform working dirs and saved plans — never committed (lockfiles and the bootstrap state ARE committed)
+**/.terraform/
+*.tfplan
+infra/terraform/**/tfplan
