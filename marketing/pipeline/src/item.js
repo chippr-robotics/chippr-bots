@@ -61,7 +61,7 @@ export async function loadItem(contentDir, rel) {
   if (meta.platforms.includes('wordpress') && blog === null) {
     throw new ItemError(slug, 'platform wordpress requires blog.md');
   }
-  return { slug, dir, meta, blog, social };
+  return { slug, rel, dir, meta, blog, social };
 }
 
 // Enumerate item dirs under contentDir/<year>/<slug>. Non-item files are

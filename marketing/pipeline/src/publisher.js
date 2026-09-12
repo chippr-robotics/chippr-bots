@@ -28,6 +28,7 @@ export async function tick({
   env = process.env,
   dryRun = true,
   adapterLoader = defaultAdapterLoader,
+  approvalVerifier = verifyApproval,
   fetchImpl = fetch,
   log = () => {},
 }) {
@@ -60,7 +61,7 @@ export async function tick({
       continue;
     }
 
-    const approval = await verifyApproval(item, { env, fetchImpl });
+    const approval = await approvalVerifier(item, { env, fetchImpl });
     if (!approval.approved) {
       const status = approval.unverifiable ? reading.UNREADABLE : reading.FAILED;
       record({ item: due.item, action: 'approval', status, reason: approval.reason });
@@ -118,8 +119,12 @@ export async function tick({
       try {
         payload = buildPayload(row, item, sections, postUrl);
       } catch (e) {
-        if (e instanceof MissingLinkError) {
+        if (e instanceof MissingLinkError && item.meta.platforms.includes('wordpress')) {
+          // legitimate wait: the WP receipt lands earlier in this or a later tick
           record({ item: due.item, platform: row.id, action: 'publish', status: 'skipped', reason: e.message });
+        } else if (e instanceof MissingLinkError) {
+          // no primary channel will ever supply the URL — a content defect, not a wait
+          record({ item: due.item, platform: row.id, action: 'payload', status: reading.FAILED, reason: `${e.message} (item has no wordpress platform)` });
         } else {
           record({ item: due.item, platform: row.id, action: 'payload', status: reading.FAILED, reason: e.message });
         }

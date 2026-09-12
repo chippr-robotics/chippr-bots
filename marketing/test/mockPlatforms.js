@@ -72,6 +72,22 @@ export async function startMockPlatforms() {
       return json(200, { records: state.bskyRecords });
     }
 
+    // --- GitHub API (approval verification) ---
+    // Models: primary's last commit on the pilot meta.json came in via PR #900,
+    // merged, approved by "realcodywburns".
+    if (url.pathname === '/gh/repos/chippr-robotics/chippr-bots/commits' && url.searchParams.get('path')) {
+      return json(200, [{ sha: 'abc123abc123' }]);
+    }
+    if (url.pathname === '/gh/repos/chippr-robotics/chippr-bots/commits/abc123abc123/pulls') {
+      return json(200, [{ number: 900, merged_at: '2026-09-12T13:00:00Z' }]);
+    }
+    if (url.pathname === '/gh/repos/chippr-robotics/chippr-bots/pulls/900') {
+      return json(200, { number: 900, merged_at: '2026-09-12T13:00:00Z' });
+    }
+    if (url.pathname === '/gh/repos/chippr-robotics/chippr-bots/pulls/900/reviews') {
+      return json(200, [{ state: 'COMMENTED', user: { login: 'someone' } }, { state: 'APPROVED', user: { login: 'realcodywburns' } }]);
+    }
+
     json(404, { error: `unmocked ${req.method} ${url.pathname}` });
   });
 
@@ -93,6 +109,10 @@ export async function startMockPlatforms() {
       BSKY_SERVICE: `${base}/bsky`,
       BSKY_IDENTIFIER: 'chipprbots.com',
       BSKY_APP_PASSWORD: 'bsky-app-pass',
+      GITHUB_API_URL: `${base}/gh`,
+      GITHUB_REPOSITORY: 'chippr-robotics/chippr-bots',
+      GITHUB_TOKEN: 'gh-test-token',
+      MARKETING_APPROVERS: 'realcodywburns',
     },
     close: () => new Promise((r) => server.close(r)),
   };

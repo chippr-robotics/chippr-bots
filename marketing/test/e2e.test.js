@@ -35,8 +35,12 @@ test('dry-run performs no external calls and writes nothing', async () => {
     env: mock.env,
     dryRun: true,
   });
-  assert.equal(report.ok, true);
-  assert.equal(mock.requests.length, 0, 'dry-run must not touch the network');
+  assert.equal(report.ok, true, JSON.stringify(report.problems));
+  // Approval verification is a read of GitHub and is allowed in dry-run;
+  // no PLATFORM endpoint may be touched.
+  const platformCalls = mock.requests.filter((r) => !r.path.startsWith('/gh/'));
+  assert.deepEqual(platformCalls, [], 'dry-run must not touch any platform');
+  assert.ok(mock.requests.some((r) => r.path.startsWith('/gh/')), 'approval is verified even in dry-run');
   const dry = report.actions.filter((a) => a.status === 'dry-run');
   assert.ok(dry.length >= 3, `expected wp+mastodon+bluesky dry-run actions, got ${JSON.stringify(report.actions)}`);
   await assert.rejects(readFile(join(receiptsDir, 'receipts', '2026/passkey-smart-accounts', 'wordpress.json')));

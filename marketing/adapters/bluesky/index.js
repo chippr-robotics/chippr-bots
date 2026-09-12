@@ -31,11 +31,13 @@ export function linkFacets(text) {
   const re = /https?:\/\/[^\s)]+/g;
   let m;
   while ((m = re.exec(text)) !== null) {
+    // sentence punctuation after a URL is prose, not part of the link
+    const uri = m[0].replace(/[.,;:!?]+$/, '');
     const byteStart = enc.encode(text.slice(0, m.index)).length;
-    const byteEnd = byteStart + enc.encode(m[0]).length;
+    const byteEnd = byteStart + enc.encode(uri).length;
     facets.push({
       index: { byteStart, byteEnd },
-      features: [{ $type: 'app.bsky.richtext.facet#link', uri: m[0] }],
+      features: [{ $type: 'app.bsky.richtext.facet#link', uri }],
     });
   }
   return facets;

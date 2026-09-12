@@ -63,7 +63,21 @@ test('approval fail-closed: pre-approved without provenance publishes nothing an
   await rm(dir, { recursive: true, force: true });
 });
 
-test('PR-reviewed approval with no GitHub credentials is unverifiable, not a pass', async () => {
+test('social copy with <link> on an item that has no wordpress platform is a content failure, not an endless wait', async () => {
+  const dir = await makeFixture();
+  const { writeFile: wf } = await import('node:fs/promises');
+  await wf(join(dir, 'content', '2026', 'test-post', 'meta.json'), JSON.stringify({
+    slug: 'test-post', state: 'approved', platforms: ['mastodon'], review: { preApproved: true, batch: 'b' }, provenance: { repo: 'r', path: 'p', commit: 'c' },
+  }));
+  const { loader, calls } = stubAdapters();
+  const report = await tick({ now: NOW, marketingDir: dir, receiptsDir: join(dir, 'r'), env: {}, dryRun: false, adapterLoader: loader, approvalVerifier: APPROVED });
+  assert.equal(calls.length, 0);
+  assert.equal(report.ok, false);
+  assert.match(report.problems[0].reason, /no wordpress platform/);
+  await rm(dir, { recursive: true, force: true });
+});
+
+test('approval with no GitHub credentials is unverifiable, not a pass', async () => {
   const dir = await makeFixture({ review: { pr: 7 } });
   const { loader, calls } = stubAdapters();
   const report = await tick({ now: NOW, marketingDir: dir, receiptsDir: join(dir, 'r'), env: {}, dryRun: false, adapterLoader: loader });
@@ -73,12 +87,14 @@ test('PR-reviewed approval with no GitHub credentials is unverifiable, not a pas
   await rm(dir, { recursive: true, force: true });
 });
 
+const APPROVED = async () => ({ approved: true, basis: 'test stub' });
+
 test('an unconfigured platform is not-configured, not a failure; wordpress url feeds mastodon', async () => {
   const dir = await makeFixture();
   const { loader, calls } = stubAdapters({
     mastodon: { isConfigured: () => ({ configured: false, missing: ['MASTODON_TOKEN'] }) },
   });
-  const report = await tick({ now: NOW, marketingDir: dir, receiptsDir: join(dir, 'r'), env: {}, dryRun: false, adapterLoader: loader });
+  const report = await tick({ now: NOW, marketingDir: dir, receiptsDir: join(dir, 'r'), env: {}, dryRun: false, adapterLoader: loader, approvalVerifier: APPROVED });
   assert.equal(report.ok, true);
   assert.equal(calls.length, 1); // wordpress only
   const masto = report.actions.find((a) => a.platform === 'mastodon');
@@ -86,7 +102,7 @@ test('an unconfigured platform is not-configured, not a failure; wordpress url f
 
   // re-run with mastodon configured: wp is skipped (receipt), mastodon gets the URL
   const stub2 = stubAdapters();
-  const report2 = await tick({ now: NOW, marketingDir: dir, receiptsDir: join(dir, 'r'), env: {}, dryRun: false, adapterLoader: stub2.loader });
+  const report2 = await tick({ now: NOW, marketingDir: dir, receiptsDir: join(dir, 'r'), env: {}, dryRun: false, adapterLoader: stub2.loader, approvalVerifier: APPROVED });
   assert.equal(report2.ok, true);
   assert.equal(stub2.calls.length, 1);
   assert.equal(stub2.calls[0].platform, 'mastodon');

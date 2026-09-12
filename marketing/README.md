@@ -26,7 +26,12 @@ the publisher is the security-critical surface, so `npm ci` has nothing to poiso
 
 Run locally: `npm ci --ignore-scripts && npm run check && npm test`.
 Dry-run a tick: `npm run tick` (dry-run is the default; `--live` additionally
-requires `MARKETING_LIVE=true` — one flag alone can never publish).
+requires `MARKETING_LIVE=true`, and a live tick still publishes nothing until
+credentials are delivered — an unconfigured platform is `not-configured`, never
+a fabricated success). The publisher verifies, via the GitHub API, that the PR
+which last changed an item's `meta.json` on `primary` is merged with an
+approving review from `MARKETING_APPROVERS` before publishing it — `meta.json`
+can never self-declare approval.
 
 Receipts live on the **`receipts` ref**, never `primary` (no branch-protection
 bypass actor); "published" is derived from receipts. The publisher workflow is
