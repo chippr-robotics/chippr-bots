@@ -213,8 +213,9 @@ Dormant Yarn-v1/Lerna-6 monorepo, last real activity 2023–2025. Deep-read verd
 
 ### 2.2 The agent roster (maps 1:1 onto the current 8-step flow)
 
-All agents operate under a **dedicated machine identity** (bot account / GitHub App) —
-never Cody's account — so human review rules can actually bind (§2.5).
+Every content PR is authored by a **machine identity** — never Cody's account — so human
+review rules can actually bind (§2.5; decided 2026-09-12: `github-actions[bot]` via the
+`marketing-content-pr` workflow, no account or key to hold).
 
 | Agent | Replaces step | Job | Runs as |
 |---|---|---|---|
@@ -306,17 +307,24 @@ chippr-bots/
 Today `primary` is unprotected and any write credential could push `approved` state
 directly. Phase 0 installs, in this order:
 
-1. **Machine identity**: agents act as a dedicated GitHub App/bot user with write
-   access; Cody's account is never an agent identity (also: GitHub forbids a PR
-   author approving their own PR — agent-opened PRs + human review only works when
-   the identities are distinct).
+1. **Machine identity** (decided 2026-09-12, after the first content PR #178
+   demonstrated the collision — opened from a session acting as Cody, merged
+   unreviewable, refused by the verifier): the PR **author** is `github-actions[bot]`.
+   An agent pushes a `content/**` branch; `.github/workflows/marketing-content-pr.yml`
+   opens the PR with `GITHUB_TOKEN` (`contents: read`, `pull-requests: write` — it can
+   describe, never merge). No bot account, App or key exists to rotate or leak.
+   Sessions and Routines still push as the account that runs them; that account is
+   never the PR author, so the review rule binds (GitHub forbids a PR author approving
+   their own PR). A dedicated App remains an option if a *named* identity is ever
+   needed; nothing here depends on one.
 2. **Ruleset on `primary`**: PRs required for all changes; ≥1 approving review from
    **CODEOWNERS** (`marketing/content/**` and `calendar.json` owned by Cody or
    per-series delegates); dismiss stale approvals on push; the bot identity is not a
    CODEOWNER and cannot satisfy the rule. Changes to
    `.github/workflows/marketing-*.yml` themselves require CODEOWNER review.
-3. **Merge mechanics**: the Editor opens PRs and enables auto-merge; the merge happens
-   only once the human approval lands. The Editor never merges directly.
+3. **Merge mechanics**: the Editor pushes the branch, the workflow opens the PR, and the
+   merge happens only after the human approval lands (the approver merges, or enables
+   auto-merge at approval time). The Editor never opens or merges a content PR itself.
 4. **Independent verification**: the publisher does not trust the merge alone — before
    publishing an item it checks via the GitHub API that the PR introducing it carries
    an approving review from the human allowlist, and refuses otherwise. Belt and

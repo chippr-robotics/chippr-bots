@@ -38,8 +38,11 @@ new functions go through Spec Kit.
   `npm ci --ignore-scripts` in CI; GitHub Actions pinned by commit SHA.
 - Branch from `primary`; PRs into `primary`. Content PRs need a CODEOWNER review —
   that review IS the publish gate; never weaken it to get something out the door.
-- Agents operate under the machine identity, never a human's account. The Editor
-  agent opens content PRs and never merges them.
+- A content PR is authored by the machine identity, never a human's account: an
+  agent pushes a `content/**` branch and `marketing-content-pr` opens the PR as
+  `github-actions[bot]` (a session or Routine pushes as the account that runs it,
+  and GitHub forbids an author approving their own PR — never open one by hand).
+  No agent ever merges a content PR.
 - Coordination: a concept/campaign is an **issue**; work lands as **PRs** that
   reference it (`Part of #N` / `Closes #N`); the GitHub Project board reads issue
   state — never mirror status into labels.

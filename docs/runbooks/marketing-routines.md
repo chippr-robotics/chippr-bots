@@ -18,10 +18,11 @@ a schedule.
 - The Editor **never merges** a content PR and **never publishes**. A content PR is merged only by
   a CODEOWNER after review; the deterministic `marketing-publish` workflow is the only path to a
   channel, and it verifies that approval independently (constitution I).
-- Routines act under a machine identity once #167 lands. Until then they act as the account that
-  created them — which is why the Editor routine is created **disabled** and enabled only after
-  #167 (bot identity + `primary` ruleset) so a human review can satisfy a required-review rule on
-  routine-opened PRs.
+- A Routine pushes as the account that created it, so it must **never open a content PR itself**:
+  it pushes a `content/<year>-<slug>` branch and `marketing-content-pr` opens the PR as
+  `github-actions[bot]`, which the human can then approve (GitHub forbids an author approving
+  their own PR — #178 was the demonstration). The Editor routine is created **disabled** and
+  enabled only after #167's `primary` ruleset is in place, so the required review actually binds.
 - A routine that lacks its connector stops and says so; it never routes around a missing tool.
 
 ## Creating / enabling / pausing

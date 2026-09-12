@@ -15,6 +15,7 @@
     "./reading": "./src/reading.js",
     "./receipts": "./src/receipts.js",
     "./approval": "./src/approval.js",
+    "./contentPr": "./src/contentPr.js",
     "./markdown": "./src/markdown.js",
     "./social": "./src/social.js"
   }

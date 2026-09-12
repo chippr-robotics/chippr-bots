@@ -16,7 +16,12 @@ Daily loop:
 4. Promote the next backlog items when the queue is short: copy from the
    source repo with `provenance` (repo, path, commit SHA), state `approved`
    only for the pre-approved batch (verbatim body; net-new social lines make
-   it `in-review`), open the content PR, request review. At most
+   it `in-review`). Push ONE item per `content/<year>-<slug>` branch; the
+   commit subject is the PR title and the commit body is what the reviewer
+   reads (what is verbatim, what is net-new, the slot). The
+   `marketing-content-pr` workflow opens the PR as `github-actions[bot]` and
+   requests review — NEVER open the PR yourself: you push as the account that
+   runs you, and GitHub forbids an author approving their own PR. At most
    MAX_CONTENT_PRS_PER_DAY.
 5. Fire Writer/Designer sessions for items in `brief`/`drafted` states.
 

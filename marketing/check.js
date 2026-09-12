@@ -11,8 +11,9 @@
 //      it needs, and every calendar entry points at a real item with a
 //      timezone-carrying timestamp.
 //  G4  workflows: marketing workflows contain NO `uses:` steps (the
-//      zero-third-party-actions invariant) and the publish workflow keeps
-//      its concurrency group.
+//      zero-third-party-actions invariant), the publish workflow keeps its
+//      concurrency group, and the content-PR workflow stays `contents: read`
+//      (it opens PRs as github-actions[bot]; it must never be able to merge).
 //  G5  approved items: pre-approved requires pinned provenance; PR-reviewed
 //      requires review.pr.
 
@@ -97,7 +98,7 @@ try {
 }
 
 // G4
-for (const wf of ['marketing-gates.yml', 'marketing-publish.yml']) {
+for (const wf of ['marketing-gates.yml', 'marketing-publish.yml', 'marketing-content-pr.yml']) {
   let text;
   try {
     text = await readFile(join(repoDir, '.github', 'workflows', wf), 'utf8');
@@ -109,6 +110,14 @@ for (const wf of ['marketing-gates.yml', 'marketing-publish.yml']) {
   if (uses.length) fail('G4', `${wf} uses third-party actions: ${uses.map((u) => u.trim()).join('; ')}`);
   if (wf === 'marketing-publish.yml' && !/concurrency:/.test(text)) {
     fail('G4', `${wf} lost its concurrency group`);
+  }
+  if (wf === 'marketing-content-pr.yml') {
+    if (!/^\s*contents:\s*read\s*$/m.test(text) || /^\s*contents:\s*write\s*$/m.test(text)) {
+      fail('G4', `${wf} must declare contents: read — the PR opener can never be able to merge`);
+    }
+    if (/^\s*pull_request(_target)?:/m.test(text)) {
+      fail('G4', `${wf} must trigger on push only — a pull_request trigger would run it on foreign PRs`);
+    }
   }
 }
 
