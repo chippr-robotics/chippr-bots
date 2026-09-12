@@ -12,7 +12,10 @@ import { startMockPlatforms } from './mockPlatforms.js';
 // the same code paths a live tick runs, minus real credentials.
 
 const marketingDir = join(dirname(fileURLToPath(import.meta.url)), '..');
-const NOW = new Date('2026-09-16T12:00:00Z'); // after the pilot's publishAt
+// "Now" is one day past the LATEST calendar slot, so the e2e never couples to
+// a real publish date the Editor is free to move.
+const calendar = JSON.parse(await readFile(join(marketingDir, 'content', 'calendar.json'), 'utf8'));
+const NOW = new Date(Math.max(...calendar.map((e) => Date.parse(e.publishAt))) + 86_400_000);
 
 let mock;
 let receiptsDir;
