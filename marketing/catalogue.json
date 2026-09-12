@@ -6,11 +6,22 @@
       "kind": "adapter",
       "adapter": "adapters/wordpress",
       "role": "primary",
-      "formats": { "media": ["image/png", "image/jpeg"], "body": "html" },
+      "formats": {
+        "media": [
+          "image/png",
+          "image/jpeg"
+        ],
+        "body": "html"
+      },
       "schedulingModel": "at-time",
       "authModel": "basic-app-password",
-      "credentialEnv": ["WP_APP_PASSWORD"],
-      "configEnv": ["WP_BASE_URL", "WP_USERNAME"],
+      "credentialEnv": [
+        "WP_APP_PASSWORD"
+      ],
+      "configEnv": [
+        "WP_BASE_URL",
+        "WP_USERNAME"
+      ],
       "enabled": true
     },
     {
@@ -18,12 +29,25 @@
       "kind": "adapter",
       "adapter": "adapters/mastodon",
       "role": "social",
-      "formats": { "media": ["image/png", "image/jpeg"], "maxChars": 500 },
-      "copySections": ["mastodon", "x"],
+      "formats": {
+        "media": [
+          "image/png",
+          "image/jpeg"
+        ],
+        "maxChars": 500
+      },
+      "copySections": [
+        "mastodon",
+        "x"
+      ],
       "schedulingModel": "at-time",
       "authModel": "bearer-token",
-      "credentialEnv": ["MASTODON_TOKEN"],
-      "configEnv": ["MASTODON_BASE_URL"],
+      "credentialEnv": [
+        "MASTODON_TOKEN"
+      ],
+      "configEnv": [
+        "MASTODON_BASE_URL"
+      ],
       "enabled": true
     },
     {
@@ -31,20 +55,34 @@
       "kind": "adapter",
       "adapter": "adapters/bluesky",
       "role": "social",
-      "formats": { "media": ["image/png", "image/jpeg"], "maxChars": 300 },
-      "copySections": ["bluesky", "x"],
+      "formats": {
+        "media": [
+          "image/png",
+          "image/jpeg"
+        ],
+        "maxChars": 300
+      },
+      "copySections": [
+        "bluesky",
+        "x"
+      ],
       "schedulingModel": "at-time",
       "authModel": "app-password-session",
-      "credentialEnv": ["BSKY_APP_PASSWORD"],
-      "configEnv": ["BSKY_SERVICE", "BSKY_IDENTIFIER"],
+      "credentialEnv": [
+        "BSKY_APP_PASSWORD"
+      ],
+      "configEnv": [
+        "BSKY_SERVICE",
+        "BSKY_IDENTIFIER"
+      ],
       "enabled": true
     },
     {
       "id": "linkedin",
       "kind": "delegated",
       "delegatedVia": "wordpress",
-      "mechanism": "jetpack-social",
-      "$comment": "No adapter and no credential on purpose (PLAN.md 1.1): Jetpack Social fans out the WP publish. The publisher records state 'delegated', never a fabricated ok. Read-back of share status is a Phase-1 verify item.",
+      "mechanism": "wp-linkedin-auto-publish",
+      "$comment": "No adapter and no credential on purpose (PLAN.md 1.1): the site's WP LinkedIn Auto Publish plugin (verified installed + authorized 2026-09-12; Jetpack Social is NOT installed — the `jetpack/v4` namespace is WooCommerce's connection package) fans out the WP publish on transition_post_status. The publisher records state 'delegated', never a fabricated ok. Read-back = the plugin's `_sent_to_linkedin` post meta (Phase-1 verify item).",
       "credentialEnv": [],
       "configEnv": [],
       "enabled": true
@@ -54,7 +92,7 @@
       "kind": "adapter",
       "adapter": null,
       "role": "social",
-      "$comment": "Phase 2 (issue #165). Row exists so item platform lists can name it; disabled until the adapter lands with its credential row.",
+      "$comment": "OMITTED for now (decision 2026-09-12). The site's twitter-auto-publish plugin would auto-tweet every WP publish (default-on for new posts); the chippr-marketing-rails must-use plugin (infra/wordpress/mu-plugins/) unhooks it for posts authored by marketing-bot, so the pipeline never reaches X until this row is enabled with its own adapter + credential (issue #165).",
       "credentialEnv": [],
       "configEnv": [],
       "enabled": false

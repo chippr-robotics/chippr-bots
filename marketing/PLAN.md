@@ -34,24 +34,28 @@ consistent secondary evidence, needs one confirmation (tracked in §6).
   **Author cannot create categories/tags over REST** (`manage_categories` is missing) —
   the service user is either Editor-role, or Author against a pre-seeded fixed taxonomy
   that the pipeline only assigns. Decided in Phase 0.
-- **Jetpack is installed** (verified: `jetpack/v4` namespace) — and that is *all* that
-  is verified. The working assumption is that Jetpack Social is the current "wp app
-  publishes to linkedin", which would mean we never need our own LinkedIn API approval
-  (a vetted, weeks-to-months process for org posting). But plugin activation proves
-  neither a WordPress.com connection, nor the Social module being enabled, nor a
-  LinkedIn connection, nor page-vs-profile, nor free-cap headroom (~30 shares/mo, one
-  shared caption; paid ~$5/mo lifts the cap and adds short per-network captions — not
-  long-form bodies). The whole chain is **probable** and is verified as a Phase-1
-  acceptance item (§6). The direct Community Management API is **deferred pending that
-  test**, not declined.
-- **ActivityPub plugin is active** (verified: `activitypub/1.0` namespace) — actual
-  federation (WebFinger, actor config, delivery) is **probable** and gets a live
-  follow-and-receive test in §6. Note its outbox delivery rides WP-Cron.
+- **Jetpack is NOT installed** (corrected 2026-09-12 from the host: the `jetpack/v4`
+  namespace is WooCommerce's Jetpack *Connection* package, not Jetpack Social). The
+  "wp app publishes to linkedin" is the **WP LinkedIn Auto Publish** plugin (8.26, active,
+  authorized — 15 posts carry `_sent_to_linkedin`): it shares on `transition_post_status`
+  → publish for every post whose category is not excluded and whose `_dont_share_post_linkedin`
+  meta is not `yes`, so a REST-created post shares to the default profile/company with
+  no extra call. Read-back is the plugin's `_sent_to_linkedin` post meta. No cap, no
+  paid tier, no WordPress.com account. The direct Community Management API stays
+  **deferred**. Also present and authorized: **twitter-auto-publish** (1.7.7, 29 posts),
+  default-on for new posts — X is omitted from the pipeline for now, so the
+  `chippr-marketing-rails` must-use plugin (`infra/wordpress/mu-plugins/`) unhooks it for
+  posts authored by `marketing-bot`; human-authored posts are unaffected.
+- **ActivityPub plugin is active and federating** (verified 2026-09-12: WebFinger resolves
+  `acct:chipprbots@chipprbots.com`, actor outbox holds 23 items; `enable-mastodon-apps` is
+  active too, so the site speaks the Mastodon client API). The blog already IS a Fediverse
+  presence — see §7 for whether Mastodon is served by this (delegated, zero credentials)
+  or by a separate brand account. Outbox delivery rides WP-Cron.
 - **WP-Cron gets a real cron regardless.** Our publisher posts at-time
-  (`status=publish`), which removes scheduled-post dependence on WP-Cron — but Jetpack
-  sharing and ActivityPub delivery still run through it, so a low-traffic site needs
-  `DISABLE_WP_CRON` + a system cron hitting `wp-cron.php` every 1–5 min. One-time
-  change on the WP host (ops_node_1, Phase 0).
+  (`status=publish`), which removes scheduled-post dependence on WP-Cron — but LinkedIn
+  auto-publish and ActivityPub delivery still run through it, so a low-traffic site needs
+  `DISABLE_WP_CRON` + a system cron hitting `wp-cron.php` every 1–5 min. **Done 2026-09-12**
+  on the host (`DISABLE_WP_CRON` + root cron `*/5`, issue #169).
 
 ### 1.2 The content backlog — the surprise asset
 
@@ -109,7 +113,7 @@ edited item re-enters review like net-new content. Three honest caveats:
 
 | Platform | Path | Friction | Cost | Prerequisite before launch |
 |---|---|---|---|---|
-| LinkedIn | Jetpack Social (**probable**, §1.1) | low if chain confirms | $0–5/mo | verify chain §6; paid plan is **required** if the backlog's LinkedIn drafts are to be used (free = one shared caption) |
+| LinkedIn | WP LinkedIn Auto Publish plugin (**verified installed + authorized**, §1.1) | low | $0 | one live REST-created post + `_sent_to_linkedin` read-back (§6); per-post copy = plugin post meta (Phase 2) |
 | Mastodon | `POST /api/v1/statuses`, at-time | none | $0 | pick instance, mark account as bot |
 | Bluesky | app password + `createRecord` vs bsky.social | none | $0 | DNS TXT `_atproto` → `@chipprbots.com` handle |
 | X | API v2 pay-per-use | low | ~$0.20/link post | credits; **prefer OAuth 1.0a user context** (static creds — v2 posting accepts it) over OAuth2, whose single-use rotating refresh tokens break a stateless cron; if OAuth2, persist-then-use writeback (§2.4) |
@@ -159,7 +163,7 @@ Dormant Yarn-v1/Lerna-6 monorepo, last real activity 2023–2025. Deep-read verd
 - **Secrets (spec 097 shape)**: data-only registry (id / env aliases / class /
   least-privilege profiles), wrapper-injected child env, payloads only in GCP Secret
   Manager. Marketing prefix: `chipprbots-mkt-*`. The WP app password is classified for
-  its true blast radius: it fans out to LinkedIn (Jetpack) and Fediverse distribution.
+  its true blast radius: it fans out to LinkedIn (WP LinkedIn Auto Publish) and Fediverse distribution.
 - **Honest states (specs 089/104)**: every platform read/publish resolves
   `ok / not-configured / unreadable / delegated` — a failed publish is never a silent
   skip; an unconfigured platform is not an error; no metric fabricates a zero.
@@ -224,7 +228,7 @@ review rules can actually bind (§2.5; decided 2026-09-12: `github-actions[bot]`
 | **Writer** | 3 | brief → `blog.md` + `social.md`. Backlog mode: adapt existing drafts + add the missing Mastodon/Bluesky copy | per-item session |
 | **Designer** | 4 | Canva rail: template by (brand, format) → fill → export renditions (JPG for IG); Phase 2+: Grok hero images via `upload-asset-from-url` | per-item session / script |
 | **Reviewer** | 5 | **HUMAN** — approving PR review (the gate) | Cody / delegates |
-| **Publisher** | 6–8 | on merge + due time: WP REST, then platform adapters per catalogue; two-phase publish + receipts (§2.4); LinkedIn delegated to Jetpack with read-back | deterministic worker (GH Actions cron) |
+| **Publisher** | 6–8 | on merge + due time: WP REST, then platform adapters per catalogue; two-phase publish + receipts (§2.4); LinkedIn delegated to the site's WP LinkedIn Auto Publish plugin with read-back | deterministic worker (GH Actions cron) |
 | **Analyst** *(Phase 3)* | — | engagement readback, spend catalogue (FinOps discipline), monthly report | scheduled Routine |
 
 The Publisher is deliberately **not** an LLM: publishing is deterministic I/O and must
@@ -292,8 +296,8 @@ chippr-bots/
     dead-man's check — it verifies the last expected tick ran and receipts advanced,
     which also catches GitHub's 60-day auto-disable of scheduled workflows in quiet
     repos.
-  - **LinkedIn (Jetpack) honesty**: the leg is recorded `delegated`, a distinct state
-    — never a fabricated `ok`. The publisher reads back Jetpack connection/share
+  - **LinkedIn (auto-publish plugin) honesty**: the leg is recorded `delegated`, a distinct state
+    — never a fabricated `ok`. The publisher reads back the plugin's `_sent_to_linkedin` post meta
     status and tracks cap usage, alerting before the free cap binds.
 - **Agent sessions**: CCR Routines — Editor daily; Writer/Designer fired per item by
   the Editor; Strategist from Phase 2; escalation lands as an issue/PR comment
@@ -403,8 +407,8 @@ central-functions repo**, not just the marketing dir.
 ### Phase 1 — Primary channel + zero-friction socials (weeks 1–3)
 1. **WordPress adapter** end-to-end: media upload → post create → at-time publish →
    receipt on the receipts ref.
-2. **Jetpack/LinkedIn chain verification** (§6): WP.com connection → Social module →
-   LinkedIn connection → page vs profile → cap usage; then **one live Jetpack→LinkedIn
+2. **LinkedIn chain verification** (§6): plugin authorization → profile/company
+   selection → category exclusions; then **one live REST-created post→LinkedIn
    share as part of acceptance**. Decide paid Social (~$5/mo) — **required** if the
    backlog's LinkedIn drafts are to be delivered rather than a generic caption.
 3. **Canva masters, minimum set**: blog-header/OG (1600×900 + 1200×630) for Chipprbots
@@ -447,7 +451,7 @@ central-functions repo**, not just the marketing dir.
 
 ### Explicitly deferred / declined
 - **Self-hosted Bluesky PDS** — off; not needed for posting or the branded handle.
-- **Direct LinkedIn Community Management API** — deferred pending the Phase-1 Jetpack
+- **Direct LinkedIn Community Management API** — deferred pending the Phase-1 plugin
   chain test; applied for only if that rail fails to deliver.
 - **Community management / replies** — out of scope Phases 1–3 (§2.2).
 - **Reviving any legacy `packages/*` code** — prior art only.
@@ -459,7 +463,7 @@ central-functions repo**, not just the marketing dir.
 | Line | Est. | Basis |
 |---|---|---|
 | X pay-per-use | ~$3/mo (1 status per post @ $0.20) — ~$6–8/mo if threading (2–3 statuses/post; a content decision, §7) | modelled |
-| Jetpack Social paid | $0 or ~$5/mo (required for per-post LinkedIn copy) | vendor price, verify |
+| WP LinkedIn Auto Publish | $0 (installed + authorized; per-post copy = plugin post meta, Phase 2) | verified 2026-09-12 |
 | Grok images (Phase 2+) | ~$1–2/mo (@ ~$0.05/image) | modelled |
 | Grok video (Phase 3) | ~$0.80/10 s clip, usage-based | modelled |
 | Canva | existing plan (AI credits: ideation only) | — |
@@ -477,12 +481,12 @@ changes it.
 | Unapproved content reaches a channel | enforced gate (§2.5): ruleset + CODEOWNERS + distinct bot identity + publisher-side review verification; receipts off `primary` so no bypass actor exists |
 | Publisher workflow edited maliciously | workflow files under CODEOWNER review; publish job in `primary`-restricted environment; PR-triggered runs get no secrets/id-token |
 | Double-posting / crash windows | concurrency group; claim-marker two-phase publish; verify-via-API before any retry |
-| One compromised job = every platform | per-tick credential profiles; SHA-pinned actions; `npm ci --ignore-scripts`; WP app password classified for its Jetpack/ActivityPub blast radius |
+| One compromised job = every platform | per-tick credential profiles; SHA-pinned actions; `npm ci --ignore-scripts`; WP app password classified for its LinkedIn-auto-publish/ActivityPub blast radius |
 | Silent publisher death (red runs, 60-day cron auto-disable) | failure issue @Cody per bad tick; Editor daily dead-man's check |
-| LinkedIn silent skip (cap, dead connection) | `delegated` state + Jetpack read-back + cap alerting; never fabricated `ok` |
+| LinkedIn silent skip (dead authorization, excluded category) | `delegated` state + `_sent_to_linkedin` read-back; never fabricated `ok` |
 | Rotating tokens strand a platform | persist-then-use writeback on exactly the rotating containers; `unreadable` + re-auth runbook |
 | Prompt injection via public issues/PR comments/news | capability separation (§2.1.5): read-only ingestion agents; author-association filter; non-LLM publisher |
-| Missed schedules (WP-Cron) | at-time publishing; real system cron for Jetpack/ActivityPub delivery |
+| Missed schedules (WP-Cron) | at-time publishing; real system cron for LinkedIn-auto-publish/ActivityPub delivery (installed 2026-09-12) |
 | Pre-publication content world-readable | named decision §7; `features/` promoted late while public |
 | Legacy workspace contamination | own lockfile/toolchain outside `packages/*`; CI never runs legacy installs |
 | Shared GCP project blast radius | declared Terraform (§2.7), additive IAM, repo+ref-pinned WIF, own state |
@@ -491,7 +495,7 @@ changes it.
 ## 6. Verify-at-build checklist
 
 - [ ] ops_node_1 estate report: WP VM state, PDS asset remnants, existing marketing secrets (requested, pending)
-- [ ] **Jetpack chain, in order**: WP.com connection → Social module enabled → LinkedIn connection exists → page vs profile → current cap + usage → per-post REST fields (`jetpack_publicize_connections`/message) + real custom-message length → **one live share** (Phase-1 acceptance)
+- [x] ~~Jetpack chain~~ — Jetpack is not installed (2026-09-12). **LinkedIn chain, in order**: WP LinkedIn Auto Publish authorized (verified) → default profile/company selection → category exclusions (`wp_linkedin_autopublish_settings`) → **one live REST-created post** → `_sent_to_linkedin` read-back (Phase-1 acceptance)
 - [ ] **ActivityPub live test**: follow the blog actor from a Mastodon account, publish a test post, confirm delivery
 - [ ] **Canva write path** (Phase-0 gate): create-from-template → fill → export → download; whether `update_autofill_field` tagging works below Enterprise
 - [ ] X unit prices in the developer console ($0.015/post, $0.20/link post are third-party-sourced); OAuth 1.0a availability on the account
@@ -509,17 +513,28 @@ for content management (issues = concepts, PRs = steps); Phase 0 widened to prep
 the repo as the brand-management/central-functions home with Spec Kit + shared
 skills, coordinating other Chippr projects here.
 
+**Decided 2026-09-12 (ops, Cody):** X is **omitted for now** — the site's twitter-auto-publish
+is unhooked for pipeline posts (`chippr-marketing-rails` must-use plugin), the X row stays
+disabled; Bluesky uses the **pre-existing** owner-managed container `chippr-social-bluesky`
+(app password for `chipprbots.com`, verified against bsky.social and the account's PDS);
+content PRs are authored by `github-actions[bot]` (§2.5); the publisher's WordPress user is
+`marketing-bot` (Editor).
+
 **Still open:**
 
 1. **Repo visibility** — keep `chippr-bots` public (pre-publication calendar/drafts
    world-readable; accepted for evergreen content, `features/` promoted late) or go
    private (forfeits nothing material; Actions still ~free).
 2. **Approval authority** — Cody-only at first, or per-series CODEOWNER delegates.
-3. **Jetpack Social paid** (~$5/mo) — required if the backlog's LinkedIn drafts are to
-   be used as written; confirm with the chain test.
-4. **Cadence + X threading** — ~3/wk assumed; is one X status per post enough, or
-   threads (2–3×, prices the X line at ~$6–8/mo)?
-5. **X spend ceiling** — monthly credit cap for the adapter.
+3. **Mastodon presence** — the blog already federates as `@chipprbots@chipprbots.com`
+   (ActivityPub plugin, 23 items in the outbox) and no separate brand account exists on
+   the instances probed. Either (a) record Mastodon as `delegated via wordpress/activitypub`
+   with outbox read-back — zero credentials, already live — or (b) a brand account on an
+   instance of choice, whose `write:statuses` token fills `chipprbots-mkt-mastodon-token`
+   and whose instance URL becomes `MASTODON_BASE_URL`. Until decided the rail reads
+   `not-configured` (honest skip, never a failure).
+4. **Cadence + X threading** — deferred with X (omitted for now); ~3/wk assumed.
+5. **X spend ceiling** — deferred with X.
 
 Default assumed unless redirected: the Editor promotes scheduling-ready items into
 `marketing/content/` with SHA-pinned provenance (promoted copy authoritative) rather

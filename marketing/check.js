@@ -121,10 +121,12 @@ for (const wf of ['marketing-gates.yml', 'marketing-publish.yml', 'marketing-con
   }
 }
 
-// G6: the Terraform secret containers and the secrets registry must be the SAME list. A registry
-// entry with no container fails at fetch time as NOT_FOUND; a container with no registry entry is
-// a credential nothing declares — and a missing accessor grant surfaces later as PERMISSION_DENIED,
-// which reads exactly like a broken login.
+// G6: the Terraform secret containers and the secrets registry must be the SAME list, in two
+// halves: `secret_ids` (containers Terraform CREATES) == registry entries without `preExisting`,
+// and `secret_accessor_secrets` (owner-managed containers Terraform only GRANTS) == entries with
+// `preExisting: true`. A registry entry with no container fails at fetch time as NOT_FOUND; a
+// container with no registry entry is a credential nothing declares — and a missing accessor grant
+// surfaces later as PERMISSION_DENIED, which reads exactly like a broken login.
 {
   const tfvarsPath = join(repoDir, 'infra', 'terraform', 'marketing', 'terraform.tfvars');
   let tfvars = null;
@@ -134,12 +136,21 @@ for (const wf of ['marketing-gates.yml', 'marketing-publish.yml', 'marketing-con
     fail('G6', `${tfvarsPath} missing — the registry has entries but no Terraform declares their containers`);
   }
   if (tfvars !== null) {
-    const m = /secret_ids\s*=\s*\[([\s\S]*?)\]/.exec(tfvars);
-    const tfIds = m ? [...m[1].matchAll(/"([^"]+)"/g)].map((x) => x[1]).sort() : [];
-    const regIds = REGISTRY.map((r) => r.id).sort();
-    if (JSON.stringify(tfIds) !== JSON.stringify(regIds)) {
-      fail('G6', `terraform.tfvars secret_ids ${JSON.stringify(tfIds)} != registry ids ${JSON.stringify(regIds)}`);
+    const list = (key) => {
+      const m = new RegExp(`(?:^|\\n)\\s*${key}\\s*=\\s*\\[([\\s\\S]*?)\\]`).exec(tfvars);
+      return m ? [...m[1].matchAll(/"([^"]+)"/g)].map((x) => x[1]).sort() : [];
+    };
+    const created = list('secret_ids');
+    const granted = list('secret_accessor_secrets');
+    const regCreated = REGISTRY.filter((r) => r.preExisting !== true).map((r) => r.id).sort();
+    const regGranted = REGISTRY.filter((r) => r.preExisting === true).map((r) => r.id).sort();
+    if (JSON.stringify(created) !== JSON.stringify(regCreated)) {
+      fail('G6', `terraform.tfvars secret_ids ${JSON.stringify(created)} != registry (created) ids ${JSON.stringify(regCreated)}`);
     }
+    if (JSON.stringify(granted) !== JSON.stringify(regGranted)) {
+      fail('G6', `terraform.tfvars secret_accessor_secrets ${JSON.stringify(granted)} != registry preExisting ids ${JSON.stringify(regGranted)}`);
+    }
+    for (const id of created) if (granted.includes(id)) fail('G6', `${id} is both created and pre-existing`);
   }
 }
 
