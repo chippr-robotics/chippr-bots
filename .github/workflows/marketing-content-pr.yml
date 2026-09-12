@@ -1,0 +1,60 @@
+# marketing-content-pr: the machine identity behind content PRs (PLAN.md §2.5 step 1, issue #167).
+#
+# A push to a `content/**` branch opens the pull request into `primary` AS
+# `github-actions[bot]` — GitHub's own identity: no bot account, no App, no key, no
+# secret. The point is that the PR AUTHOR is never the human who must approve it:
+# GitHub forbids an author approving their own PR, and a Claude session or Routine
+# pushes as the account that runs it (the first content PR, #178, demonstrated the
+# collision — merged, unreviewable, refused by the verifier). The approving review
+# on the PR this opens IS the publish gate; the publisher verifies it independently
+# (marketing/pipeline/src/approval.js) against a HUMAN allowlist, which
+# github-actions[bot] can never satisfy.
+#
+# - No `uses:` steps (marketing/check.js G4) and `contents: read` (also G4): this
+#   workflow cannot merge, push, or approve — it can only open and describe.
+# - Idempotent: a branch that already has an open PR is left alone (the push itself
+#   updated it). One item per branch; the head commit's subject becomes the title
+#   and its body the description, built by node from the environment — never
+#   interpolated into a shell string.
+# - GITHUB_TOKEN-opened PRs get no `pull_request` workflow runs, so marketing-gates
+#   also runs on the push; check runs are per head SHA and show on the PR.
+name: marketing-content-pr
+
+on:
+  push:
+    branches:
+      - 'content/**'
+
+permissions:
+  contents: read
+  pull-requests: write
+
+concurrency:
+  group: marketing-content-pr-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  open-pr:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out the pushed commit (no actions)
+        run: |
+          git init --quiet repo
+          cd repo
+          git remote add origin "https://x-access-token:${GH_TOKEN}@github.com/${GITHUB_REPOSITORY}.git"
+          git fetch --quiet --depth 1 origin "${GITHUB_SHA}"
+          git checkout --quiet FETCH_HEAD
+          git log -1 --format=%B > "${RUNNER_TEMP}/commit-message.txt"
+        env:
+          GH_TOKEN: ${{ github.token }}
+
+      - name: Open the pull request as github-actions[bot] (idempotent)
+        working-directory: repo/marketing
+        run: node pipeline/bin/open-content-pr.js
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+          HEAD_BRANCH: ${{ github.ref_name }}
+          BASE_BRANCH: primary
+          PUSHER: ${{ github.actor }}
+          MARKETING_APPROVERS: ${{ vars.MARKETING_APPROVERS }}
+          COMMIT_MESSAGE_FILE: ${{ runner.temp }}/commit-message.txt

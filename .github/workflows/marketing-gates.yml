@@ -11,6 +11,12 @@ on:
       - 'marketing/**'
       - '.github/workflows/marketing-*.yml'
       - '.github/CODEOWNERS'
+  # Content PRs are opened by marketing-content-pr with GITHUB_TOKEN, and a PR that
+  # GITHUB_TOKEN opens gets no `pull_request` run. Check runs are per head SHA, so
+  # running on the branch push puts the same checks on that PR.
+  push:
+    branches:
+      - 'content/**'
 
 permissions:
   contents: read
@@ -28,7 +34,7 @@ jobs:
           git checkout --quiet FETCH_HEAD
         env:
           GH_TOKEN: ${{ github.token }}
-          HEAD_SHA: ${{ github.event.pull_request.head.sha }}
+          HEAD_SHA: ${{ github.event.pull_request.head.sha || github.sha }}
 
       - name: Toolchain
         run: node --version && npm --version
