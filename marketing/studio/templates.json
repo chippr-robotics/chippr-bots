@@ -1,0 +1,14 @@
+{
+  "$comment": "Canva brand-template registry: (brand, format) -> template id. Authored 2026-09-12 (issue #164) via the verified rail (issue #170): create-design-from-brand-template -> read-design(open_transaction) -> edit-design replace_text on the tagged fields -> commit -> export-design. Every template carries the same three text fields. Phase-1 masters are TYPOGRAPHIC (no hero image field) by design - PLAN.md 1.3; hero images arrive with Grok in Phase 2 as an update_fill on a tagged image element.",
+  "fields": ["brand", "headline", "subhead"],
+  "formats": {
+    "blog-header": { "width": 1600, "height": 900, "use": "WordPress featured image (images/header.png)" },
+    "og-card": { "width": 1200, "height": 630, "use": "OpenGraph / link-preview card; Mastodon + Bluesky fallback rendition" }
+  },
+  "templates": [
+    { "brand": "chipprbots", "format": "blog-header", "id": "EAHU_qK6678", "title": "Chipprbots - Blog header 1600x900 (master)" },
+    { "brand": "chipprbots", "format": "og-card", "id": "EAHU_ibAApM", "title": "Chipprbots - OG card 1200x630 (master)" },
+    { "brand": "fairwins", "format": "blog-header", "id": "EAHU_usrkyw", "title": "Fairwins - Blog header 1600x900 (master)" },
+    { "brand": "fairwins", "format": "og-card", "id": "EAHU_qRlVZ8", "title": "Fairwins - OG card 1200x630 (master)" }
+  ]
+}

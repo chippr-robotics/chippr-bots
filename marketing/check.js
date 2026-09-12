@@ -112,6 +112,28 @@ for (const wf of ['marketing-gates.yml', 'marketing-publish.yml']) {
   }
 }
 
+// G6: the Terraform secret containers and the secrets registry must be the SAME list. A registry
+// entry with no container fails at fetch time as NOT_FOUND; a container with no registry entry is
+// a credential nothing declares — and a missing accessor grant surfaces later as PERMISSION_DENIED,
+// which reads exactly like a broken login.
+{
+  const tfvarsPath = join(repoDir, 'infra', 'terraform', 'marketing', 'terraform.tfvars');
+  let tfvars = null;
+  try {
+    tfvars = await readFile(tfvarsPath, 'utf8');
+  } catch {
+    fail('G6', `${tfvarsPath} missing — the registry has entries but no Terraform declares their containers`);
+  }
+  if (tfvars !== null) {
+    const m = /secret_ids\s*=\s*\[([\s\S]*?)\]/.exec(tfvars);
+    const tfIds = m ? [...m[1].matchAll(/"([^"]+)"/g)].map((x) => x[1]).sort() : [];
+    const regIds = REGISTRY.map((r) => r.id).sort();
+    if (JSON.stringify(tfIds) !== JSON.stringify(regIds)) {
+      fail('G6', `terraform.tfvars secret_ids ${JSON.stringify(tfIds)} != registry ids ${JSON.stringify(regIds)}`);
+    }
+  }
+}
+
 if (failures.length) {
   console.error(`marketing check: ${failures.length} failure(s)`);
   for (const f of failures) console.error(`  ${f}`);

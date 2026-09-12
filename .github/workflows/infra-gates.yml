@@ -1,0 +1,56 @@
+# infra-gates: PR checks for infra/terraform (issue #169).
+# No `uses:` steps, no secrets, no id-token: a pull_request run must never hold credentials.
+# terraform validate is NOT run here — it needs the private module repo (TF_MODULES_TOKEN) and
+# belongs to the applying operator; fmt + the guardrail gate are what a PR proves.
+name: infra-gates
+
+on:
+  pull_request:
+    paths:
+      - 'infra/terraform/**'
+      - 'scripts/infra/**'
+      - '.github/workflows/infra-gates.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  gates:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out PR head (no actions)
+        run: |
+          git init --quiet repo
+          cd repo
+          git remote add origin "https://x-access-token:${GH_TOKEN}@github.com/${GITHUB_REPOSITORY}.git"
+          git fetch --quiet --depth 1 origin "${HEAD_SHA}"
+          git checkout --quiet FETCH_HEAD
+        env:
+          GH_TOKEN: ${{ github.token }}
+          HEAD_SHA: ${{ github.event.pull_request.head.sha }}
+
+      - name: IaC guardrails
+        working-directory: repo
+        run: node scripts/infra/check-iac-guardrails.js
+
+      - name: Guardrail gate self-test
+        working-directory: repo
+        run: node --test "scripts/infra/__tests__/*.test.js"
+
+      # ubuntu-latest no longer ships terraform. Install a PINNED release, verified against
+      # HashiCorp's published SHA256SUMS, in a run: step — no third-party action, no floating version.
+      - name: Install terraform (pinned, checksum-verified)
+        run: |
+          set -euo pipefail
+          cd "$RUNNER_TEMP"
+          curl -fsSLO "https://releases.hashicorp.com/terraform/${TF_VERSION}/terraform_${TF_VERSION}_linux_amd64.zip"
+          curl -fsSLO "https://releases.hashicorp.com/terraform/${TF_VERSION}/terraform_${TF_VERSION}_SHA256SUMS"
+          grep "terraform_${TF_VERSION}_linux_amd64.zip" "terraform_${TF_VERSION}_SHA256SUMS" | sha256sum -c -
+          unzip -oq "terraform_${TF_VERSION}_linux_amd64.zip" -d "$RUNNER_TEMP/tf"
+          "$RUNNER_TEMP/tf/terraform" version
+        env:
+          TF_VERSION: "1.15.8"
+
+      - name: terraform fmt
+        working-directory: repo
+        run: "$RUNNER_TEMP/tf/terraform" fmt -check -recursive infra/terraform
