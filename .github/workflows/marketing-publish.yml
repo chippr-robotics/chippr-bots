@@ -23,6 +23,7 @@ permissions:
   contents: write        # push to the receipts ref only
   issues: write          # escalation issue
   pull-requests: read    # approval verification
+  id-token: write        # OIDC token for Workload Identity Federation (live mode); nothing stored
 
 jobs:
   tick:
@@ -55,16 +56,52 @@ jobs:
             git add README.md
           fi
 
-      - name: Fetch secrets (live mode only; requires issue #169 WIF)
+      # Workload Identity Federation with a credential config file — no third-party action.
+      # The OIDC token is exchanged at STS for short-lived credentials impersonating the publisher
+      # identity declared in infra/terraform/marketing (issue #169). Only refs/heads/primary is
+      # bound to that identity, so a PR-triggered run could not federate even if it reached here.
+      - name: Federate to GCP (live mode only)
         if: ${{ vars.MARKETING_LIVE == 'true' }}
-        run: echo "::error::Live mode requested but WIF secret delivery is not wired yet (issue #169)." && exit 1
+        run: |
+          set -euo pipefail
+          for v in WIF_PROVIDER WIF_SERVICE_ACCOUNT; do
+            if [ -z "${!v}" ]; then
+              echo "::error::repository variable $v is unset — see docs/runbooks/marketing-secrets.md §3"
+              exit 1
+            fi
+          done
+          TOKEN=$(curl -sS -H "Authorization: bearer ${ACTIONS_ID_TOKEN_REQUEST_TOKEN}" \
+            "${ACTIONS_ID_TOKEN_REQUEST_URL}&audience=//iam.googleapis.com/${WIF_PROVIDER}" \
+            | node -pe 'JSON.parse(require("fs").readFileSync(0, "utf8")).value')
+          printf '%s' "$TOKEN" > "${RUNNER_TEMP}/oidc.jwt"
+          node -e '
+            const [provider, sa, file] = process.argv.slice(1);
+            process.stdout.write(JSON.stringify({
+              type: "external_account",
+              audience: "//iam.googleapis.com/" + provider,
+              subject_token_type: "urn:ietf:params:oauth:token-type:jwt",
+              token_url: "https://sts.googleapis.com/v1/token",
+              service_account_impersonation_url:
+                "https://iamcredentials.googleapis.com/v1/projects/-/serviceAccounts/" + sa + ":generateAccessToken",
+              credential_source: { file },
+            }));
+          ' "$WIF_PROVIDER" "$WIF_SERVICE_ACCOUNT" "${RUNNER_TEMP}/oidc.jwt" > "${RUNNER_TEMP}/cred.json"
+          gcloud auth login --cred-file="${RUNNER_TEMP}/cred.json" --quiet
+          gcloud config set project chippr-bots-site-wp --quiet
+        env:
+          WIF_PROVIDER: ${{ vars.WIF_PROVIDER }}
+          WIF_SERVICE_ACCOUNT: ${{ vars.WIF_SERVICE_ACCOUNT }}
 
+      # Live: secrets/fetch.js delivers the `publish` profile into the tick's environment and
+      # nothing else (gcloud secrets versions access, byte-exact, never on disk). Dry-run: no
+      # credentials at all — every platform reports not-configured or dry-run.
       - name: Publisher tick (dry-run unless MARKETING_LIVE)
         working-directory: repo/marketing
         run: |
           npm ci --ignore-scripts
           if [ "${MARKETING_LIVE}" = "true" ]; then
-            node pipeline/bin/tick.js --live --receipts-dir "${GITHUB_WORKSPACE}/receipts-checkout"
+            node secrets/fetch.js --profile publish -- \
+              node pipeline/bin/tick.js --live --receipts-dir "${GITHUB_WORKSPACE}/receipts-checkout"
           else
             node pipeline/bin/tick.js --receipts-dir "${GITHUB_WORKSPACE}/receipts-checkout"
           fi
@@ -72,6 +109,11 @@ jobs:
           MARKETING_LIVE: ${{ vars.MARKETING_LIVE }}
           GITHUB_TOKEN: ${{ github.token }}
           MARKETING_APPROVERS: ${{ vars.MARKETING_APPROVERS }}
+          WP_BASE_URL: ${{ vars.WP_BASE_URL }}
+          WP_USERNAME: ${{ vars.WP_USERNAME }}
+          MASTODON_BASE_URL: ${{ vars.MASTODON_BASE_URL }}
+          BSKY_SERVICE: ${{ vars.BSKY_SERVICE }}
+          BSKY_IDENTIFIER: ${{ vars.BSKY_IDENTIFIER }}
 
       - name: Push receipts (rebase-retry)
         if: ${{ vars.MARKETING_LIVE == 'true' }}
