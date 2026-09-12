@@ -1,9 +1,18 @@
 # Chippr Robotics Marketing Department — Founding Plan
 
-Status: **Proposed** (rev 2 — post adversarial review) · Owner: Cody · Home: `chippr-bots/marketing/`
+Status: **Accepted — phased approach approved 2026-09-12** (rev 3) · Owner: Cody · Home: `chippr-bots/marketing/`
 Scope: automate the blog → image → review → publish → distribute flow for all Chippr
 projects (FairWins, Fukuii, ClearPath, King's Edge, Chippr Robotics itself), with agents
 doing every step except one human review gate.
+
+Decisions taken (2026-09-12): the **GitHub PR + Actions process is the human gate**;
+the **78 backlog posts are pre-approved** (they enter the pipeline as `approved`; any
+edit re-enters review); a **GitHub Project** provides content management — issues track
+concepts, PRs track the steps. Phase 0 widened: this repo becomes Chippr's core
+brand-management and central-functions home (Spec Kit + shared skills + prompts +
+asset-management packages), and the coordination surface for dormant projects
+(fukuii, Sigil) via the same issues/Project machinery. The repo's constitution now
+lives at `.specify/memory/constitution.md`.
 
 ---
 
@@ -59,7 +68,10 @@ consistent secondary evidence, needs one confirmation (tracked in §6).
 Every item has `blog.md` **plus `social.md`** — X copy, LinkedIn copy, and a detailed
 16:9 image prompt (written for a generative model). Inventories with per-topic scoring
 and a suggested publishing order (04→12→15→06→29→25) exist. **The marketing team's
-first job is publishing the backlog, not generating content.** Three honest caveats:
+first job is publishing the backlog, not generating content.** Per the 2026-09-12
+decision, **these 78 items are pre-approved**: promotion enters them at `approved`
+with `review: pre-approved (2026 batch)` provenance — no per-item re-review; an
+edited item re-enters review like net-new content. Three honest caveats:
 
 1. The binding runway is the **engineering lane: ~18 weeks** — net-new generation must
    be producing publishable engineering briefs by **month 3–4**, not month 6.
@@ -311,7 +323,25 @@ directly. Phase 0 installs, in this order:
    an approving review from the human allowlist, and refuses otherwise. Belt and
    braces: the gate holds even if a ruleset is misconfigured.
 
-### 2.6 GCP footprint (small, but real — declared, not clicked)
+### 2.6 Tracking: the GitHub Project (decided 2026-09-12)
+
+Content management and cross-project coordination live on a GitHub Project board:
+
+- **Issues are concepts**: a blog topic, a campaign, a phase epic, a coordination
+  thread for a dormant project (fukuii, Sigil). The Editor opens topic issues and
+  keeps them current.
+- **PRs are the steps**: draft, design, promotion, and pipeline changes land as PRs
+  referencing their issue (`Part of #N`; `Closes #N` on the finishing PR — and read
+  the issue back after merge rather than trusting the automation).
+- **State is structural**: assignee = claim, linked PRs = progress, closed = done —
+  no `status:*` labels (the sibling-estate lesson: a mirror drifts the moment an
+  agent stops mid-task). GitHub's built-in Project workflows move items to Done on
+  close/merge.
+- One-time manual step: Projects v2 has no write API on our MCP toolset, so the
+  board itself is created once in the UI (tracked as a Phase-0 issue) and issues
+  are added there; everything after that is automatic or issue-driven.
+
+### 2.7 GCP footprint (small, but real — declared, not clicked)
 
 The secrets + WIF bootstrap **is infrastructure in the shared project** and follows
 the imported spec-087 discipline rather than click-ops:
@@ -330,19 +360,38 @@ the imported spec-087 discipline rather than click-ops:
 
 ## 3. Rollout
 
-### Phase 0 — Bootstrap (repo + gate week)
-1. **Gate mechanism** (§2.5): bot identity, `primary` ruleset + CODEOWNERS,
-   workflow-file protection. This precedes any publishing code.
-2. Repo hygiene PR: remove the broken `chippr-agi` gitlink, fix/delete the invalid
-   `dependabot.yml` (re-scope to `marketing/`), refresh root `readme.md`.
+### Phase 0 — Bootstrap: the repo's new life (widened 2026-09-12)
+
+Phase 0 now prepares chippr-bots as **Chippr's core brand-management +
+central-functions repo**, not just the marketing dir.
+
+**Done in this PR:**
+- Spec Kit installed: `.specify/` (templates, scripts, workflows) + the
+  `speckit-*` skills in `.claude/skills/` — new central functions are spec-driven.
+- **Constitution** written: `.specify/memory/constitution.md` (the gate, content-as-
+  git, honest states, secrets, frozen legacy, injection posture, spec-driven dev).
+- `CLAUDE.md` (agent working guide) + root `readme.md` rewritten for the new
+  mission, including the coordination model for dormant projects (fukuii, Sigil).
+- Hygiene: broken `chippr-agi` gitlink removed; `dependabot.yml` fixed (valid,
+  scoped to new surfaces only — legacy stays frozen).
+
+**Remaining Phase 0 (tracked as issues):**
+1. **Gate mechanism** (§2.5): bot/App identity for agents, `primary` ruleset +
+   CODEOWNERS file, workflow-file protection. Needs repo-admin action; precedes any
+   publishing code.
+2. **GitHub Project board** (§2.6): create in the UI, wire built-in workflows, add
+   the phase epics.
 3. Scaffold `marketing/` workspace + contract + pipeline skeleton + CI gates.
-4. **GCP bootstrap** (§2.6): Terraform root, WIF, SA, `chipprbots-mkt-*` containers
+4. **GCP bootstrap** (§2.7): Terraform root, WIF, SA, `chipprbots-mkt-*` containers
    (WP app password first). WP service user: **Editor role** (or Author + pre-seeded
    taxonomy — decide with the WP admin). ops_node_1: apply + install the real
    `wp-cron.php` system cron.
 5. **Canva write-path gate**: the 5-minute scratch test (create-from-template → fill →
    export → download). If tagging is Enterprise-gated, fall back to placeholder-text
    `find_and_replace_text` conventions — the pipeline shape is unchanged.
+6. Shared skills/prompts inventory: pull in the other commonly-used third-party
+   skills as they're identified; custom asset-management packages get spec'd through
+   Spec Kit as they're needed (each is a `specs/<NNN>` feature, per constitution VII).
 
 ### Phase 1 — Primary channel + zero-friction socials (weeks 1–3)
 1. **WordPress adapter** end-to-end: media upload → post create → at-time publish →
@@ -429,7 +478,7 @@ changes it.
 | Missed schedules (WP-Cron) | at-time publishing; real system cron for Jetpack/ActivityPub delivery |
 | Pre-publication content world-readable | named decision §7; `features/` promoted late while public |
 | Legacy workspace contamination | own lockfile/toolchain outside `packages/*`; CI never runs legacy installs |
-| Shared GCP project blast radius | declared Terraform (§2.6), additive IAM, repo+ref-pinned WIF, own state |
+| Shared GCP project blast radius | declared Terraform (§2.7), additive IAM, repo+ref-pinned WIF, own state |
 | Reviewer bottleneck | one-PR-per-item review; missed-slot markers + standing schedule-status issue (§2.1.6); delegable per series |
 
 ## 6. Verify-at-build checklist
@@ -445,20 +494,30 @@ changes it.
 - [ ] Grok Imagine pricing at Phase-2 start
 - [ ] Whether to defensively register `chipperbots.com`
 
-## 7. Decisions requested (Cody)
+## 7. Decisions
+
+**Decided 2026-09-12** (Cody): the phased approach; GitHub PR + Actions as the human
+gate; the 78 backlog posts are pre-approved (edits re-enter review); a GitHub Project
+for content management (issues = concepts, PRs = steps); Phase 0 widened to prepare
+the repo as the brand-management/central-functions home with Spec Kit + shared
+skills, coordinating dormant projects (fukuii, Sigil) here.
+
+**Still open:**
 
 1. **Repo visibility** — keep `chippr-bots` public (pre-publication calendar/drafts
    world-readable; accepted for evergreen content, `features/` promoted late) or go
    private (forfeits nothing material; Actions still ~free).
-2. **Content promotion model** — Editor copies scheduling-ready items into
-   `marketing/content/` with SHA-pinned provenance, promoted copy authoritative
-   (recommended), vs publishing straight from project repos.
-3. **Approval authority** — Cody-only at first, or per-series CODEOWNER delegates.
-4. **Jetpack Social paid** (~$5/mo) — required if the backlog's LinkedIn drafts are to
+2. **Approval authority** — Cody-only at first, or per-series CODEOWNER delegates.
+3. **Jetpack Social paid** (~$5/mo) — required if the backlog's LinkedIn drafts are to
    be used as written; confirm with the chain test.
-5. **Cadence + X threading** — ~3/wk assumed; is one X status per post enough, or
+4. **Cadence + X threading** — ~3/wk assumed; is one X status per post enough, or
    threads (2–3×, prices the X line at ~$6–8/mo)?
-6. **X spend ceiling** — monthly credit cap for the adapter.
+5. **X spend ceiling** — monthly credit cap for the adapter.
+
+Default assumed unless redirected: the Editor promotes scheduling-ready items into
+`marketing/content/` with SHA-pinned provenance (promoted copy authoritative) rather
+than publishing straight from project repos — it is what makes the PR gate and the
+Project board the single surface.
 
 ---
 
